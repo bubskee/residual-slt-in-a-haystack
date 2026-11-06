@@ -1,0 +1,411 @@
+module
+import ResidualSLT
+
+#print ResidualSLT.HasIntegrabilityThresholdOn
+#print ResidualSLT.oneBlockSquaredError
+#print ResidualSLT.oneBlockLoss
+#print ResidualSLT.evenMoment
+#print ResidualSLT.FinitePositiveEvenMoment
+
+#check ResidualSLT.raw_coefficients
+#check ResidualSLT.network_natDegree
+#check ResidualSLT.raw_network_eq_X_iff
+#check ResidualSLT.real_raw_two_coefficients_zero_iff
+#check ResidualSLT.active_factor_relation
+#check ResidualSLT.monomial_thresholdOn_symmetric
+#check ResidualSLT.integrableOn_rpow_const_mul_iff
+#check ResidualSLT.integrableOn_rpow_iff_of_comparable
+#check ResidualSLT.HasIntegrabilityThresholdOn.mul_bounded
+#check ResidualSLT.finitePositiveEvenMoment_of_mass_ne_zero
+#check ResidualSLT.oneBlock_loss_eq
+#check ResidualSLT.oneBlock_certificate
+#check ResidualSLT.oneBlock_integrableOn_iff
+#check ResidualSLT.oneBlock_not_integrable_at_threshold
+
+#print ResidualSLT.BoundedPositivePriorOn
+#check ResidualSLT.integrableOn_withDensity_iff_weighted
+#check ResidualSLT.integrableOn_withDensity_iff_of_boundedPositive
+#check ResidualSLT.HasIntegrabilityThresholdOn.withDensity
+#check ResidualSLT.oneBlock_prior_integrableOn_iff
+#check ResidualSLT.oneBlock_prior_weighted_integrableOn_iff
+#check ResidualSLT.oneBlock_prior_certificate
+#check ResidualSLT.oneBlock_prior_not_integrable_at_threshold
+
+#check ResidualSLT.norm_rpow_integrableOn_ball_iff
+#check ResidualSLT.normPower_threshold
+#check ResidualSLT.positive_homogeneous_bounds
+#check ResidualSLT.positive_homogeneous_threshold
+#check ResidualSLT.feature_square_integrable
+#check ResidualSLT.feature_integral_eq_gram
+#check ResidualSLT.gramValue_bounds
+#check ResidualSLT.quadratic_network_polynomial
+#check ResidualSLT.quadratic_loss_comparison
+#check ResidualSLT.parameter_ball_eq_square
+#check ResidualSLT.quadratic_twoBlock_certificate
+#check ResidualSLT.quadratic_prior_not_integrable
+#print ResidualSLT.FinitePositiveFeatureGram
+
+#check ResidualSLT.integrableOn_rpow_iff_of_comparable_all
+#check ResidualSLT.raw_residual_coefficients
+#check ResidualSLT.positive_homogeneous_integrableOn_iff
+#check ResidualSLT.quadratic_prior_integrableOn_iff
+#check ResidualSLT.quadratic_prior_weighted_integrableOn_iff
+#check ResidualSLT.sumEvenPowers_integrableOn_iff
+#check ResidualSLT.sumEvenPowers_prior_integrableOn_iff
+#check ResidualSLT.productPowers_integrableOn_iff
+#check ResidualSLT.productPowers_prior_integrableOn_iff
+#check ResidualSLT.normalCrossingCutoff_integrable
+#check ResidualSLT.normalCrossingCutoff_eq
+#check ResidualSLT.normalCrossingCutoff_log_equivalent
+#check ResidualSLT.active_family_independent
+
+
+#check ResidualSLT.network_raw_step
+#check ResidualSLT.network_feature_expansion
+#check ResidualSLT.network_squaredError_integrable
+#check ResidualSLT.network_loss_eq_gram
+#check ResidualSLT.networkCoefficients_first
+#check ResidualSLT.residual_coeff_uniform_bound
+#check ResidualSLT.even_residual_coeff_bound
+#check ResidualSLT.even_network_coefficients_bounds
+#check ResidualSLT.even_network_loss_comparison
+#check ResidualSLT.parameter_ball_eq_cube
+#check ResidualSLT.even_network_integrableOn_iff
+#check ResidualSLT.even_network_prior_integrableOn_iff
+#check ResidualSLT.even_network_prior_weighted_integrableOn_iff
+#check ResidualSLT.even_network_certificate
+#check ResidualSLT.even_network_prior_not_integrable
+#check ResidualSLT.atomic_shiftedPower_gram
+#check ResidualSLT.network_atomic_gram
+#print ResidualSLT.networkSquaredError
+#print ResidualSLT.networkPopulationLoss
+#print ResidualSLT.networkFeatures
+#print ResidualSLT.networkCoefficients
+#print ResidualSLT.BoundedPositivePriorOn
+#print ResidualSLT.HasIntegrabilityThresholdOn
+
+
+#check ResidualSLT.networkRemainder_abs_majorized
+#check ResidualSLT.signed_remainder_coeff_bound
+#check ResidualSLT.signed_higher_coeff_bound
+#check ResidualSLT.signed_raw_higher_coeff_bound
+#check ResidualSLT.residual_coeff_le_norm
+#check ResidualSLT.residual_second_SQ
+#check ResidualSLT.signed_network_coefficients_upper
+#check ResidualSLT.signed_network_coefficients_lower
+#check ResidualSLT.signed_network_coefficients_bounds
+#check ResidualSLT.signed_network_loss_comparison
+#check ResidualSLT.signed_network_certificate
+#check ResidualSLT.signed_network_cancellation_comparison
+#check ResidualSLT.cancellationModel_pos
+#check ResidualSLT.signed_network_integrableOn_iff_model
+#check ResidualSLT.signed_network_prior_integrableOn_iff_model
+#check ResidualSLT.signed_network_prior_weighted_integrableOn_iff_model
+#print ResidualSLT.CoeffMajorized
+#print ResidualSLT.networkRemainder
+#print ResidualSLT.signedRemainderEnvelope
+#print ResidualSLT.weightSquareSum
+#print ResidualSLT.cancellationModel
+
+#print axioms ResidualSLT.separator_family_independent
+#print axioms ResidualSLT.active_family_independent
+#print axioms ResidualSLT.atomicInput_integrable
+#print axioms ResidualSLT.atomicInput_integral
+#print axioms ResidualSLT.atomic_shiftedPower_gram
+#print axioms ResidualSLT.network_atomic_gram
+#print axioms ResidualSLT.coeff_pow_nonneg
+#print axioms ResidualSLT.network_residual_coeff_nonneg
+#print axioms ResidualSLT.coeff_le_eval_one
+#print axioms ResidualSLT.networkEnvelope_one_le
+#print axioms ResidualSLT.network_eval_one_control
+#print axioms ResidualSLT.residual_coeff_uniform_bound
+#print axioms ResidualSLT.coeff_one_pow
+#print axioms ResidualSLT.graded_coeff_one
+#print axioms ResidualSLT.graded_coeff_two
+#print axioms ResidualSLT.graded_coeff_two_SQ
+#print axioms ResidualSLT.network_coeff_graded
+#print axioms ResidualSLT.network_coeff_r
+#print axioms ResidualSLT.network_coeff_two_mul_sub_one
+#print axioms ResidualSLT.raw_coefficients
+#print axioms ResidualSLT.raw_residual_coefficients
+#print axioms ResidualSLT.activeCount_zero
+#print axioms ResidualSLT.activeCount_succ
+#print axioms ResidualSLT.network_natDegree
+#print axioms ResidualSLT.activeCount_le
+#print axioms ResidualSLT.network_natDegree_le
+#print axioms ResidualSLT.network_eq_X_iff
+#print axioms ResidualSLT.raw_network_eq_X_iff
+#print axioms ResidualSLT.weightPowerSum_nonneg
+#print axioms ResidualSLT.evenNetworkModel_pos
+#print axioms ResidualSLT.evenNetworkModel_continuous
+#print axioms ResidualSLT.weightPowerSum_smul
+#print axioms ResidualSLT.evenNetworkModel_smul
+#print axioms ResidualSLT.evenNetworkModel_integrableOn_iff
+#print axioms ResidualSLT.evenNetworkModel_threshold
+#print axioms ResidualSLT.even_effective_weights_bounds
+#print axioms ResidualSLT.even_residual_coeff_bound
+#print axioms ResidualSLT.even_network_coefficients_bounds
+#print axioms ResidualSLT.even_network_loss_comparison
+#print axioms ResidualSLT.parameter_ball_eq_cube
+#print axioms ResidualSLT.even_network_integrableOn_iff
+#print axioms ResidualSLT.even_network_threshold
+#print axioms ResidualSLT.even_network_prior_integrableOn_iff
+#print axioms ResidualSLT.even_network_prior_weighted_integrableOn_iff
+#print axioms ResidualSLT.even_network_certificate
+#print axioms ResidualSLT.even_network_prior_not_integrable
+#print axioms ResidualSLT.feature_square_expansion
+#print axioms ResidualSLT.feature_square_integrable
+#print axioms ResidualSLT.feature_integral_eq_gram
+#print axioms ResidualSLT.gramValue_continuous
+#print axioms ResidualSLT.gramValue_smul
+#print axioms ResidualSLT.gramValue_pos
+#print axioms ResidualSLT.gramValue_bounds
+#print axioms ResidualSLT.monomial_integrableOn_iff
+#print axioms ResidualSLT.monomial_thresholdOn
+#print axioms ResidualSLT.monomial_integrableOn_symmetric_iff
+#print axioms ResidualSLT.monomial_thresholdOn_symmetric
+#print axioms ResidualSLT.integrableOn_rpow_const_mul_iff
+#print axioms ResidualSLT.HasIntegrabilityThresholdOn.const_mul
+#print axioms ResidualSLT.integrableOn_rpow_iff_of_comparable
+#print axioms ResidualSLT.HasIntegrabilityThresholdOn.of_comparable
+#print axioms ResidualSLT.HasIntegrabilityThresholdOn.mul_bounded
+#print axioms ResidualSLT.integrableOn_rpow_iff_of_comparable_all
+#print axioms ResidualSLT.network_raw_step
+#print axioms ResidualSLT.networkFeatureCount_pos
+#print axioms ResidualSLT.network_residual_X_pow_dvd
+#print axioms ResidualSLT.network_feature_expansion
+#print axioms ResidualSLT.network_squaredError_eq
+#print axioms ResidualSLT.network_squaredError_integrable
+#print axioms ResidualSLT.network_loss_eq_gram
+#print axioms ResidualSLT.networkCoefficients_first
+#print axioms ResidualSLT.continuous_coeff_pow
+#print axioms ResidualSLT.network_coeff_continuous
+#print axioms ResidualSLT.networkCoefficients_continuous
+#print axioms ResidualSLT.networkPopulationLoss_continuous
+#print axioms ResidualSLT.normalCrossingCutoff_integrable
+#print axioms ResidualSLT.normalCrossingCutoff_eq
+#print axioms ResidualSLT.normalCrossingCutoff_log_equivalent
+#print axioms ResidualSLT.oneBlock_squaredError_eq
+#print axioms ResidualSLT.oneBlock_squaredError_integrable
+#print axioms ResidualSLT.oneBlock_loss_eq
+#print axioms ResidualSLT.finitePositiveEvenMoment_of_mass_ne_zero
+#print axioms ResidualSLT.oneBlock_integrableOn_iff
+#print axioms ResidualSLT.oneBlock_threshold
+#print axioms ResidualSLT.oneBlock_certificate
+#print axioms ResidualSLT.oneBlock_not_integrable_at_threshold
+#print axioms ResidualSLT.oneBlock_prior_integrableOn_iff
+#print axioms ResidualSLT.oneBlock_prior_weighted_integrableOn_iff
+#print axioms ResidualSLT.oneBlock_prior_threshold
+#print axioms ResidualSLT.oneBlock_prior_certificate
+#print axioms ResidualSLT.oneBlock_prior_not_integrable_at_threshold
+#print axioms ResidualSLT.graded_coeff_zero
+#print axioms ResidualSLT.network_eq_graded
+#print axioms ResidualSLT.network_zero_weights
+#print axioms ResidualSLT.network_succ_of_zero
+#print axioms ResidualSLT.eval_network_succ
+#print axioms ResidualSLT.integrableOn_withDensity_iff_weighted
+#print axioms ResidualSLT.integrableOn_withDensity_iff_of_boundedPositive
+#print axioms ResidualSLT.HasIntegrabilityThresholdOn.withDensity
+#print axioms ResidualSLT.integrable_prod_mul_iff_of_ae_ne_zero
+#print axioms ResidualSLT.productPowers_integrableOn_iff
+#print axioms ResidualSLT.productPowers_threshold
+#print axioms ResidualSLT.productPowers_prior_integrableOn_iff
+#print axioms ResidualSLT.quadratic_network_polynomial
+#print axioms ResidualSLT.quadratic_squaredError_eq
+#print axioms ResidualSLT.quadratic_squaredError_integrable
+#print axioms ResidualSLT.quadratic_loss_eq_gram
+#print axioms ResidualSLT.quadraticLoss_continuous
+#print axioms ResidualSLT.quadratic_coefficients_bounds
+#print axioms ResidualSLT.quadratic_loss_comparison
+#print axioms ResidualSLT.parameter_ball_eq_square
+#print axioms ResidualSLT.quadraticModel_pos
+#print axioms ResidualSLT.quadraticModel_smul
+#print axioms ResidualSLT.quadraticModel_integrableOn_iff
+#print axioms ResidualSLT.quadraticModel_threshold
+#print axioms ResidualSLT.quadratic_threshold
+#print axioms ResidualSLT.quadratic_prior_threshold
+#print axioms ResidualSLT.quadratic_twoBlock_certificate
+#print axioms ResidualSLT.quadratic_prior_not_integrable
+#print axioms ResidualSLT.quadratic_integrableOn_iff
+#print axioms ResidualSLT.quadratic_prior_integrableOn_iff
+#print axioms ResidualSLT.quadratic_prior_weighted_integrableOn_iff
+#print axioms ResidualSLT.norm_rpow_integrableOn_ball_iff
+#print axioms ResidualSLT.normPower_integrableOn_ball_iff
+#print axioms ResidualSLT.normPower_threshold
+#print axioms ResidualSLT.positive_homogeneous_bounds
+#print axioms ResidualSLT.positive_homogeneous_threshold
+#print axioms ResidualSLT.positive_homogeneous_integrableOn_iff
+#print axioms ResidualSLT.real_two_coefficients_zero_iff
+#print axioms ResidualSLT.real_raw_two_coefficients_zero_iff
+#print axioms ResidualSLT.separator_coprime
+#print axioms ResidualSLT.separator_natDegree
+#print axioms ResidualSLT.separator_relation
+#print axioms ResidualSLT.active_factor_relation
+#print axioms ResidualSLT.two_direction_degree_gaps
+#print axioms ResidualSLT.CoeffMajorized.nonneg
+#print axioms ResidualSLT.CoeffMajorized.add
+#print axioms ResidualSLT.CoeffMajorized.mul
+#print axioms ResidualSLT.CoeffMajorized.pow
+#print axioms ResidualSLT.coeffMajorized_X
+#print axioms ResidualSLT.coeffMajorized_C
+#print axioms ResidualSLT.CoeffMajorized.pow_sub_X
+#print axioms ResidualSLT.network_abs_majorized
+#print axioms ResidualSLT.networkRemainder_succ
+#print axioms ResidualSLT.networkRemainder_abs_majorized
+#print axioms ResidualSLT.signedRemainderEnvelope_nonneg
+#print axioms ResidualSLT.network_power_eval_bound
+#print axioms ResidualSLT.networkRemainder_eval_bound
+#print axioms ResidualSLT.signed_remainder_coeff_bound
+#print axioms ResidualSLT.signed_higher_coeff_bound
+#print axioms ResidualSLT.weightSquareSum_eq
+#print axioms ResidualSLT.weightSquareSum_nonneg
+#print axioms ResidualSLT.signed_effective_weights_bounds
+#print axioms ResidualSLT.signed_raw_higher_coeff_bound
+#print axioms ResidualSLT.residual_coeff_le_norm
+#print axioms ResidualSLT.residual_second_SQ
+#print axioms ResidualSLT.weightPowerSum_abs_le_depth
+#print axioms ResidualSLT.signed_network_coefficients_upper
+#print axioms ResidualSLT.signed_network_coefficients_lower
+#print axioms ResidualSLT.signed_network_coefficients_bounds
+#print axioms ResidualSLT.signed_network_loss_comparison
+#print axioms ResidualSLT.signed_network_certificate
+#print axioms ResidualSLT.signed_network_cancellation_comparison
+#print axioms ResidualSLT.cancellationModel_continuous
+#print axioms ResidualSLT.cancellationModel_pos
+#print axioms ResidualSLT.signed_network_integrableOn_iff_model
+#print axioms ResidualSLT.signed_network_prior_integrableOn_iff_model
+#print axioms ResidualSLT.signed_network_prior_weighted_integrableOn_iff_model
+#print axioms ResidualSLT.sumEvenPowers_continuous
+#print axioms ResidualSLT.sumEvenPowers_pos
+#print axioms ResidualSLT.sumEvenPowers_smul
+#print axioms ResidualSLT.sumEvenPowers_integrableOn_iff
+#print axioms ResidualSLT.sumEvenPowers_threshold
+#print axioms ResidualSLT.sumEvenPowers_prior_integrableOn_iff
+
+-- Weighted cancellation integral certificates.
+#print axioms ResidualSLT.weightedCancellation_measurable
+#print axioms ResidualSLT.rectangle_rpow_integrable_iff
+#print axioms ResidualSLT.weightedCancellation_le_product
+#print axioms ResidualSLT.cancellation_exponent_split
+#print axioms ResidualSLT.weightedCancellation_integrable_of_pos
+#print axioms ResidualSLT.weightedCancellation_factor
+#print axioms ResidualSLT.weightedCancellation_lower_flat
+#print axioms ResidualSLT.weightedCancellation_lower_core
+#print axioms ResidualSLT.weightedCancellation_radial_necessary
+#print axioms ResidualSLT.weightedCancellation_core_necessary
+#print axioms ResidualSLT.weightedCancellation_integrable_of_nonpos
+#print axioms ResidualSLT.weightedCancellation_integrableOn_iff
+#print axioms ResidualSLT.weightedNetworkModel_integrableOn_iff
+#print axioms ResidualSLT.integrableOn_even_transverse_iff
+#print axioms ResidualSLT.weightedCancellation_symmetric_integrableOn_iff
+#print axioms ResidualSLT.weightedNetworkModel_phase_transition
+#print ResidualSLT.weightedCancellation_integrableOn_iff
+#print ResidualSLT.weightedCancellation_symmetric_integrableOn_iff
+#print ResidualSLT.weightedNetworkModel_phase_transition
+#print axioms ResidualSLT.weightedCancellation_smallRectangle_necessary
+#print axioms ResidualSLT.weightedCancellation_local_integrableOn_iff
+#print axioms ResidualSLT.cancellationNormalForm_weightedMeasure_iff
+#print axioms ResidualSLT.weightedNetworkModel_local_phase_transition
+#print axioms ResidualSLT.weightedCancellation_local_not_integrable
+#print axioms ResidualSLT.weightPowerSum_hasFDerivAt
+#print axioms ResidualSLT.fermatDifferential_apply
+#print axioms ResidualSLT.fermatDifferential_radial
+#print axioms ResidualSLT.fermatDifferential_ne_zero
+#print axioms ResidualSLT.fermat_sphere_transverse
+#print axioms ResidualSLT.cancellationModel_radial_comparison
+#print axioms ResidualSLT.odd_fermat_sphere_nonempty
+#print axioms ResidualSLT.cancellationModel_integrableOn_iff_radial
+#print axioms ResidualSLT.signed_network_prior_integrableOn_iff_radial
+#check ResidualSLT.weightedCancellation_local_integrableOn_iff
+#check ResidualSLT.cancellationNormalForm_weightedMeasure_iff
+#check ResidualSLT.weightedNetworkModel_local_phase_transition
+#check ResidualSLT.weightPowerSum_hasFDerivAt
+#check ResidualSLT.fermat_sphere_transverse
+#check ResidualSLT.cancellationModel_radial_comparison
+#check ResidualSLT.signed_network_prior_integrableOn_iff_radial
+#print axioms ResidualSLT.transverseMap_hasFDerivAt
+#print axioms ResidualSLT.transverseMap_contDiff
+#print axioms ResidualSLT.transverseDeriv_det
+#print axioms ResidualSLT.transverseDeriv_bijective
+#print axioms ResidualSLT.integrableOn_image_iff_of_bounded_jacobian
+#print axioms ResidualSLT.exists_transverse_chart
+#print axioms ResidualSLT.exists_mem_transverseChart
+#print axioms ResidualSLT.TransverseChart.inverse_coordinate
+#print axioms ResidualSLT.TransverseChart.inverse_other
+#print axioms ResidualSLT.TransverseChart.integrableOn_image_iff
+#print axioms ResidualSLT.finite_transverse_chart_cover
+#print axioms ResidualSLT.compact_complement_abs_lower
+#print axioms ResidualSLT.TransverseChart.radial_integrableOn_image_iff
+#print axioms ResidualSLT.angularFermat_contDiff
+#print axioms ResidualSLT.angularFermat_hasFDerivAt
+#print axioms ResidualSLT.angularFermat_zero_regular
+#print axioms ResidualSLT.angularFermat_exists_chart
+#print axioms ResidualSLT.angularFermat_finite_cover
+#print axioms ResidualSLT.angularFermat_finite_cover_and_complement
+#print axioms ResidualSLT.weightPowerSum_fixed_coordinate
+#print axioms ResidualSLT.weightedAngular_chart_iff
+#print axioms ResidualSLT.weightedAngular_integrable_off_zero
+#print axioms ResidualSLT.radialBlowup_hasFDerivAt
+#print axioms ResidualSLT.radialBlowup_contDiff
+#print axioms ResidualSLT.radialBlowup_left_inverse
+#print axioms ResidualSLT.radialBlowup_right_inverse
+#print axioms ResidualSLT.radialBlowup_injOn
+#print axioms ResidualSLT.radialBlowupDeriv_det
+#print axioms ResidualSLT.radialBlowup_integrableOn_image_iff
+#print axioms ResidualSLT.radialBlowup_eq_smul
+#print axioms ResidualSLT.cancellationModel_radialBlowup
+#print axioms ResidualSLT.radialBlowupInverse_contDiffOn
+#print axioms ResidualSLT.radialBlowup_angular_Q_bounds
+#print axioms ResidualSLT.cancellationModel_radialBlowup_bounds
+#print axioms ResidualSLT.cancellationModel_on_radial_patch_iff
+#print axioms ResidualSLT.radialBlowup_dominating_representation
+#print axioms ResidualSLT.signed_radialBlowup_cover
+#check ResidualSLT.exists_transverse_chart
+#check ResidualSLT.TransverseChart
+#check ResidualSLT.TransverseChart.radial_integrableOn_image_iff
+#check ResidualSLT.angularFermat_finite_cover_and_complement
+#check ResidualSLT.weightedAngular_chart_iff
+#check ResidualSLT.weightedAngular_integrable_off_zero
+#check ResidualSLT.radialBlowup_integrableOn_image_iff
+#check ResidualSLT.cancellationModel_on_radial_patch_iff
+#check ResidualSLT.signed_radialBlowup_cover
+#print axioms ResidualSLT.cancellationModel_projective_integrableOn_iff
+#print axioms ResidualSLT.cancellationModel_transverse_cone_iff
+#print axioms ResidualSLT.projectiveConePatch_measurableSet
+#print axioms ResidualSLT.projectiveConePatch_subset_ball
+#print axioms ResidualSLT.signed_network_prior_integrableOn_iff_model_on_subset
+#print axioms ResidualSLT.signed_network_prior_transverse_cone_iff
+#check ResidualSLT.cancellationModel_transverse_cone_iff
+#check ResidualSLT.signed_network_prior_transverse_cone_iff
+
+-- Angular product-region and divergence audit.
+#print axioms ResidualSLT.angularCylinder_integrable_iff
+#print axioms ResidualSLT.TransverseChart.image_subset_cylinder
+#print axioms ResidualSLT.TransverseChart.exists_inner_cylinder
+#print axioms ResidualSLT.weightedAngular_integrable_cube
+#print axioms ResidualSLT.weightedAngular_necessary_of_interior_zero
+#print axioms ResidualSLT.weightedAngular_radial_necessary
+#print axioms ResidualSLT.odd_angularFermat_interior_zero
+
+-- Complete arbitrary-depth odd actual-network threshold.
+#print axioms ResidualSLT.cancellationModel_neg
+#print axioms ResidualSLT.cancellationModel_integrable_of_angular
+#print axioms ResidualSLT.cancellationModel_angular_of_integrable
+#print axioms ResidualSLT.cancellationModel_integrable_nonpos
+#print axioms ResidualSLT.odd_cancellationModel_integrableOn_iff
+#print axioms ResidualSLT.cancellationModel_one_integrableOn_iff
+#print axioms ResidualSLT.odd_cancellationModel_all_depths_integrableOn_iff
+#print axioms ResidualSLT.BoundedPositivePriorOn.mono
+#print axioms ResidualSLT.signed_network_prior_necessary_of_interior_zero
+#print axioms ResidualSLT.odd_network_prior_integrableOn_iff
+#print axioms ResidualSLT.odd_network_prior_phase_transition
+#print axioms ResidualSLT.odd_network_integrableOn_iff
+#print axioms ResidualSLT.odd_network_prior_weighted_integrableOn_iff
+#print axioms ResidualSLT.odd_network_threshold
+#print axioms ResidualSLT.odd_network_certificate
+#print axioms ResidualSLT.odd_network_prior_not_integrable
+#check ResidualSLT.odd_network_prior_phase_transition
+#check ResidualSLT.odd_network_prior_integrableOn_iff
+#check ResidualSLT.odd_network_certificate
+#check ResidualSLT.odd_network_prior_not_integrable
+#check ResidualSLT.signed_network_prior_necessary_of_interior_zero

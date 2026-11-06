@@ -1,0 +1,91 @@
+module
+import ResidualSLT
+import Mathlib.Algebra.MvPolynomial.Degrees
+import Mathlib.RingTheory.MvPolynomial.Symmetric.Defs
+import Mathlib.RingTheory.Localization.Basic
+import Mathlib.RingTheory.Ideal.Span
+import Mathlib.Analysis.Asymptotics.Defs
+import Mathlib.Analysis.Calculus.InverseFunctionTheorem.FDeriv
+import Mathlib.MeasureTheory.Function.Jacobian
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+
+#check (fun (p : MvPolynomial ℕ ℝ) (d : ℕ →₀ ℕ) => p.coeff d)
+#check MvPolynomial.coeff_mul
+#check MvPolynomial.aeval
+#check MvPolynomial.totalDegree
+#check MvPolynomial.esymm
+#check Polynomial.comp
+#check Polynomial.mul_coeff_one
+#check Polynomial.coeff_expand_mul
+#check Polynomial.natDegree_comp
+#check Polynomial.natDegree_C_mul
+#check Finset.sum_sq_eq_zero_iff
+#check IsCoprime.dvd_of_dvd_mul_right
+#check IsCoprime.pow_right
+#check Ideal.span
+#check Ideal.mem_span_singleton'
+#check IsLocalization
+#check IsLocalization.map_units
+#check IsLocalization.surj
+#check Asymptotics.IsTheta
+#check HasStrictFDerivAt.to_localInverse
+#check MeasureTheory.integral_image_eq_integral_abs_det_fderiv_smul
+#check MeasureTheory.integral_prod_mul
+#check intervalIntegral.integrableOn_Ioo_rpow_iff
+#check integral_rpow
+#check intervalIntegral.integrableOn_Ioo_cpow_iff
+
+#check MeasureTheory.Integrable.const_mul
+#check MeasureTheory.integral_const_mul
+#check MeasureTheory.integral_pos_iff_support_of_nonneg
+#check MeasureTheory.integrable_const_mul_iff
+#check MeasureTheory.Integrable.mono_nonneg
+#check Real.mul_rpow
+#check Real.rpow_le_rpow_of_nonpos
+#check Real.hasMeasurablePow
+#check AEMeasurable.pow_const
+
+#check MeasureTheory.restrict_withDensity
+#check MeasureTheory.withDensity_mono
+#check MeasureTheory.withDensity_const
+#check MeasureTheory.withDensity_absolutelyContinuous
+#check MeasureTheory.Measure.AbsolutelyContinuous.ae_le
+#check MeasureTheory.Integrable.mono_measure
+#check MeasureTheory.Integrable.smul_measure
+#check MeasureTheory.integrable_smul_measure
+#check MeasureTheory.integrable_withDensity_iff_integrable_coe_smul
+
+#check MeasureTheory.integrableOn_fun_norm_addHaar
+#check IsCompact.exists_isMinOn
+#check IsCompact.exists_isMaxOn
+#check Matrix.PosDef.dotProduct_mulVec_pos
+#check MeasureTheory.integrable_finsetSum
+#check MeasureTheory.integral_finsetSum
+#check MeasureTheory.Integrable.prod_left_ae
+#check MeasureTheory.Integrable.prod_right_ae
+#check MeasureTheory.Integrable.mul_prod
+#check MeasureTheory.setIntegral_prod_mul
+#check MeasureTheory.Measure.prod_restrict
+#check MeasureTheory.Measure.volume_eq_prod
+#check integral_inv_of_pos
+#check LinearIndependent.option
+#check LinearIndependent.map'
+#check LinearMap.mulLeft
+#check Real.rpow_le_rpow
+#check Real.rpow_natCast_mul
+
+#check Polynomial.X_pow_dvd_iff
+#check Polynomial.eval_eq_sum_range'
+#check Polynomial.coeff_mul
+#check pow_dvd_pow_of_dvd
+#check pi_norm_lt_iff
+#check Matrix.eq_zero_of_forall_index_sum_mul_pow_eq_zero
+#check MeasureTheory.integrable_finsetSum_measure
+#check MeasureTheory.integral_finsetSum_measure
+
+#check abs_pow_sub_pow_le
+#check Finset.abs_sum_le_sum_abs
+#check Finset.sum_mul_sq_le_sq_mul_sq
+#check Polynomial.coeff_eq_zero_of_natDegree_lt
+#check MeasureTheory.Measure.ae_ne
