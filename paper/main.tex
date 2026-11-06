@@ -1,0 +1,401 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,float}
+\usepackage[numbers]{natbib}
+\usepackage{graphicx,xurl}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Learning Coefficients and Active-Block Arrangements in Scalar Residual Networks},
+ pdfauthor={Bobby Faber}, pdfsubject={Local learning coefficients of scalar polynomial residual networks},
+ pdfkeywords={singular learning theory, residual networks, real log canonical threshold, Lean}}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}[section]
+\newcommand{\R}{\mathbb R}
+\newcommand{\asym}{\asymp}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\pos}[1]{(#1)_+}
+\DeclareMathOperator{\supp}{supp}
+\title{Learning Coefficients and Active-Block Arrangements\\in Scalar Residual Networks}
+\author{Bobby Faber\\\small Independent}
+\date{5 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study squared-error population losses of scalar polynomial residual networks in their raw weights. At the identity target, odd activation degree permits cancellation and produces a depth-dependent transition, including a logarithmic factor at the critical depth. At an arbitrary realization, nonzero active blocks separate consecutive inactive groups: the local learning coefficient is the sum of a regular active contribution and the identity contributions of those groups. This gives realizations of the same function with different local exponents or multiplicities. Complete fiber classifications yield global formulas for targets with one or two active blocks. The identity-target integrability thresholds and boundary divergence are also certified in Lean under explicit Gram and prior assumptions.
+\end{abstract}
+
+\section{Introduction}
+A depth-five cubic residual network represents $f(x)=x+x^3$ with its sole nonzero weight at any of its five positions, yet these realizations have different local loss geometry. We describe this geometry by a pair $(\lambda,m)$: the local learning coefficient $\lambda$ and multiplicity $m$ give the order $N^{-\lambda}(\log N)^{m-1}$ of the local integral of $e^{-N K_f}$, where $K_f$ is the squared-error population loss and $N\to\infty$ is a positive concentration parameter. At positions $1$ or $5$, the pair is $(13/12,1)$; at positions $2$ or $4$, it is $(7/6,2)$; at the center, it is $(7/6,1)$. Thus the same function has local integral orders $N^{-13/12}$, $N^{-7/6}\log N$, and $N^{-7/6}$. Figure~\ref{fig:arrangements} and Table~\ref{tab:examples} display the three cases.
+
+Learning coefficients capture singular geometry beyond parameter counting or Jacobian rank \citep{wei2023,lau2025}. Here every realization has five parameters and raw coefficient-Jacobian rank one, but the local pairs differ. A local analysis near one realization therefore need not describe the geometry near another realization of the same function. Equivalently, the local low-loss volume has order $\epsilon^\lambda(\log(1/\epsilon))^{m-1}$ as the tolerance $\epsilon\downarrow0$: smaller $\lambda$ gives more volume, and $m$ distinguishes logarithmic scales when the exponents agree.
+
+An inactive residual block is the identity, so moving the sole active block preserves the output. Perturbing inactive weights, however, introduces terms at different stages of composition. The active block separates the resulting cancellation opportunities.
+
+For odd degree $r$, signed $r$th powers can cancel within a consecutive group of inactive blocks. Active blocks separate these groups into independent leading loss directions, so their positions determine the available cancellation regimes. A group's contribution changes regime when its length reaches $r$, where a logarithm appears. Theorem~\ref{thm:arrangement} adds these group contributions to the regular contribution of the active weights. Global asymptotics then select among the local contributions of all realizations, as Theorem~\ref{thm:global} shows for one- and two-active targets.
+
+The architecture is the scalar monomial specialization of the polynomial ResNets studied by \citet{dahlgren2026}. Related work connects sparse subnetworks to singularities of polynomial function spaces \citep{shahverdi2026}. Here we compute local loss-volume exponents, giving exact examples relevant to local learning coefficient estimation \citep{lau2025}. Exact coefficients are also known for reduced-rank regression and multilayer linear networks \citep{aoyagiwatanabe2005,aoyagi2024}. Our calculations use the singular learning framework and monomial rules of \citet{watanabe2009,lin2017}; they concern deterministic population-loss integrals.
+
+\section{Model and assumptions}\label{sec:model}
+Fix integers $r\ge2$ and $L\ge1$. The parameters are independent raw weights $w\in\R^L$, with
+\begin{equation}\label{eq:network}
+ h_0(x)=x,\qquad h_\ell(x)=h_{\ell-1}(x)+w_\ell^r h_{\ell-1}(x)^r,
+ \quad 1\le\ell\le L.
+\end{equation}
+This is the bias-free scalar specialization of $h\mapsto h+\sigma(wh)$ with $\sigma(z)=z^r$ \citep[Definition 2.1]{dahlgren2026}, hence the coefficient $w^r$. Replacing it by an independent coefficient $c$ changes the geometry at zero: $w\mapsto c=w^r$ is not a local diffeomorphism there, and raw Lebesgue measure induces a density proportional to $|c|^{1/r-1}$ on each branch. A smooth positive prior in $c$ therefore defines a different local integral. Write $F_c(x)=x+cx^r$, so $h_L=F_{w_L^r}\circ\cdots\circ F_{w_1^r}$. The target $f$ is realizable in this architecture. For an input probability measure $\mu$, let
+\begin{equation}\label{eq:loss}
+ K_f(w)=\int_\R (h_L(w,x)-f(x))^2\,d\mu(x).
+\end{equation}
+Put $\nu=(r^L-1)/(r-1)$ and $d_j=1+j(r-1)$ for $1\le j\le\nu$. Throughout, assume the sparse feature Gram matrix
+\begin{equation}\label{eq:gram}
+ G_{ij}=\int_\R x^{d_i+d_j}\,d\mu(x)
+ \quad(1\le i,j\le\nu)
+ \quad\text{is finite and positive definite.}
+\end{equation}
+Then $K_f$ is comparable to the squared coefficient-error norm. A finite absolute moment of order $2r^L$ and infinite support of $\mu$ suffice: a nonzero univariate polynomial has finitely many zeros.
+
+At a realization $w^*$, let $\pi$ be a smooth positive density on a full neighborhood. Take a nonnegative smooth compact cutoff $\chi$, supported in a sufficiently small neighborhood and equal to one near $w^*$. Define the local pair by
+\begin{equation}\label{eq:pair}
+ Z_{N,w^*}=\int_{\R^L}\chi(w)e^{-N K_f(w)}\pi(w)\,dw
+ \asym N^{-\lambda}(\log N)^{m-1},\qquad N\longrightarrow\infty.
+\end{equation}
+The symbol $\asym$ denotes bounds by positive constant multiples. The local threshold $\lambda$ satisfies: $K_f^{-s}$ is integrable for $s<\lambda$ and diverges at $s=\lambda$. The integer $m$ records the logarithmic power, equivalently the order of the first positive pole of the local zeta integral for this analytic loss. These interpretations follow from the usual resolution framework \citep[Theorem 2.10 and Proposition 3.2]{lin2017}; our calculations below determine the logarithmic power as well as the threshold. Our normalization uses a \emph{squared} loss; Lin's coefficient-ideal threshold is $2\lambda$ (his zeta convention is $(\sum_i f_i^2)^{-z/2}$). A measurable density bounded above and away from zero already suffices for the order in \eqref{eq:pair}; smoothness supplies the customary pole interpretation.
+
+All local constants may depend on $r,L,w^*$ and $\mu$; the estimates are pointwise in the nonzero active weights. Global statements below use a proper density on $\R^L$, normalized to integral one, smooth and positive near every point of the target fiber. No independence assumption on the prior is needed.
+
+\section{The identity-target phase transition}
+Write $K_0=K_x$. Effective coefficients $u_i=w_i^r$ will be used only as algebraic notation: the integration variables remain the raw weights. Set
+\[
+ S(w)=\sum_{i=1}^L w_i^r,\qquad Q(w)=\sum_{i=1}^L w_i^{2r}.
+\]
+\begin{theorem}[Identity target]\label{thm:identity}
+Under \eqref{eq:gram}, near $w=0$,
+\begin{equation}\label{eq:identityreduction}
+ K_0(w)\asym S(w)^2+Q(w)^2.
+\end{equation}
+The local pair is
+\begin{equation}\label{eq:identitypair}
+ (\lambda,m)=
+ \begin{cases}
+ (L/(2r),1),&r\text{ even or }L<r,\\
+ (1/2,2),&r\text{ odd},\ L=r,\\
+ ((L+r)/(4r),1),&r\text{ odd},\ L>r.
+ \end{cases}
+\end{equation}
+Moreover, $K_0$ is coercive and has zero set $\{0\}$. Thus the same pair governs the global integral under a proper prior smooth and positive near zero.
+\end{theorem}
+
+The first two output error coefficients are exactly $S$ and
+\[
+ B=r\sum_{i<j}u_i u_j=\frac r2(S^2-Q).
+\]
+All higher coefficients have higher homogeneous degree in $u$. The Gram bound and this identity give \eqref{eq:identityreduction}; Appendix~\ref{app:coeff} supplies the uniform estimate and coercivity argument.
+
+For even $r$, the summands of $S$ are nonnegative, so $S^2\asym\norm{w}^{2r}$ and the radial exponent is $L/(2r)$. For odd $r$ and $L\ge2$, write $w=\rho\theta$ with $\theta\in\mathbb S^{L-1}$. The angular function $\tau(\theta)=\sum_i\theta_i^r$ has a nonempty regular zero set. Near it, transverse coordinates $t=\tau(\theta)$ reduce the loss and volume to
+\begin{equation}\label{eq:angularmodel}
+ \rho^{2r}(t^2+\rho^{2r}),\qquad
+ \rho^{L-1}\,d\rho\,dt\,d\eta
+\end{equation}
+up to bounded positive factors. A finite collection of local charts with bounded positive densities suffices. In the thin region $|t|\le\rho^r$, cancellation changes the radial scale to $\rho^{4r}$ while the angular width contributes $\rho^r$. This gives $(L+r)/(4r)$. The competing exponent is $L/(2r)$; their crossing at $L=r$ produces one logarithm. Appendix~\ref{app:sectors} computes both exponents and the logarithm using two explicit sectors.
+
+\section{The local arrangement theorem}
+Each inactive group inherits the identity-target geometry of Theorem~\ref{thm:identity}; the active weights contribute regular directions. For an inactive group of size $n$, define $A_r(0)=0$, $M_r(0)=1$, and, for $n\ge1$,
+\begin{equation}\label{eq:AM}
+ A_r(n)=\begin{cases}n/(2r),&r\text{ even},\\
+ n/(2r)-\pos{n-r}/(4r),&r\text{ odd},\end{cases}
+ \qquad
+ M_r(n)=\begin{cases}2,&r\text{ odd and }n=r,\\1,&\text{otherwise}.\end{cases}
+\end{equation}
+Here $(a)_+=\max(a,0)$. These are the identity pairs of Theorem~\ref{thm:identity}, with the empty group contributing an integral equal to one.
+
+Fix $w^*$ with exactly $k$ nonzero weights, at positions $i_1<\cdots<i_k$. Put $c_j=(w^*_{i_j})^r\ne0$. There are $k+1$ consecutive inactive groups, of lengths $n_0,\ldots,n_k$, before, between, and after the active blocks; $k+\sum_g n_g=L$. Write their raw weights as $a_g=(a_{g,1},\ldots,a_{g,n_g})$ and put
+\[
+ S_g=\sum_{i=1}^{n_g}a_{g,i}^r,\qquad Q_g=\sum_{i=1}^{n_g}a_{g,i}^{2r}.
+\]
+The active deviations $\delta_j=w_{i_j}^r-c_j$ are valid local coordinates because $r(w^*_{i_j})^{r-1}\ne0$. Only these active coordinates are changed.
+
+\begin{samepage}
+\begin{theorem}[Local arrangement]\label{thm:arrangement}
+Let $f=h_L(w^*,\cdot)$ and assume \eqref{eq:gram}, with any nonzero active values and any inactive group sizes $n_g\ge0$. For odd $r\ge3$, on a sufficiently small full neighborhood of $w^*$,
+\begin{equation}\label{eq:arrangementodd}
+ K_f\asym\sum_{j=1}^k\delta_j^2+\sum_{g=0}^k(S_g^2+Q_g^2).
+\end{equation}
+For even $r\ge2$ the comparison is
+\begin{equation}\label{eq:arrangementeven}
+ K_f\asym\sum_{j=1}^k\delta_j^2+\sum_{\text{inactive }i}|w_i|^{2r}.
+\end{equation}
+Under the local prior conditions of Section~\ref{sec:model}, for every $k\ge0$ with total depth $L\ge1$,
+\begin{equation}\label{eq:arrangementpair}
+ \boxed{\lambda=\frac{k}{2}+\sum_{g=0}^k A_r(n_g),\qquad
+ m=1+\sum_{g=0}^k\bigl(M_r(n_g)-1\bigr).}
+\end{equation}
+\end{theorem}
+\end{samepage}
+
+Independence of the retained directions follows by induction on active count: each new active block multiplies old directions by a polynomial coprime to the new active direction, while the new group directions have strictly higher degree.
+
+Independence controls the retained coefficient directions, but cancellations can make those coefficients much smaller than the raw perturbation. A remainder estimate solely in the raw distance would then be insufficient: the omitted terms must be small relative to the retained coefficients themselves. Appendix~\ref{app:arrangement} proves $\norm{E}\le C\varepsilon\norm{z}$, where $z$ collects the retained active and group coefficients and $\varepsilon\to0$ throughout the raw neighborhood. Absorbing this error proves the loss comparisons. Their model integral factors on product boxes: active directions contribute $k/2$, and group logarithmic powers add. Bounded positive prior and Jacobian factors preserve the result, without requiring a product prior.
+
+\section{Same function, different local geometry}
+Take $r=3$ and $f(x)=x+x^3$. Its complete fiber consists of the unit coordinate vectors $e_j$, $1\le j\le L$: a composition with $q$ nonzero blocks has degree $3^q$, so there is exactly one active coefficient, which must equal one. Figure~\ref{fig:arrangements} shows how placement partitions the inactive weights. Table~\ref{tab:examples} applies \eqref{eq:arrangementpair} to all those points at depths four and five.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/active-arrangements.pdf}
+\caption{The three distinct local pairs for the depth-five cubic target $f(x)=x+x^3$. Boxes denote full residual blocks, labeled by raw weight; black boxes are active, and brackets mark consecutive inactive groups. The endpoint, one-position-inward, and center placements have group lengths $(0,4)$, $(1,3)$, and $(2,2)$, respectively. Only the second has a group at the critical length $r=3$, giving $m=2$. Reflection gives positions $5$ and $4$ the same pairs as $1$ and $2$; see Table~\ref{tab:examples}.}\label{fig:arrangements}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}cccl@{}}
+\toprule
+Depth $L$ & Active position $j$ & Inactive lengths $(n_0,n_1)$ & Local $(\lambda,m)$\\
+\midrule
+4 & $1,4$ & $(0,3),(3,0)$ & $(1,2)$\\
+4 & $2,3$ & $(1,2),(2,1)$ & $(1,1)$\\
+5 & $1,5$ & $(0,4),(4,0)$ & $(13/12,1)$\\
+5 & $2,4$ & $(1,3),(3,1)$ & $(7/6,2)$\\
+5 & $3$ & $(2,2)$ & $(7/6,1)$\\
+\bottomrule
+\end{tabular}
+\caption{The same cubic target at every listed realization. Positions are counted in composition order.}\label{tab:examples}
+\end{table}
+At depth four, moving the active block changes the logarithmic factor. At depth five, it can change the exponent itself. All these points have raw coefficient-Jacobian rank one; that rank does not determine either pair. The theorem also permits more than one logarithm: two groups of length $r$ give $m=3$. Such a local statement need not describe the globally dominant realization.
+
+\clearpage
+\section{Global one- and two-active fibers}
+The arrangement theorem describes a neighborhood of one realization. A global integral combines the neighborhoods of the entire target fiber, whose classification is explicit in the following two cases.
+\begin{theorem}[Global selection for one or two active blocks]\label{thm:global}
+Assume \eqref{eq:gram}, $k\in\{1,2\}$, and $L\ge k$. For $k=1$, let $f=F_c$ with $c\ne0$. For $k=2$, let $f=F_d\circ F_c$ with $c,d\ne0$. Require $c>0$ (and $d>0$) when $r$ is even. The complete effective fiber is obtained by placing the ordered active coefficient or coefficients in any $k$ positions, with all others zero. Each such placement has one raw realization for odd $r$ and $2^k$ sign choices for even $r$.
+
+For every proper prior smooth and strictly positive near all these points,
+\begin{equation}\label{eq:globalpair}
+ \int_{\R^L}e^{-N K_f(w)}\pi(w)\,dw
+ \asym N^{-[k/2+A_r(L-k)]}(\log N)^{M_r(L-k)-1}.
+\end{equation}
+This includes equality or opposite signs of $c,d$ whenever realizable.
+\end{theorem}
+
+
+For two active coefficients $u,v$, the first three residual coefficients are
+\[
+ C_1=u+v,\qquad C_2=ruv,\qquad C_3=\binom r2u^2v.
+\]
+Degree forces two active blocks, and $C_2\ne0$ recovers their order and values: $u=2C_3/((r-1)C_2)$, $v=C_1-u$.
+
+The identity loss is coercive, and the $L^2(\mu)$ triangle inequality gives
+\[
+ \sqrt{K_f(w)}\ge\sqrt{K_0(w)}-\norm{f-x}_{L^2(\mu)}.
+\]
+Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, making the complementary integral exponentially small. Among local contributions, minimize $\lambda$, then maximize $m$ among ties. For $n=L-k$, the inequality $\sum_g\pos{n_g-r}\le\pos{n-r}$ gives \eqref{eq:globalpair} (Appendix~\ref{app:global}). The cubic examples have global pairs $(1,2)$ and $(13/12,1)$; a prior supported near another realization instead retains its local pair.
+
+\section{Formal verification}\label{sec:formal}
+Lean certifies the identity-target loss comparison, integrability thresholds, and divergence at and above the threshold. Its input assumption is a finite positive-definite Gram for $x^r,x^{r+1},\ldots,x^{r^L}$, strictly stronger than \eqref{eq:gram}; Section~\ref{sec:model}'s sufficient condition implies both. The prior is a measurable density bounded above and away from zero on the raw parameter ball. The certificates cover all positive depths, even $r\ge2$, and odd $r\ge3$.
+
+Appendix~\ref{app:repro} gives the public proof source, pinned versions, declarations, and audit commands. Multiplicities, Laplace asymptotics, arrangements, and global selection have paper proofs only.
+
+\paragraph{Scope.}
+The local arrangement theorem applies to arbitrary active counts; the complete nonidentity fiber classification and global selection here cover one or two active blocks. The results use priors in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. The proved scope is scalar, bias-free polynomial residual networks and deterministic population-loss integrals; higher-dimensional, biased, and more general architectures are outside it.
+
+\label{main-end}
+
+\clearpage
+\appendix
+\section{Coefficient reduction, zeros, and coercivity}\label{app:coeff}
+Write $h_\ell=xT_\ell(x^{r-1})$. The exact recursion
+\[
+ T_0(y)=1,\qquad T_\ell(y)=T_{\ell-1}(y)+u_\ell yT_{\ell-1}(y)^r
+\]
+shows that $h_L-x=\sum_{j=1}^{\nu} P_j(u)x^{d_j}$, where $P_j$ is homogeneous of degree $j$. Comparing the first two coefficients gives $P_1=S$ and $P_2=B=r(S^2-Q)/2$. At depth one the absent $P_2$ is set to zero, consistently with $Q=S^2$.
+
+In a fixed small ball in effective variables, $|P_j(u)|\le C_j\norm{u}^j\le C_jQ$ for $j\ge2$. Hence the Gram upper bound gives $K_0\le C(S^2+Q^2)$. Conversely, with $\gamma>0$ the smallest eigenvalue of $G$,
+\begin{equation}\label{eq:coercive}
+ K_0\ge\gamma(S^2+B^2),\qquad
+ Q=S^2-2B/r\le S^2+2|B|/r.
+\end{equation}
+Locally $S^4\le C S^2$, so $Q^2\le C(S^2+B^2)$. This proves \eqref{eq:identityreduction}, including depth one. Globally \eqref{eq:coercive} gives
+\[
+ Q\le K_0/\gamma+(2/r)\sqrt{K_0/\gamma}.
+\]
+Since $Q=\sum_iw_i^{2r}\to\infty$ as $\norm{w}\to\infty$, $K_0$ is coercive. Also $K_0=0$ implies $S=B=Q=0$, hence $w=0$. For a proper prior the integral outside any sufficiently small fixed neighborhood is therefore $O(e^{-bN})$ for some $b>0$.
+
+\section{Angular sectors and the logarithmic factor}\label{app:sectors}
+For even $r$, $S\asym\norm{w}^r$ and \eqref{eq:identityreduction} reduces the integral to an ordinary radial integral with density $\rho^{L-1}$ and loss $\rho^{2r}$. The pair is $(L/(2r),1)$. At depth one the loss is exactly a positive constant times $w^{2r}$ for either parity.
+
+Suppose $r$ is odd and $L\ge2$, and use the Euclidean sphere. Let $\tau(\theta)=\sum_i\theta_i^r$, $q(\theta)=\sum_i\theta_i^{2r}$. Compactness gives $0<c\le q\le C$. The set $\Sigma=\{\tau=0\}$ is nonempty, since it contains $(2^{-1/2},-2^{-1/2},0,\ldots,0)$. At a point of $\Sigma$, Euler's identity gives $\theta\cdot\nabla\tau=r\tau=0$, whereas $\nabla\tau\ne0$. Thus the tangential derivative is nonzero. The inverse function theorem supplies smooth local coordinates $(t,\eta)$ with $t=\tau$, and surface density bounded above and below on smaller coordinate boxes. A finite collection of these boxes covers a neighborhood of the compact set $\Sigma$. On the remaining compact angular set, $|\tau|$ has a positive lower bound.
+
+Restrict each chart to the inverse image of a product box $|t|<b$, $\eta\in V$ contained in its image; finitely many smaller boxes cover $\Sigma$, and bounded larger boxes give upper bounds. The smaller boxes give lower bounds, while the unused coordinates contribute finite positive volume (one in dimension zero). For radial cutoff $R>0$, the product domain lies between $(0,\rho_0)\times(-\rho_0^r,\rho_0^r)$ and $(0,\rho_1)\times(-\rho_1^r,\rho_1^r)$, where $\rho_0=\min(R,b^{1/r})$ and $\rho_1=\max(R,b^{1/r})$. These inclusions justify the following model integrals.
+
+The reduced loss equals $\rho^{2r}(t^2+\rho^{2r}q^2)$ and is comparable to \eqref{eq:angularmodel}. In a product box $0<\rho<\rho_0$, $|t|<\rho_0^r$, split into two sectors for each sign $\sigma\in\{-1,1\}$:
+\begin{align*}
+ \mathcal C:&\quad t=\sigma\rho^r v,\quad 0<v<1,
+ &\rho^{L-1}d\rho\,dt&=\rho^{L+r-1}d\rho\,dv,\\
+ \mathcal O:&\quad t=\sigma z^r,\quad \rho=zy,\quad 0<z<\rho_0,\ 0<y<1,
+ &\rho^{L-1}|d\rho\,dt|&=r z^{L+r-1}y^{L-1}dz\,dy.
+\end{align*}
+Apart from boundaries of measure zero these are exactly $|t|<\rho^r$ and $\rho^r<|t|$. The loss is comparable to $\rho^{4r}$ in $\mathcal C$ and to $z^{4r}y^{2r}$ in $\mathcal O$. Sector $\mathcal C$ has pair $((L+r)/(4r),1)$. For $\mathcal O$, substitute $a=z^{4r}$ and $b=y^{2r}$. Up to constants its integral is
+\[
+ \int_0^{\rho_0^{4r}}\!\int_0^1 e^{-Nab}a^{\alpha-1}b^{\beta-1}\,db\,da,
+ \qquad \alpha=\frac{L+r}{4r},\quad\beta=\frac{L}{2r}.
+\]
+The inner integral is comparable to $\min\{1,(Na)^{-\beta}\}$. Splitting at $a=N^{-1}$ gives order $N^{-\min(\alpha,\beta)}$, with a factor $\log N$ exactly when $\alpha=\beta$. The same pair follows directly from the integer monomial $z^{4r}y^{2r}$ with density $z^{L+r-1}y^{L-1}$ by \citet[Proposition 2.1]{lin2017}. The noncancellation region contributes $O(N^{-\beta})$, so it does not change the resulting pair. The same integrals with the exponential replaced by the negative power diverge when either exponent reaches its critical value. Positive contributions from the chart boxes cannot cancel.
+
+Finally, if $cF\le K\le CF$, then the corresponding Laplace integrals satisfy $Z_F(CN)\le Z_K(N)\le Z_F(cN)$ for the same positive amplitude. Thus both the exponent and logarithmic power transfer to the actual loss, not just the power-integrability threshold. For the pole interpretation, replace the cutoff by a small closed box around the isolated zero, on which the density is smooth and positive. The difference is supported away from the zero and contributes an exponentially small Laplace term and a zeta term holomorphic near the positive real axis. Resolution on that box supplies the stated interpretation.
+
+\section{Proof of the local arrangement theorem}\label{app:arrangement}
+We first identify independent leading coefficient directions. We then control the higher-order terms uniformly, including along cancellation paths. Finally, we transfer the coefficient comparison to the population loss and factor the local integral.
+
+Fix $r,k,(n_g)$ and nonzero active coefficients $c_1,\ldots,c_k$. Constants in the coefficient estimates depend only on these fixed data. Use coefficient $\ell^1$ norms on polynomial spaces and sum norms on their direct sums; use the Euclidean norm on each effective group vector $u_g=(a_{g,i}^r)_i$. Norm equivalence will be used only in fixed finite dimension.
+
+\paragraph{The auxiliary composition map.}
+Set $d_h=1+h(r-1)$, $\nu_g=(r^{n_g}-1)/(r-1)$, and
+\[
+ \mathcal P_g=\operatorname{span}\{x^{d_h}:1\le h\le\nu_g\},\qquad
+ \mathcal P=\R^k\oplus\bigoplus_{g=0}^k\mathcal P_g.
+\]
+Thus $\mathcal P_g=\{0\}$ for an empty group and $\mathcal P_g=\operatorname{span}\{x^r\}$ for a singleton. For $v=(\delta,p_0,\ldots,p_k)\in\mathcal P$, define
+\begin{equation}\label{eq:Psi}
+ \Psi(v)=(\operatorname{id}+p_k)\circ F_{c_k+\delta_k}\circ\cdots
+ \circ(\operatorname{id}+p_1)\circ F_{c_1+\delta_1}\circ(\operatorname{id}+p_0).
+\end{equation}
+For $k=0$ this means $\Psi(p_0)=\operatorname{id}+p_0$. This is a polynomial map into the finite-dimensional space of polynomials of degree at most $r^L$: degrees multiply, and $k+\sum_g n_g=L$. Every output has linear term $x$, and its other degrees are $1$ modulo $r-1$, so all output differences lie in the sparse feature space of \eqref{eq:gram}. Let $\mathcal H_g$ denote the composition of inactive group $g$. For its error $p_g=\mathcal H_g-x$, $\Psi(v)=h_L$ and $\Psi(0)=f$.
+
+The differential can be identified exactly. Put $\widehat H_0=x$, $\widehat H_j=F_{c_j}\circ \widehat H_{j-1}$, and $T_j=F_{c_k}\circ\cdots\circ F_{c_{j+1}}$, with $T_k=\operatorname{id}$. Define the fixed polynomials
+\[
+ U_j=(T_j'\circ \widehat H_j)\widehat H_{j-1}^r,\quad
+ V_g=(T_g'\circ \widehat H_g)\widehat H_g^r,\quad
+ W_g=(T_g'\circ \widehat H_g)\widehat H_g^{2r-1}.
+\]
+The chain rule gives, for arbitrary auxiliary group perturbations $q_g\in\mathcal P_g$,
+\begin{equation}\label{eq:dPsi}
+ D\Psi(0)[\alpha,q_0,\ldots,q_k]
+ =\sum_{j=1}^k\alpha_j U_j+\sum_{g=0}^k(T_g'\circ \widehat H_g)(q_g\circ \widehat H_g).
+\end{equation}
+In particular $V_g$ and $W_g$ are the columns for the first two group coefficients when those coefficients exist.
+
+\paragraph{Independence for $r\ge3$.}
+First consider the virtual family $U_j,V_g,W_g$ in $\R[x]$, including both directions at every group. At $k=0$ the family is $x^r,x^{2r-1}$. Suppose the family at $j$ active blocks is independent and has degrees at most $(2r-1)d$, where $d=r^j$ is the degree of the partial output $H$. Appending $F_e$, $e\ne0$, multiplies all old columns by $P=1+reH^{r-1}$ and adds the active column $H^r$ and the last-group columns $\widetilde H^r,\widetilde H^{2r-1}$, where $\widetilde H=H+eH^r$.
+
+The multiplied old degrees are at most $(3r-2)d$; the last two degrees are $r^2d$ and $r(2r-1)d$, strictly greater and distinct for $r\ge3$. Their coefficients in any relation therefore vanish. The remaining relation is $PR+tH^r=0$. Since $P-reH^{r-1}=1$, $P$ and $H^r$ are coprime. The polynomial $P$ is nonconstant, so $P\mid tH^r$ forces $t=0$, then $R=0$. This proves independence and preserves the degree bound. Delete both group columns for an empty group and $W_g$ for a singleton. The remaining columns are independent and, by \eqref{eq:dPsi}, belong to the actual sparse output space. The virtual columns need not belong to that space and are used only to prove independence before restriction.
+
+\paragraph{Uniform control of omitted coefficients.}
+Each actual inactive group has
+\begin{equation}\label{eq:group}
+ \mathcal H_g=x+S_gx^r+B_gx^{2r-1}+R_g,\qquad
+ B_g=\frac r2(S_g^2-Q_g),\qquad
+ \norm{R_g}\le C_g\norm{u_g}_2Q_g.
+\end{equation}
+Indeed its coefficient of $x^{d_h}$ is homogeneous of degree $h$ in $u_g$. On $\norm{u_g}_2\le1$, the sum of the finitely many terms with $h\ge3$ is bounded by $C_g\norm{u_g}_2^3$, and $Q_g=\norm{u_g}_2^2$. Empty and singleton groups have $R_g=0$; also $B_g=0$ for a singleton.
+
+For odd $r$, let $z$ consist of the active deviations, $S_g$ for $n_g\ge1$, and $B_g$ for $n_g\ge2$. Let $J$ insert these scalars as the corresponding auxiliary coordinates; its norm is one. With
+\[
+ \varepsilon=\sum_j|\delta_j|+\sum_g\norm{u_g}_2,\qquad
+ R=(0,R_0,\ldots,R_k),
+\]
+we have the \emph{exact identity} $v=Jz+R$. Shrink the neighborhood so $\varepsilon\le1$ and $|S_g|\le1$ for every group. Since
+\[
+ Q_g\le S_g^2+\frac2r|B_g|\le |S_g|+\frac2r|B_g|,
+\]
+\eqref{eq:group} gives fixed constants $C_0,C_1>0$ such that
+\begin{equation}\label{eq:zcontrol}
+ \norm{z}\le C_0\varepsilon,\qquad \norm{R}\le C_1\varepsilon\norm{z}.
+\end{equation}
+The first bound follows also directly from $|S_g|\le\sqrt{n_g}\norm{u_g}_2$ and $|B_g|\le C\norm{u_g}_2^2$. No division by $S_g$, $B_g$, or $\norm{z}$ is involved, so these bounds include simultaneous cancellations and $z=0$.
+
+\begin{lemma}[Taylor estimate with a controlled remainder]\label{lem:remainder}
+Let $\Psi$ be a $C^2$ map between finite-dimensional normed spaces on a neighborhood of the closed unit ball. Let $J$ be linear and suppose $v=Jz+R$, $0\le\varepsilon\le1$, and \eqref{eq:zcontrol} holds. Set $M=\norm{J}+C_1$, and assume $MC_0\varepsilon\le1$. If $H_*$ bounds $\norm{D^2\Psi}$ on that ball, then, with $A=D\Psi(0)J$,
+\begin{equation}\label{eq:explicitE}
+ \Psi(v)-\Psi(0)=Az+E,\qquad
+ \norm{E}\le\left(\norm{D\Psi(0)}C_1+\frac {H_*}2 M^2C_0\right)\varepsilon\norm{z}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+We have $\norm{v}\le M\norm{z}\le MC_0\varepsilon\le1$. Taylor's formula with its integral remainder gives the exact decomposition
+\[
+ E=D\Psi(0)R+\int_0^1(1-t)D^2\Psi(tv)[v,v]\,dt.
+\]
+The first term is bounded by $\norm{D\Psi(0)}C_1\varepsilon\norm{z}$. The second is bounded by
+\[
+ (H_*/2)\norm{v}^2\le(H_*/2)M^2\norm{z}^2\le(H_*/2)M^2C_0\varepsilon\norm{z}.
+\] The integral includes all mixed terms of the composition map, involving active deviations, group coefficients, or both.
+\end{proof}
+
+Apply the lemma to \eqref{eq:Psi}; a finite $H_*$ exists by compactness because $\Psi$ is polynomial. The retained-column independence gives $a>0$ with $\norm{Az}\ge a\norm{z}$. Let $C_*$ be the parenthesized constant in \eqref{eq:explicitE}. Choose $\varepsilon$ small enough that $MC_0\varepsilon\le1$ and $C_*\varepsilon\le a/2$, in addition to the preceding group bounds. Then
+\[
+ \frac a2\norm{z}\le\norm{h_L-f}\le(\norm{A}+a/2)\norm{z}.
+\]
+All these restrictions hold on a full neighborhood of the fixed raw realization because $\varepsilon\to0$ there. Norm equivalence, \eqref{eq:group}, and the sparse Gram bounds give
+\[
+ K_f\asym\sum_j\delta_j^2+\sum_g(S_g^2+B_g^2)
+ \asym\sum_j\delta_j^2+\sum_g(S_g^2+Q_g^2).
+\]
+For the last comparison use $Q_g\le S_g^2+2|B_g|/r$ and $B_g=r(S_g^2-Q_g)/2$ with bounded $S_g$.
+
+\paragraph{Even degree, including $r=2$.}
+Now $u_g\ge0$, so $Q_g\le S_g^2$. Retain $z=(\delta,S_g:n_g\ge1)$ and set $R'_g=\mathcal H_g-x-S_gx^r$. Homogeneity of all omitted coefficients, now of degree at least two, gives
+\[
+ \norm{R'_g}\le C_g Q_g\le C_g S_g^2
+ \le C_g\sqrt{n_g}\,\varepsilon S_g.
+\]
+Thus $v=Jz+(0,R'_0,\ldots,R'_k)$ obeys the same lemma. The retained family $U_j,V_g$ is independent by the previous induction with old degree bound $rd$, multiplied bound $(2r-1)d$, and new last-group degree $r^2d>(2r-1)d$ for every $r\ge2$; coprimality separates the new active column. No two-direction independence is used at $r=2$. Absorption yields $K_f\asym\sum_j\delta_j^2+\sum_g S_g^2$. Finally
+\[
+ \sum_{i\text{ in }g}|w_i|^{2r}\le S_g^2
+ \le n_g\sum_{i\text{ in }g}|w_i|^{2r}
+\]
+for each nonempty group, proving \eqref{eq:arrangementeven}.
+
+\paragraph{Integration.}
+The active coordinate map has Jacobian determinant $\prod_j r(w^*_{i_j})^{r-1}\ne0$. Its inverse absolute Jacobian and the prior are bounded above and away from zero locally. Inner and outer product boxes in $(\delta,a_0,\ldots,a_k)$ bound the cutoff integral. On each box the comparison integral factors into Gaussian active integrals and identity-group integrals. Theorem~\ref{thm:identity}, or the usual addition rule \citep[Proposition 3.7]{lin2017}, gives \eqref{eq:arrangementpair}: exponents add and $m-1=\sum_g(M_r(n_g)-1)$. Empty groups contribute one. All comparison losses vanish only at the base point, so shrinking cutoffs does not change the pair. Integration uses $(\delta,a_0,\ldots,a_k)$; $z$ records coefficients rather than raw coordinates.
+
+\section{Full fibers and global selection}\label{app:global}
+Every block $F_c$ with $c\ne0$ has degree $r$ and nonzero leading coefficient. Composition multiplies degrees, over either $\R$ or $\mathbb C$. A network with exactly $q$ nonzero effective coefficients therefore has degree $r^q$; inactive blocks are identities. This proves the active-count restriction in Theorem~\ref{thm:global}. In the one-active case the coefficient of $x^r$ fixes $c$. In the two-active case direct expansion of $F_v\circ F_u$ gives the displayed $C_1,C_2,C_3$ and hence the unique ordered pair $(u,v)=(c,d)$. Positive-definite $G$ ensures that zero population loss is equivalent to polynomial equality. Taking real $r$th roots gives exactly the raw fibers in that theorem, including all even-degree signs.
+
+Coercivity from Appendix~\ref{app:coeff} and the $L^2$ triangle inequality makes every sublevel set of $K_f$ compact. Delete disjoint small neighborhoods of the finite fiber. Choose a large ball outside which $K_f\ge1$. Within the ball, the complement of the open fiber neighborhoods is compact and zero-free, so continuity gives a positive minimum whenever that complement is nonempty. Set $b=1$ if that complement is empty; otherwise take the smaller of its minimum and one. Then $K_f\ge b>0$ on the entire remaining set, so the prior-weighted tail is at most $e^{-bN}$. Each fiber neighborhood has the local pair of Theorem~\ref{thm:arrangement} with a positive contribution. A finite sum of terms $N^{-\lambda_i}(\log N)^{m_i-1}$ has the smallest $\lambda_i$ and then the largest $m_i$ among ties. Several realizations with that same pair affect the multiplicative constants, not the logarithmic power; multiplicities do not add across disjoint neighborhoods.
+
+For even $r$, every placement has pair $(k/2+(L-k)/(2r),1)$. For odd $r$, write $n=L-k=\sum_g n_g$. Then
+\[
+ \sum_g A_r(n_g)=\frac n{2r}-\frac1{4r}\sum_g\pos{n_g-r},\qquad
+ \sum_g\pos{n_g-r}\le\pos{n-r}.
+\]
+If $n<r$, all placements have the same exponent and $m=1$. If $n=r$, all exponents agree and concentrating the inactive blocks in one gap gives $m=2$, the largest multiplicity. If $n>r$, the inequality is strict whenever at least two gaps are nonempty: if any gap exceeds $r$, the other nonempty gaps strictly reduce the sum of positive parts from $n-r$; if none does, that sum is zero. Hence concentration in one gap uniquely describes the minimizing patterns, and these have $m=1$. Such a placement exists before, between, or after the ordered active blocks. When $n=0$ these descriptions coincide. This proves \eqref{eq:globalpair}, without requiring adjacent active blocks or comparing leading constants.
+
+\section{Lean source and audit record}\label{app:repro}
+The proof source is available at \url{https://github.com/bubskee/residual-slt-in-a-haystack}. The audited proof-source commit is
+\begin{center}\small\ttfamily dfd9f7ee8c4338256a7cb7426ceaae7a038fbf00\end{center}
+It uses Lean \texttt{v4.35.0} and mathlib commit
+\begin{center}\small\ttfamily 56a005855ea17e0b0958f73ec801ae140b0a1679\end{center}
+The principal declarations, all in namespace \texttt{ResidualSLT}, are
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item \nolinkurl{signed_network_certificate}: actual identity-target loss comparison;
+\item \nolinkurl{even_network_prior_integrableOn_iff}: the even threshold;
+\item \nolinkurl{odd_network_prior_phase_transition}: the odd threshold;
+\item \nolinkurl{even_network_prior_not_integrable}: even boundary divergence;
+\item \nolinkurl{odd_network_prior_not_integrable}: odd boundary divergence.
+\end{itemize}
+Both divergence declarations include every larger exponent. The four other audited declarations are \nolinkurl{signed_network_loss_comparison}, \nolinkurl{even_network_certificate}, \nolinkurl{odd_network_certificate}, and \nolinkurl{parameter_ball_eq_cube}.
+
+The source files are \nolinkurl{SignedNetwork.lean}, \nolinkurl{EvenNetwork.lean}, and \nolinkurl{OddNetwork.lean}, all under \nolinkurl{lean/ResidualSLT/}; the ball--cube identity is in \nolinkurl{EvenNetwork.lean}.
+
+The companion \nolinkurl{formalization_status.md} specifies the exact hypotheses, including the contiguous Gram condition and the density-weighted parameter measure. From the repository root, fetch the pinned dependencies and run the build and focused audit:
+\begingroup\small
+\begin{verbatim}
+cd lean
+lake exe cache get
+lake build
+lake env lean -DwarningAsError=true -DautoImplicit=false \
+  ../paper/checks/IdentityAudit.lean
+\end{verbatim}
+\endgroup
+The build completed successfully (3583 jobs). The audit prints theorem types and \texttt{\#print axioms} for nine selected declarations; every dependency set is exactly \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, with no \texttt{sorryAx}. Logs are \nolinkurl{paper/checks/lean-build.txt} and \nolinkurl{paper/checks/IdentityAudit.txt}. The logs record the build and strict audit rerun for this release. The repository includes the proof source, audit source, and logs; mathlib is fetched at the pinned revision.
+
+\paragraph{Acknowledgment.}
+Substantial AI assistance supported the research, proof development, Lean formalization, and writing.
+
+\bibliographystyle{plainnat}
+\begingroup\small
+\setlength{\bibsep}{4pt}
+\bibliography{references}
+\endgroup
+\end{document}

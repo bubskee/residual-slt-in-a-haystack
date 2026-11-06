@@ -1,0 +1,9 @@
+lean/.lake/
+*.aux
+*.log
+*.out
+*.blg
+*.fls
+*.fdb_latexmk
+__pycache__/
+.DS_Store

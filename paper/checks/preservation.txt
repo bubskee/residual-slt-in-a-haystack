@@ -1,0 +1,10 @@
+theorem: 3 preserved
+lemma: 1 preserved
+equation: 18 preserved
+tabular: 1 preserved
+proof: 1 preserved
+Appendices A-D: unchanged apart from three-sentence C roadmap
+References: 32 unique labels, 8 cited bibliography entries; all resolved
+All 44 Lean source/configuration files identical to prior audited source and isolated audit checkout
+LaTeX: no overfull/underfull boxes, undefined references, or LaTeX warnings
+Focused audit: all nine axiom sets correct; no sorryAx

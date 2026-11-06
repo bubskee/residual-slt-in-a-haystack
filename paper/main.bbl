@@ -1,0 +1,72 @@
+\begin{thebibliography}{8}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Aoyagi(2024)]{aoyagi2024}
+Miki Aoyagi.
+\newblock Consideration on the learning efficiency of multiple-layered neural
+  networks with linear units.
+\newblock \emph{Neural Networks}, 172:\penalty0 106132, 2024.
+\newblock \doi{10.1016/j.neunet.2024.106132}.
+
+\bibitem[Aoyagi and Watanabe(2005)]{aoyagiwatanabe2005}
+Miki Aoyagi and Sumio Watanabe.
+\newblock Stochastic complexities of reduced rank regression in {Bayesian}
+  estimation.
+\newblock \emph{Neural Networks}, 18\penalty0 (7):\penalty0 924--933, 2005.
+\newblock \doi{10.1016/j.neunet.2005.03.014}.
+
+\bibitem[Dahlgren et~al.(2026)Dahlgren, Marchetti, and Kohn]{dahlgren2026}
+Isabel Dahlgren, Giovanni~Luca Marchetti, and Kathl{\'e}n Kohn.
+\newblock Polynomial residual networks are generically identifiable.
+\newblock arXiv:2610.33738v1 [cs.LG], 2026.
+\newblock URL \url{https://arxiv.org/abs/2610.33738v1}.
+\newblock 24 October 2026.
+
+\bibitem[Lau et~al.(2025)Lau, Furman, Wang, Murfet, and Wei]{lau2025}
+Edmund Lau, Zach Furman, George Wang, Daniel Murfet, and Susan Wei.
+\newblock The local learning coefficient: A singularity-aware complexity
+  measure.
+\newblock In \emph{Proceedings of the 28th International Conference on
+  Artificial Intelligence and Statistics}, volume 258 of \emph{Proceedings of
+  Machine Learning Research}, pages 244--252. PMLR, 2025.
+\newblock URL \url{https://proceedings.mlr.press/v258/lau25a.html}.
+
+\bibitem[Lin(2017)]{lin2017}
+Shaowei Lin.
+\newblock Ideal-theoretic strategies for asymptotic approximation of marginal
+  likelihood integrals.
+\newblock arXiv:1003.5338v3 [stat.CO], 2017.
+\newblock URL \url{https://arxiv.org/abs/1003.5338v3}.
+\newblock Version 3, 13 February 2017; first posted 2010.
+
+\bibitem[Shahverdi et~al.(2026)Shahverdi, Marchetti, and Kohn]{shahverdi2026}
+Vahid Shahverdi, Giovanni~Luca Marchetti, and Kathl{\'e}n Kohn.
+\newblock Learning on a razor's edge: Identifiability and singularity of
+  polynomial neural networks.
+\newblock arXiv:2505.11846v3 [cs.LG], 2026.
+\newblock URL \url{https://arxiv.org/abs/2505.11846v3}.
+\newblock Version 3, 11 June 2026; published at ICLR 2026.
+
+\bibitem[Watanabe(2009)]{watanabe2009}
+Sumio Watanabe.
+\newblock \emph{Algebraic Geometry and Statistical Learning Theory}, volume~25
+  of \emph{Cambridge Monographs on Applied and Computational Mathematics}.
+\newblock Cambridge University Press, 2009.
+\newblock ISBN 9780521864671.
+\newblock \doi{10.1017/CBO9780511800474}.
+
+\bibitem[Wei et~al.(2023)Wei, Murfet, Gong, Li, Gell-Redman, and
+  Quella]{wei2023}
+Susan Wei, Daniel Murfet, Mingming Gong, Hui Li, Jesse Gell-Redman, and Thomas
+  Quella.
+\newblock Deep learning is singular, and that's good.
+\newblock \emph{IEEE Transactions on Neural Networks and Learning Systems},
+  34\penalty0 (12):\penalty0 10473--10486, 2023.
+\newblock \doi{10.1109/TNNLS.2022.3167409}.
+\newblock First published online 30 June 2022.
+
+\end{thebibliography}
