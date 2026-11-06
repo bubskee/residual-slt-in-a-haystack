@@ -390,9 +390,13 @@ lake env lean -DwarningAsError=true -DautoImplicit=false \
 \endgroup
 The build completed successfully (3583 jobs). The audit prints theorem types and \texttt{\#print axioms} for nine selected declarations; every dependency set is exactly \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, with no \texttt{sorryAx}. Logs are \nolinkurl{paper/checks/lean-build.txt} and \nolinkurl{paper/checks/IdentityAudit.txt}. The logs record the build and strict audit rerun for this release. The repository includes the proof source, audit source, and logs; mathlib is fetched at the pinned revision.
 
-\paragraph{Acknowledgment.}
-Substantial AI assistance supported the research, proof development, Lean formalization, and writing.
+\paragraph{Tool and computational resource disclosure.}
+Following the disclosure recommendation of the Leiden Declaration on Artificial Intelligence and Mathematics \citep{leiden2026}, we report substantial AI assistance. Astra and Opus 5.5 assisted with writing, proof development, and Lean formalization. Fable 5.1 provided adversarial review and attempted to find errors in the arguments. The author retains responsibility for the results, arguments, and citations.
 
+\paragraph{Acknowledgments.}
+The author thanks BlueDot Impact for financial support.
+
+\clearpage
 \bibliographystyle{plainnat}
 \begingroup\small
 \setlength{\bibsep}{4pt}

@@ -34,4 +34,6 @@ The vector figure is included. Its optional Python generator requires matplotlib
 
 ## Assistance
 
-Substantial AI assistance supported the research, proof development, Lean formalization, and writing, as disclosed in the manuscript.
+Following the disclosure recommendation of the [Leiden Declaration on Artificial Intelligence and Mathematics](https://doi.org/10.5281/zenodo.20302944), the manuscript records substantial AI assistance. Astra and Opus 5.5 assisted with writing, proof development, and Lean formalization. Fable 5.1 provided adversarial review and attempted to find errors in the arguments. The author retains responsibility for the results, arguments, and citations.
+
+The author thanks BlueDot Impact for financial support.
