@@ -18,6 +18,8 @@ From `paper/`, run `tectonic --keep-logs main.tex` (verified with Tectonic 0.17.
 
 Install Python and matplotlib, then run `python3 figures/make_arrangements.py`. The generator checks all three local pairs using exact fractions and writes PDF, SVG, and PNG versions. Boxes contain raw weights; black means active, and brackets identify inactive groups. The pairs agree with Table 1.
 
+Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions.
+
 ## Reproduce the formal audit
 
 Clone the public proof repository and follow `formalization_status.md`. The manuscript-only bundle contains the audit and logs; the repository also contains the pinned proof source. All theorem statements and mathematical proof arguments are unchanged by the final editorial pass.

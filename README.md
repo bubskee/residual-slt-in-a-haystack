@@ -7,6 +7,8 @@ Bobby Faber, Independent. 5 November 2026.
 
 Exact local learning coefficients for scalar, bias-free polynomial residual networks in raw weights. Active blocks separate inactive groups; different placements can represent the same function while having different local exponents or multiplicities. The paper has three main theorems: the identity-target transition, the local arrangement theorem, and global selection for one or two active blocks.
 
+Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions.
+
 ## Reproduce the Lean checks
 
 Install [elan](https://github.com/leanprover/elan), then:

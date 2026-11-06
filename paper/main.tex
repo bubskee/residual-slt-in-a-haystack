@@ -195,9 +195,9 @@ Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, m
 The local arrangement theorem applies to arbitrary active counts; the complete nonidentity fiber classification and global selection here cover one or two active blocks. The results use priors in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. The proved scope is scalar, bias-free polynomial residual networks and deterministic population-loss integrals; higher-dimensional, biased, and more general architectures are outside it.
 
 \section{Formal verification}\label{sec:formal}
-Lean certifies the identity-target loss comparison, integrability thresholds, and divergence at and above the threshold. Its input assumption is a finite positive-definite Gram for $x^r,x^{r+1},\ldots,x^{r^L}$, strictly stronger than \eqref{eq:gram}; Section~\ref{sec:model}'s sufficient condition implies both. The prior is a measurable density bounded above and away from zero on the raw parameter ball. The certificates cover all positive depths, even $r\ge2$, and odd $r\ge3$.
+Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions (Appendix~\ref{app:repro}).
 
-Appendix~\ref{app:repro} gives the public proof source, pinned versions, declarations, and audit commands. Multiplicities, Laplace asymptotics, arrangements, and global selection have paper proofs only.
+The current certificates establish the identity-target loss comparison, integrability thresholds, and divergence at and above the threshold, for all positive depths, even $r\ge2$, and odd $r\ge3$. They assume a finite positive-definite Gram for $x^r,x^{r+1},\ldots,x^{r^L}$, strictly stronger than \eqref{eq:gram}, and a measurable prior bounded above and away from zero on the raw parameter ball. Section~\ref{sec:model}'s sufficient condition implies both Gram assumptions. Multiplicities, Laplace asymptotics, arrangements, and global selection have paper proofs only.
 
 \label{main-end}
 
