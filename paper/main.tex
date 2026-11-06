@@ -144,7 +144,7 @@ Take $r=3$ and $f(x)=x+x^3$. Its complete fiber consists of the unit coordinate 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/active-arrangements.pdf}
-\caption{The three distinct local pairs for the depth-five cubic target $f(x)=x+x^3$. Boxes denote full residual blocks, labeled by raw weight; black boxes are active, and brackets mark consecutive inactive groups. The endpoint, one-position-inward, and center placements have group lengths $(0,4)$, $(1,3)$, and $(2,2)$, respectively. Only the second has a group at the critical length $r=3$, giving $m=2$. Reflection gives positions $5$ and $4$ the same pairs as $1$ and $2$; see Table~\ref{tab:examples}.}\label{fig:arrangements}
+\caption{The three distinct local pairs for the depth-five cubic target $f(x)=x+x^3$. Boxes denote full residual blocks, labeled by raw weight; black boxes are active, and brackets mark consecutive inactive groups. The endpoint, one-position-inward, and center placements have group lengths $(0,4)$, $(1,3)$, and $(2,2)$, respectively. Only the second has a group at the critical length $r=3$, giving $m=2$. By \eqref{eq:arrangementpair}, positions $5$ and $4$ have the same pairs as $1$ and $2$; see Table~\ref{tab:examples}.}\label{fig:arrangements}
 \end{figure}
 
 \begin{table}[H]
@@ -191,13 +191,13 @@ The identity loss is coercive, and the $L^2(\mu)$ triangle inequality gives
 \]
 Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, making the complementary integral exponentially small. Among local contributions, minimize $\lambda$, then maximize $m$ among ties. For $n=L-k$, the inequality $\sum_g\pos{n_g-r}\le\pos{n-r}$ gives \eqref{eq:globalpair} (Appendix~\ref{app:global}). The cubic examples have global pairs $(1,2)$ and $(13/12,1)$; a prior supported near another realization instead retains its local pair.
 
+\paragraph{Scope.}
+The local arrangement theorem applies to arbitrary active counts; the complete nonidentity fiber classification and global selection here cover one or two active blocks. The results use priors in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. The proved scope is scalar, bias-free polynomial residual networks and deterministic population-loss integrals; higher-dimensional, biased, and more general architectures are outside it.
+
 \section{Formal verification}\label{sec:formal}
 Lean certifies the identity-target loss comparison, integrability thresholds, and divergence at and above the threshold. Its input assumption is a finite positive-definite Gram for $x^r,x^{r+1},\ldots,x^{r^L}$, strictly stronger than \eqref{eq:gram}; Section~\ref{sec:model}'s sufficient condition implies both. The prior is a measurable density bounded above and away from zero on the raw parameter ball. The certificates cover all positive depths, even $r\ge2$, and odd $r\ge3$.
 
 Appendix~\ref{app:repro} gives the public proof source, pinned versions, declarations, and audit commands. Multiplicities, Laplace asymptotics, arrangements, and global selection have paper proofs only.
-
-\paragraph{Scope.}
-The local arrangement theorem applies to arbitrary active counts; the complete nonidentity fiber classification and global selection here cover one or two active blocks. The results use priors in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. The proved scope is scalar, bias-free polynomial residual networks and deterministic population-loss integrals; higher-dimensional, biased, and more general architectures are outside it.
 
 \label{main-end}
 
@@ -376,9 +376,8 @@ The principal declarations, all in namespace \texttt{ResidualSLT}, are
 \end{itemize}
 Both divergence declarations include every larger exponent. The four other audited declarations are \nolinkurl{signed_network_loss_comparison}, \nolinkurl{even_network_certificate}, \nolinkurl{odd_network_certificate}, and \nolinkurl{parameter_ball_eq_cube}.
 
-The source files are \nolinkurl{SignedNetwork.lean}, \nolinkurl{EvenNetwork.lean}, and \nolinkurl{OddNetwork.lean}, all under \nolinkurl{lean/ResidualSLT/}; the ball--cube identity is in \nolinkurl{EvenNetwork.lean}.
-
-The companion \nolinkurl{formalization_status.md} specifies the exact hypotheses, including the contiguous Gram condition and the density-weighted parameter measure. From the repository root, fetch the pinned dependencies and run the build and focused audit:
+\noindent\begin{minipage}{\linewidth}
+Exact hypotheses are recorded in \path{formalization_status.md}. From the repository root, run:
 \begingroup\small
 \begin{verbatim}
 cd lean
@@ -388,7 +387,9 @@ lake env lean -DwarningAsError=true -DautoImplicit=false \
   ../paper/checks/IdentityAudit.lean
 \end{verbatim}
 \endgroup
-The build completed successfully (3583 jobs). The audit prints theorem types and \texttt{\#print axioms} for nine selected declarations; every dependency set is exactly \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, with no \texttt{sorryAx}. Logs are \nolinkurl{paper/checks/lean-build.txt} and \nolinkurl{paper/checks/IdentityAudit.txt}. The logs record the build and strict audit rerun for this release. The repository includes the proof source, audit source, and logs; mathlib is fetched at the pinned revision.
+\end{minipage}
+
+The audit prints types and axiom dependencies for all nine declarations. Every dependency set is exactly \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; none contains \texttt{sorryAx}. The logs are in \path{paper/checks/}: \mbox{\path{lean-build.txt}} and \mbox{\path{IdentityAudit.txt}}.
 
 \paragraph{Tool and computational resource disclosure.}
 Following the disclosure recommendation of the Leiden Declaration on Artificial Intelligence and Mathematics \citep{leiden2026}, we report substantial AI assistance. Astra and Opus 5.5 assisted with writing, proof development, and Lean formalization. Fable 5.1 provided adversarial review and attempted to find errors in the arguments. The author retains responsibility for the results, arguments, and citations.
@@ -396,7 +397,6 @@ Following the disclosure recommendation of the Leiden Declaration on Artificial 
 \paragraph{Acknowledgments.}
 The author thanks BlueDot Impact for financial support.
 
-\clearpage
 \bibliographystyle{plainnat}
 \begingroup\small
 \setlength{\bibsep}{4pt}

@@ -1,11 +1,10 @@
 note: Running TeX ...
 note: Running BibTeX on main.aux ...
 note: Rerunning TeX because bibtex was run ...
-note: Rerunning TeX because "main.aux" changed ...
 note: Running xdvipdfmx ...
-note: Writing `work/build/main.out` (2.447265625 KiB)
-note: Writing `work/build/main.log` (18.3017578125 KiB)
-note: Writing `work/build/main.bbl` (3.724609375 KiB)
-note: Writing `work/build/main.aux` (7.80078125 KiB)
 note: Writing `work/build/main.blg` (194 B)
-note: Writing `work/build/main.pdf` (139.986328125 KiB)
+note: Writing `work/build/main.bbl` (3.724609375 KiB)
+note: Writing `work/build/main.out` (2.447265625 KiB)
+note: Writing `work/build/main.pdf` (138.896484375 KiB)
+note: Writing `work/build/main.log` (18.294921875 KiB)
+note: Writing `work/build/main.aux` (7.9375 KiB)
