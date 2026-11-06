@@ -1,0 +1,72 @@
+import ResidualSLT
+
+#check ResidualSLT.geometric_factor_natDegree
+#print axioms ResidualSLT.geometric_factor_natDegree
+#check ResidualSLT.normalized_residual_append_injective
+#print axioms ResidualSLT.normalized_residual_append_injective
+#check ResidualSLT.activeWord
+#print axioms ResidualSLT.activeWord
+#check ResidualSLT.wordPolynomial
+#print axioms ResidualSLT.wordPolynomial
+#check ResidualSLT.power_coeff_one_zero
+#print axioms ResidualSLT.power_coeff_one_zero
+#check ResidualSLT.wordPolynomial_normalized
+#print axioms ResidualSLT.wordPolynomial_normalized
+#check ResidualSLT.wordPolynomial_natDegree
+#print axioms ResidualSLT.wordPolynomial_natDegree
+#check ResidualSLT.wordPolynomial_injective
+#print axioms ResidualSLT.wordPolynomial_injective
+#check ResidualSLT.activeWord_nonzero
+#print axioms ResidualSLT.activeWord_nonzero
+#check ResidualSLT.activeWord_length
+#print axioms ResidualSLT.activeWord_length
+#check ResidualSLT.network_eq_wordPolynomial
+#print axioms ResidualSLT.network_eq_wordPolynomial
+#check ResidualSLT.network_full_effective_fiber
+#print axioms ResidualSLT.network_full_effective_fiber
+#check ResidualSLT.network_full_raw_fiber
+#print axioms ResidualSLT.network_full_raw_fiber
+#check ResidualSLT.mem_activeWord
+#print axioms ResidualSLT.mem_activeWord
+#check ResidualSLT.network_full_raw_fiber_finite
+#print axioms ResidualSLT.network_full_raw_fiber_finite
+#check ResidualSLT.activeWord_pow
+#print axioms ResidualSLT.activeWord_pow
+#check ResidualSLT.network_full_raw_fiber_odd
+#print axioms ResidualSLT.network_full_raw_fiber_odd
+#check ResidualSLT.network_full_raw_fiber_even
+#print axioms ResidualSLT.network_full_raw_fiber_even
+#check ResidualSLT.network_nonzero_prefix_injective
+#print axioms ResidualSLT.network_nonzero_prefix_injective
+#check ResidualSLT.activeBoundary
+#print axioms ResidualSLT.activeBoundary
+#check ResidualSLT.activeGaps
+#print axioms ResidualSLT.activeGaps
+#check ResidualSLT.activeBoundary_end
+#print axioms ResidualSLT.activeBoundary_end
+#check ResidualSLT.activeBoundary_mono
+#print axioms ResidualSLT.activeBoundary_mono
+#check ResidualSLT.activeGaps_depth
+#print axioms ResidualSLT.activeGaps_depth
+#check ResidualSLT.activeGaps_flatten
+#print axioms ResidualSLT.activeGaps_flatten
+#check ResidualSLT.raw_vector_arrangement
+#print axioms ResidualSLT.raw_vector_arrangement
+#check ResidualSLT.activeCount_nonzero_prefix
+#print axioms ResidualSLT.activeCount_nonzero_prefix
+#check ResidualSLT.network_eq_activeCount
+#print axioms ResidualSLT.network_eq_activeCount
+#check ResidualSLT.raw_vector_arrangement_of_activeCount
+#print axioms ResidualSLT.raw_vector_arrangement_of_activeCount
+#check ResidualSLT.raw_activeCount_eq
+#print axioms ResidualSLT.raw_activeCount_eq
+#check ResidualSLT.networkTargetLoss_fiber_finite
+#print axioms ResidualSLT.networkTargetLoss_fiber_finite
+#check ResidualSLT.arbitrary_active_global_network_laplace
+#print axioms ResidualSLT.arbitrary_active_global_network_laplace
+#check ResidualSLT.arbitrary_active_global_rlct_laplace_certificate
+#print axioms ResidualSLT.arbitrary_active_global_rlct_laplace_certificate
+#check ResidualSLT.globalLearningPair_pos_of_depth
+#print axioms ResidualSLT.globalLearningPair_pos_of_depth
+#check ResidualSLT.arbitrary_active_global_boundary_diverges
+#print axioms ResidualSLT.arbitrary_active_global_boundary_diverges

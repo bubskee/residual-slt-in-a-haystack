@@ -1,0 +1,62 @@
+module
+import ResidualSLT
+
+#check @ResidualSLT.weightedAngular_chart_iff_general
+#check @ResidualSLT.weightedAngular_integrable_off_zero_general
+#check @ResidualSLT.weightedAngular_integrable_regular
+#check @ResidualSLT.weightedAngular_regular_necessary
+#check @ResidualSLT.weightedAngular_integrable_nonpos_general
+#check @ResidualSLT.weightedAngular_regular_integrableOn_iff
+#check @ResidualSLT.homogeneousConeLoss
+#check @ResidualSLT.projectiveAngular
+#check @ResidualSLT.homogeneousConeLoss_radial_bounds
+#check @ResidualSLT.homogeneousConeLoss_on_radial_patch_iff
+#check @ResidualSLT.homogeneousConeLoss_projective_iff
+#check @ResidualSLT.projectiveInsertLinear
+#check @ResidualSLT.projectiveInsertLinear_apply
+#check @ResidualSLT.projectiveInsert_hasFDerivAt
+#check @ResidualSLT.projectiveAngular_contDiff
+#check @ResidualSLT.projectiveAngular_zero_regular
+#check @ResidualSLT.exists_nonzero_coordinate_partial
+#check @ResidualSLT.homogeneous_projective_zero
+#check @ResidualSLT.projectiveConePatch_subset_scaled_ball
+#check @ResidualSLT.homogeneousConeLoss_neg
+#check @ResidualSLT.homogeneousConeLoss_integrable_of_angular
+#check @ResidualSLT.homogeneousConeLoss_integrableOn_iff
+#check @ResidualSLT.homogeneous_fderiv_zero_smul
+#check @ResidualSLT.homogeneous_regular_of_unit_sphere
+#check @ResidualSLT.homogeneous_cancellation_prior_integrableOn_iff
+#check @ResidualSLT.homogeneous_cancellation_prior_not_integrable
+#check @ResidualSLT.odd_fermat_integrableOn_iff_via_homogeneous
+#check @ResidualSLT.odd_network_prior_integrableOn_iff_via_homogeneous
+#check @ResidualSLT.odd_network_prior_all_depths_via_homogeneous
+
+#print axioms ResidualSLT.weightedAngular_chart_iff_general
+#print axioms ResidualSLT.weightedAngular_integrable_off_zero_general
+#print axioms ResidualSLT.weightedAngular_integrable_regular
+#print axioms ResidualSLT.weightedAngular_regular_necessary
+#print axioms ResidualSLT.weightedAngular_integrable_nonpos_general
+#print axioms ResidualSLT.weightedAngular_regular_integrableOn_iff
+#print axioms ResidualSLT.homogeneousConeLoss
+#print axioms ResidualSLT.projectiveAngular
+#print axioms ResidualSLT.homogeneousConeLoss_radial_bounds
+#print axioms ResidualSLT.homogeneousConeLoss_on_radial_patch_iff
+#print axioms ResidualSLT.homogeneousConeLoss_projective_iff
+#print axioms ResidualSLT.projectiveInsertLinear
+#print axioms ResidualSLT.projectiveInsertLinear_apply
+#print axioms ResidualSLT.projectiveInsert_hasFDerivAt
+#print axioms ResidualSLT.projectiveAngular_contDiff
+#print axioms ResidualSLT.projectiveAngular_zero_regular
+#print axioms ResidualSLT.exists_nonzero_coordinate_partial
+#print axioms ResidualSLT.homogeneous_projective_zero
+#print axioms ResidualSLT.projectiveConePatch_subset_scaled_ball
+#print axioms ResidualSLT.homogeneousConeLoss_neg
+#print axioms ResidualSLT.homogeneousConeLoss_integrable_of_angular
+#print axioms ResidualSLT.homogeneousConeLoss_integrableOn_iff
+#print axioms ResidualSLT.homogeneous_fderiv_zero_smul
+#print axioms ResidualSLT.homogeneous_regular_of_unit_sphere
+#print axioms ResidualSLT.homogeneous_cancellation_prior_integrableOn_iff
+#print axioms ResidualSLT.homogeneous_cancellation_prior_not_integrable
+#print axioms ResidualSLT.odd_fermat_integrableOn_iff_via_homogeneous
+#print axioms ResidualSLT.odd_network_prior_integrableOn_iff_via_homogeneous
+#print axioms ResidualSLT.odd_network_prior_all_depths_via_homogeneous

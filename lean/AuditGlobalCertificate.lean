@@ -1,0 +1,140 @@
+import ResidualSLT
+
+#check ResidualSLT.twoActiveTarget
+#print axioms ResidualSLT.twoActiveTarget
+#check ResidualSLT.twoActiveEffective
+#print axioms ResidualSLT.twoActiveEffective
+#check ResidualSLT.network_two_active
+#print axioms ResidualSLT.network_two_active
+#check ResidualSLT.twoActiveTarget_natDegree
+#print axioms ResidualSLT.twoActiveTarget_natDegree
+#check ResidualSLT.activeTarget_injective
+#print axioms ResidualSLT.activeTarget_injective
+#check ResidualSLT.coeff_one_add_C_mul_X_pow
+#print axioms ResidualSLT.coeff_one_add_C_mul_X_pow
+#check ResidualSLT.two_active_graded_coefficients
+#print axioms ResidualSLT.two_active_graded_coefficients
+#check ResidualSLT.twoActiveTarget_injective
+#print axioms ResidualSLT.twoActiveTarget_injective
+#check ResidualSLT.network_single_support
+#print axioms ResidualSLT.network_single_support
+#check ResidualSLT.network_pair_support
+#print axioms ResidualSLT.network_pair_support
+#check ResidualSLT.one_active_effective_fiber
+#print axioms ResidualSLT.one_active_effective_fiber
+#check ResidualSLT.two_active_effective_fiber
+#print axioms ResidualSLT.two_active_effective_fiber
+#check ResidualSLT.one_active_raw_fiber
+#print axioms ResidualSLT.one_active_raw_fiber
+#check ResidualSLT.two_active_raw_fiber
+#print axioms ResidualSLT.two_active_raw_fiber
+#check ResidualSLT.one_active_raw_fiber_odd
+#print axioms ResidualSLT.one_active_raw_fiber_odd
+#check ResidualSLT.one_active_raw_fiber_even
+#print axioms ResidualSLT.one_active_raw_fiber_even
+#check ResidualSLT.two_active_raw_fiber_odd
+#print axioms ResidualSLT.two_active_raw_fiber_odd
+#check ResidualSLT.two_active_raw_fiber_even
+#print axioms ResidualSLT.two_active_raw_fiber_even
+#check ResidualSLT.finite_real_power_fiber
+#print axioms ResidualSLT.finite_real_power_fiber
+#check ResidualSLT.one_active_raw_fiber_finite
+#print axioms ResidualSLT.one_active_raw_fiber_finite
+#check ResidualSLT.two_active_raw_fiber_finite
+#print axioms ResidualSLT.two_active_raw_fiber_finite
+#check ResidualSLT.networkTargetLoss_eq_zero_iff
+#print axioms ResidualSLT.networkTargetLoss_eq_zero_iff
+#check ResidualSLT.network_raw_norm_le_coefficients
+#print axioms ResidualSLT.network_raw_norm_le_coefficients
+#check ResidualSLT.networkTargetLoss_sublevel_bounded
+#print axioms ResidualSLT.networkTargetLoss_sublevel_bounded
+#check ResidualSLT.networkTargetLoss_isCompact_sublevel
+#print axioms ResidualSLT.networkTargetLoss_isCompact_sublevel
+#check ResidualSLT.networkTargetLoss_gap_outside
+#print axioms ResidualSLT.networkTargetLoss_gap_outside
+#check ResidualSLT.globalLearningPair
+#print axioms ResidualSLT.globalLearningPair
+#check ResidualSLT.sum_nat_sub_le
+#print axioms ResidualSLT.sum_nat_sub_le
+#check ResidualSLT.sum_nat_sub_saturation
+#print axioms ResidualSLT.sum_nat_sub_saturation
+#check ResidualSLT.identityLearningPair_odd_deficit
+#print axioms ResidualSLT.identityLearningPair_odd_deficit
+#check ResidualSLT.identityLearningPair_empty
+#print axioms ResidualSLT.identityLearningPair_empty
+#check ResidualSLT.arrangement_global_exponent_le
+#print axioms ResidualSLT.arrangement_global_exponent_le
+#check ResidualSLT.arrangement_global_multiplicity_le_of_exponent_eq
+#print axioms ResidualSLT.arrangement_global_multiplicity_le_of_exponent_eq
+#check ResidualSLT.concentratedGroups
+#print axioms ResidualSLT.concentratedGroups
+#check ResidualSLT.concentratedGroups_sum
+#print axioms ResidualSLT.concentratedGroups_sum
+#check ResidualSLT.arrangementLearningPair_concentrated
+#print axioms ResidualSLT.arrangementLearningPair_concentrated
+#check ResidualSLT.laplaceRate_eventually_le
+#print axioms ResidualSLT.laplaceRate_eventually_le
+#check ResidualSLT.exp_neg_eventually_le_laplaceRate
+#print axioms ResidualSLT.exp_neg_eventually_le_laplaceRate
+#check ResidualSLT.HasLaplaceOrder.upper_of_dominates
+#print axioms ResidualSLT.HasLaplaceOrder.upper_of_dominates
+#check ResidualSLT.integrable_exp_neg_loss
+#print axioms ResidualSLT.integrable_exp_neg_loss
+#check ResidualSLT.laplace_integral_le_finite_local_sum
+#print axioms ResidualSLT.laplace_integral_le_finite_local_sum
+#check ResidualSLT.finite_local_laplace_assembly
+#print axioms ResidualSLT.finite_local_laplace_assembly
+#check ResidualSLT.continuous_positive_prior_local_bounds
+#print axioms ResidualSLT.continuous_positive_prior_local_bounds
+#check ResidualSLT.local_laplace_with_continuous_prior
+#print axioms ResidualSLT.local_laplace_with_continuous_prior
+#check ResidualSLT.inversePower_integrable_iff_mellin_pos
+#print axioms ResidualSLT.inversePower_integrable_iff_mellin_pos
+#check ResidualSLT.inversePower_integrable_iff_of_laplace_order_pos
+#print axioms ResidualSLT.inversePower_integrable_iff_of_laplace_order_pos
+#check ResidualSLT.arrangement_one_depth
+#print axioms ResidualSLT.arrangement_one_depth
+#check ResidualSLT.arrangement_two_depth
+#print axioms ResidualSLT.arrangement_two_depth
+#check ResidualSLT.arrangement_one_center
+#print axioms ResidualSLT.arrangement_one_center
+#check ResidualSLT.arrangement_two_center
+#print axioms ResidualSLT.arrangement_two_center
+#check ResidualSLT.arrangement_raw_certificate_at
+#print axioms ResidualSLT.arrangement_raw_certificate_at
+#check ResidualSLT.one_active_realization_arrangement
+#print axioms ResidualSLT.one_active_realization_arrangement
+#check ResidualSLT.two_active_realization_arrangement
+#print axioms ResidualSLT.two_active_realization_arrangement
+#check ResidualSLT.networkTargetLoss_congr_target
+#print axioms ResidualSLT.networkTargetLoss_congr_target
+#check ResidualSLT.arrangement_center_polynomial
+#print axioms ResidualSLT.arrangement_center_polynomial
+#check ResidualSLT.concentrated_realization_local_order
+#print axioms ResidualSLT.concentrated_realization_local_order
+#check ResidualSLT.finite_arrangement_fiber_global_laplace
+#print axioms ResidualSLT.finite_arrangement_fiber_global_laplace
+#check ResidualSLT.one_active_global_network_laplace
+#print axioms ResidualSLT.one_active_global_network_laplace
+#check ResidualSLT.two_active_global_network_laplace
+#print axioms ResidualSLT.two_active_global_network_laplace
+#check ResidualSLT.network_finite_fiber_ae_pos
+#print axioms ResidualSLT.network_finite_fiber_ae_pos
+#check ResidualSLT.network_global_inversePower_iff
+#print axioms ResidualSLT.network_global_inversePower_iff
+#check ResidualSLT.globalLearningPair_pos
+#print axioms ResidualSLT.globalLearningPair_pos
+#check ResidualSLT.one_active_global_rlct_laplace_certificate
+#print axioms ResidualSLT.one_active_global_rlct_laplace_certificate
+#check ResidualSLT.two_active_global_rlct_laplace_certificate
+#print axioms ResidualSLT.two_active_global_rlct_laplace_certificate
+#check ResidualSLT.network_global_boundary_diverges
+#print axioms ResidualSLT.network_global_boundary_diverges
+#check ResidualSLT.one_active_raw_target_exists
+#print axioms ResidualSLT.one_active_raw_target_exists
+#check ResidualSLT.two_active_raw_target_exists
+#print axioms ResidualSLT.two_active_raw_target_exists
+#check ResidualSLT.one_active_global_boundary_diverges
+#print axioms ResidualSLT.one_active_global_boundary_diverges
+#check ResidualSLT.two_active_global_boundary_diverges
+#print axioms ResidualSLT.two_active_global_boundary_diverges

@@ -1,0 +1,53 @@
+module
+import ResidualSLT
+
+#check @ResidualSLT.graded_scale
+#print axioms ResidualSLT.graded_scale
+#check @ResidualSLT.graded_coeff_scale
+#print axioms ResidualSLT.graded_coeff_scale
+#check @ResidualSLT.zeroExtend_smul
+#print axioms ResidualSLT.zeroExtend_smul
+#check @ResidualSLT.graded_high_coeff_unit_bound
+#print axioms ResidualSLT.graded_high_coeff_unit_bound
+#check @ResidualSLT.graded_omitted_coeff_cubic_bound
+#print axioms ResidualSLT.graded_omitted_coeff_cubic_bound
+#check @ResidualSLT.effective_norm_sq_le_sum
+#print axioms ResidualSLT.effective_norm_sq_le_sum
+#check @ResidualSLT.effective_sum_sq_le_retained
+#print axioms ResidualSLT.effective_sum_sq_le_retained
+#check @ResidualSLT.graded_omitted_coeff_relative_bound
+#print axioms ResidualSLT.graded_omitted_coeff_relative_bound
+#check @ResidualSLT.effective_nonneg_higher_relative_bound
+#print axioms ResidualSLT.effective_nonneg_higher_relative_bound
+#check @ResidualSLT.polynomial_family_independent_of_strictMono_degree
+#print axioms ResidualSLT.polynomial_family_independent_of_strictMono_degree
+#check @ResidualSLT.activeTarget
+#print axioms ResidualSLT.activeTarget
+#check @ResidualSLT.activeDerivativeFactor
+#print axioms ResidualSLT.activeDerivativeFactor
+#check @ResidualSLT.oneActiveSignedDirections
+#print axioms ResidualSLT.oneActiveSignedDirections
+#check @ResidualSLT.oneActiveEvenDirections
+#print axioms ResidualSLT.oneActiveEvenDirections
+#check @ResidualSLT.activeTarget_natDegree
+#print axioms ResidualSLT.activeTarget_natDegree
+#check @ResidualSLT.activeDerivativeFactor_natDegree
+#print axioms ResidualSLT.activeDerivativeFactor_natDegree
+#check @ResidualSLT.oneActiveSignedDirections_degrees
+#print axioms ResidualSLT.oneActiveSignedDirections_degrees
+#check @ResidualSLT.oneActiveSignedDirections_independent
+#print axioms ResidualSLT.oneActiveSignedDirections_independent
+#check @ResidualSLT.oneActiveEvenDirections_independent
+#print axioms ResidualSLT.oneActiveEvenDirections_independent
+#check @ResidualSLT.controlled_linearization_remainder
+#print axioms ResidualSLT.controlled_linearization_remainder
+#check @ResidualSLT.controlled_linearization_comparison
+#print axioms ResidualSLT.controlled_linearization_comparison
+#check @ResidualSLT.laplaceRate_mul
+#print axioms ResidualSLT.laplaceRate_mul
+#check @ResidualSLT.HasLaplaceOrder.mul
+#print axioms ResidualSLT.HasLaplaceOrder.mul
+#check @ResidualSLT.laplace_integral_add_prod
+#print axioms ResidualSLT.laplace_integral_add_prod
+#check @ResidualSLT.laplace_order_add_prod
+#print axioms ResidualSLT.laplace_order_add_prod

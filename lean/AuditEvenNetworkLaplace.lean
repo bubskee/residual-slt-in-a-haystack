@@ -1,0 +1,30 @@
+module
+import ResidualSLT
+
+#check @ResidualSLT.weighted_radial_interval_laplace_order
+#print axioms ResidualSLT.weighted_radial_interval_laplace_order
+#check @ResidualSLT.integral_norm_on_ball
+#print axioms ResidualSLT.integral_norm_on_ball
+#check @ResidualSLT.normPower_laplace_order
+#print axioms ResidualSLT.normPower_laplace_order
+#check @ResidualSLT.positive_homogeneous_laplace_order
+#print axioms ResidualSLT.positive_homogeneous_laplace_order
+#check @ResidualSLT.evenNetworkModel_laplace_order
+#print axioms ResidualSLT.evenNetworkModel_laplace_order
+#check @ResidualSLT.even_network_volume_laplace_order
+#print axioms ResidualSLT.even_network_volume_laplace_order
+#check @ResidualSLT.even_network_laplace_order
+#print axioms ResidualSLT.even_network_laplace_order
+#check @ResidualSLT.even_network_laplace_bounds
+#print axioms ResidualSLT.even_network_laplace_bounds
+#check @ResidualSLT.even_network_laplace_certificate
+#print axioms ResidualSLT.even_network_laplace_certificate
+
+#print ResidualSLT.networkPopulationLoss
+#print ResidualSLT.networkSquaredError
+#print ResidualSLT.networkFeatures
+#print ResidualSLT.FinitePositiveFeatureGram
+#print ResidualSLT.BoundedPositivePriorOn
+#print ResidualSLT.HasPowerLaplaceOrder
+#print ResidualSLT.PowerLaplaceLower
+#print ResidualSLT.PowerLaplaceUpper

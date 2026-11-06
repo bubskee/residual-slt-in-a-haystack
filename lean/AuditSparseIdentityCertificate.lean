@@ -1,0 +1,83 @@
+module
+import ResidualSLT
+
+#check @ResidualSLT.sparseNetworkFeatureCount
+#print axioms ResidualSLT.sparseNetworkFeatureCount
+#check @ResidualSLT.sparseNetworkFeatures
+#print axioms ResidualSLT.sparseNetworkFeatures
+#check @ResidualSLT.sparseNetworkCoefficients
+#print axioms ResidualSLT.sparseNetworkCoefficients
+#check @ResidualSLT.sparseNetworkFeature_degree
+#print axioms ResidualSLT.sparseNetworkFeature_degree
+#check @ResidualSLT.sparseNetworkFeatureCount_pos
+#print axioms ResidualSLT.sparseNetworkFeatureCount_pos
+#check @ResidualSLT.sparseNetworkIndex_bound
+#print axioms ResidualSLT.sparseNetworkIndex_bound
+#check @ResidualSLT.sparseNetworkIndex
+#print axioms ResidualSLT.sparseNetworkIndex
+#check @ResidualSLT.sparseNetworkIndex_injective
+#print axioms ResidualSLT.sparseNetworkIndex_injective
+#check @ResidualSLT.networkCoefficients_zero_off_sparse
+#print axioms ResidualSLT.networkCoefficients_zero_off_sparse
+#check @ResidualSLT.sparse_network_feature_expansion
+#print axioms ResidualSLT.sparse_network_feature_expansion
+#check @ResidualSLT.sparseNetworkCoefficients_norm
+#print axioms ResidualSLT.sparseNetworkCoefficients_norm
+#check @ResidualSLT.sparse_network_squaredError_eq
+#print axioms ResidualSLT.sparse_network_squaredError_eq
+#check @ResidualSLT.sparse_network_squaredError_integrable
+#print axioms ResidualSLT.sparse_network_squaredError_integrable
+#check @ResidualSLT.sparse_network_loss_eq_gram
+#print axioms ResidualSLT.sparse_network_loss_eq_gram
+#check @ResidualSLT.sparseNetworkCoefficients_continuous
+#print axioms ResidualSLT.sparseNetworkCoefficients_continuous
+#check @ResidualSLT.sparse_networkPopulationLoss_continuous
+#print axioms ResidualSLT.sparse_networkPopulationLoss_continuous
+#check @ResidualSLT.sparse_network_loss_coefficient_bounds
+#print axioms ResidualSLT.sparse_network_loss_coefficient_bounds
+#check @ResidualSLT.sparse_gram_of_contiguous
+#print axioms ResidualSLT.sparse_gram_of_contiguous
+#check @ResidualSLT.sparse_network_losses_comparable
+#print axioms ResidualSLT.sparse_network_losses_comparable
+#check @ResidualSLT.sparse_network_loss_pos
+#print axioms ResidualSLT.sparse_network_loss_pos
+#check @ResidualSLT.laplaceRate_scale
+#print axioms ResidualSLT.laplaceRate_scale
+#check @ResidualSLT.HasLaplaceOrder.comp_mul
+#print axioms ResidualSLT.HasLaplaceOrder.comp_mul
+#check @ResidualSLT.laplace_pair_order_of_comparable
+#print axioms ResidualSLT.laplace_pair_order_of_comparable
+#check @ResidualSLT.atomic_arithmeticPower_gram
+#print axioms ResidualSLT.atomic_arithmeticPower_gram
+#check @ResidualSLT.network_atomic_sparse_gram
+#print axioms ResidualSLT.network_atomic_sparse_gram
+#check @ResidualSLT.sparse_gram_strictly_weaker_cubic_two
+#print axioms ResidualSLT.sparse_gram_strictly_weaker_cubic_two
+#check @ResidualSLT.sparse_identity_network_rlct_laplace_certificate
+#print axioms ResidualSLT.sparse_identity_network_rlct_laplace_certificate
+#check @ResidualSLT.sparse_identity_network_laplace_bounds
+#print axioms ResidualSLT.sparse_identity_network_laplace_bounds
+#check @ResidualSLT.sparse_identity_network_prior_integrableOn_iff
+#print axioms ResidualSLT.sparse_identity_network_prior_integrableOn_iff
+#check @ResidualSLT.sparse_identity_network_prior_not_integrable
+#print axioms ResidualSLT.sparse_identity_network_prior_not_integrable
+
+#print ResidualSLT.sparseNetworkFeatureCount
+
+#print ResidualSLT.sparseNetworkFeatures
+
+#print ResidualSLT.sparseNetworkCoefficients
+
+#print ResidualSLT.identityLearningPair
+
+#print ResidualSLT.HasLaplaceOrder
+
+#print ResidualSLT.laplaceRate
+
+#print ResidualSLT.networkPopulationLoss
+
+#print ResidualSLT.networkSquaredError
+
+#print ResidualSLT.FinitePositiveFeatureGram
+
+#print ResidualSLT.BoundedPositivePriorOn

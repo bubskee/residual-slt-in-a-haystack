@@ -1,0 +1,133 @@
+import ResidualSLT
+open ResidualSLT
+
+#check ResidualSLT.high_degree_column_separation
+#print axioms ResidualSLT.high_degree_column_separation
+#check ResidualSLT.append_active_natDegree
+#print axioms ResidualSLT.append_active_natDegree
+#check ResidualSLT.append_factor_natDegree
+#print axioms ResidualSLT.append_factor_natDegree
+#check ResidualSLT.signed_arrangement_extension_separation
+#print axioms ResidualSLT.signed_arrangement_extension_separation
+#check ResidualSLT.even_arrangement_extension_separation
+#print axioms ResidualSLT.even_arrangement_extension_separation
+#check ResidualSLT.arrangementSignedJet
+#print axioms ResidualSLT.arrangementSignedJet
+#check ResidualSLT.arrangementEvenJet
+#print axioms ResidualSLT.arrangementEvenJet
+#check ResidualSLT.network_natDegree_pos
+#print axioms ResidualSLT.network_natDegree_pos
+#check ResidualSLT.arrangementSignedJet_degree
+#print axioms ResidualSLT.arrangementSignedJet_degree
+#check ResidualSLT.arrangementEvenJet_degree
+#print axioms ResidualSLT.arrangementEvenJet_degree
+#check ResidualSLT.arrangementSignedJet_kernel
+#print axioms ResidualSLT.arrangementSignedJet_kernel
+#check ResidualSLT.arrangementEvenJet_kernel
+#print axioms ResidualSLT.arrangementEvenJet_kernel
+#check ResidualSLT.ArrangementAux
+#print axioms ResidualSLT.ArrangementAux
+#check ResidualSLT.arrangementActiveL
+#print axioms ResidualSLT.arrangementActiveL
+#check ResidualSLT.arrangementGroupL
+#print axioms ResidualSLT.arrangementGroupL
+#check ResidualSLT.arrangementAuxEval
+#print axioms ResidualSLT.arrangementAuxEval
+#check ResidualSLT.arrangementAuxDeriv
+#print axioms ResidualSLT.arrangementAuxDeriv
+#check ResidualSLT.arrangementAuxEval_zero
+#print axioms ResidualSLT.arrangementAuxEval_zero
+#check ResidualSLT.arrangementGroup_hasFDerivAt
+#print axioms ResidualSLT.arrangementGroup_hasFDerivAt
+#check ResidualSLT.arrangementAuxEval_hasFDerivAt
+#print axioms ResidualSLT.arrangementAuxEval_hasFDerivAt
+#check ResidualSLT.ArrangementSignedRetained
+#print axioms ResidualSLT.ArrangementSignedRetained
+#check ResidualSLT.ArrangementEvenRetained
+#print axioms ResidualSLT.ArrangementEvenRetained
+#check ResidualSLT.arrangementSignedInsert
+#print axioms ResidualSLT.arrangementSignedInsert
+#check ResidualSLT.arrangementEvenInsert
+#print axioms ResidualSLT.arrangementEvenInsert
+#check ResidualSLT.arrangementActiveL_signedInsert
+#print axioms ResidualSLT.arrangementActiveL_signedInsert
+#check ResidualSLT.arrangementGroupL_signedInsert
+#print axioms ResidualSLT.arrangementGroupL_signedInsert
+#check ResidualSLT.arrangementActiveL_evenInsert
+#print axioms ResidualSLT.arrangementActiveL_evenInsert
+#check ResidualSLT.arrangementGroupL_evenInsert
+#print axioms ResidualSLT.arrangementGroupL_evenInsert
+#check ResidualSLT.arrangementAuxDeriv_signedInsert
+#print axioms ResidualSLT.arrangementAuxDeriv_signedInsert
+#check ResidualSLT.arrangementAuxDeriv_evenInsert
+#print axioms ResidualSLT.arrangementAuxDeriv_evenInsert
+#check ResidualSLT.arrangementSignedInsert_deriv_injective
+#print axioms ResidualSLT.arrangementSignedInsert_deriv_injective
+#check ResidualSLT.arrangementEvenInsert_deriv_injective
+#print axioms ResidualSLT.arrangementEvenInsert_deriv_injective
+#check ResidualSLT.arrangementRawAux
+#print axioms ResidualSLT.arrangementRawAux
+#check ResidualSLT.arrangementSignedRetained
+#print axioms ResidualSLT.arrangementSignedRetained
+#check ResidualSLT.arrangementEvenRetained
+#print axioms ResidualSLT.arrangementEvenRetained
+#check ResidualSLT.arrangementSignedRemainder
+#print axioms ResidualSLT.arrangementSignedRemainder
+#check ResidualSLT.arrangementEvenRemainder
+#print axioms ResidualSLT.arrangementEvenRemainder
+#check ResidualSLT.arrangementRawAux_signed_decomposition
+#print axioms ResidualSLT.arrangementRawAux_signed_decomposition
+#check ResidualSLT.arrangementRawAux_even_decomposition
+#print axioms ResidualSLT.arrangementRawAux_even_decomposition
+#check ResidualSLT.arrangementRawAux_tendsto
+#print axioms ResidualSLT.arrangementRawAux_tendsto
+#check ResidualSLT.active_power_remainder_isLittleO
+#print axioms ResidualSLT.active_power_remainder_isLittleO
+#check ResidualSLT.arrangementSignedRemainder_isLittleO
+#print axioms ResidualSLT.arrangementSignedRemainder_isLittleO
+#check ResidualSLT.arrangementEvenRemainder_isLittleO
+#print axioms ResidualSLT.arrangementEvenRemainder_isLittleO
+#check ResidualSLT.arrangementDepth
+#print axioms ResidualSLT.arrangementDepth
+#check ResidualSLT.arrangementFlatten
+#print axioms ResidualSLT.arrangementFlatten
+#check ResidualSLT.arrangementDepth_ge
+#print axioms ResidualSLT.arrangementDepth_ge
+#check ResidualSLT.arrangementFlatten_continuous
+#print axioms ResidualSLT.arrangementFlatten_continuous
+#check ResidualSLT.arrangementActiveL_rawAux
+#print axioms ResidualSLT.arrangementActiveL_rawAux
+#check ResidualSLT.arrangementGroupL_rawAux
+#print axioms ResidualSLT.arrangementGroupL_rawAux
+#check ResidualSLT.arrangementRawAux_eval_network
+#print axioms ResidualSLT.arrangementRawAux_eval_network
+#check ResidualSLT.arrangementRawAux_zero
+#print axioms ResidualSLT.arrangementRawAux_zero
+#check ResidualSLT.arrangementFlatten_target
+#print axioms ResidualSLT.arrangementFlatten_target
+#check ResidualSLT.HasLaplaceOrder.finset_prod
+#print axioms ResidualSLT.HasLaplaceOrder.finset_prod
+#check ResidualSLT.laplace_integral_sum_pi
+#print axioms ResidualSLT.laplace_integral_sum_pi
+#check ResidualSLT.laplace_order_sum_pi
+#print axioms ResidualSLT.laplace_order_sum_pi
+#check ResidualSLT.arrangementLearningPair
+#print axioms ResidualSLT.arrangementLearningPair
+#check ResidualSLT.arrangementComparisonLoss
+#print axioms ResidualSLT.arrangementComparisonLoss
+#check ResidualSLT.arrangementComparisonLoss_laplace_order
+#print axioms ResidualSLT.arrangementComparisonLoss_laplace_order
+#check ResidualSLT.networkTargetLoss
+#print axioms ResidualSLT.networkTargetLoss
+#check ResidualSLT.networkTargetCoefficients
+#print axioms ResidualSLT.networkTargetCoefficients
+#check ResidualSLT.networkTarget_feature_expansion
+#print axioms ResidualSLT.networkTarget_feature_expansion
+#check ResidualSLT.networkTargetLoss_eq_gram
+#print axioms ResidualSLT.networkTargetLoss_eq_gram
+#check ResidualSLT.networkTargetLoss_continuous
+#print axioms ResidualSLT.networkTargetLoss_continuous
+#check ResidualSLT.networkTargetLoss_coefficient_bounds
+#print axioms ResidualSLT.networkTargetLoss_coefficient_bounds
+#check ResidualSLT.networkTargetLoss_comparable
+#print axioms ResidualSLT.networkTargetLoss_comparable

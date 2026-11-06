@@ -1,0 +1,51 @@
+import ResidualSLT
+
+#print ResidualSLT.LocalNetworkCertificate
+#print ResidualSLT.UnifiedNetworkCertificate
+
+#check ResidualSLT.LocalNetworkCertificate
+#print axioms ResidualSLT.LocalNetworkCertificate
+#check ResidualSLT.arrangement_raw_full_certificate_at
+#print axioms ResidualSLT.arrangement_raw_full_certificate_at
+#check ResidualSLT.network_local_certificate_at_arrangement
+#print axioms ResidualSLT.network_local_certificate_at_arrangement
+#check ResidualSLT.network_local_certificate_at_every_fiber
+#print axioms ResidualSLT.network_local_certificate_at_every_fiber
+#check ResidualSLT.network_global_pair_locally_attained
+#print axioms ResidualSLT.network_global_pair_locally_attained
+#check ResidualSLT.UnifiedNetworkCertificate
+#print axioms ResidualSLT.UnifiedNetworkCertificate
+#check ResidualSLT.unified_residual_network_certificate
+#print axioms ResidualSLT.unified_residual_network_certificate
+#check ResidualSLT.UnifiedNetworkCertificate.loss_fiber_cardinality
+#print axioms ResidualSLT.UnifiedNetworkCertificate.loss_fiber_cardinality
+#check ResidualSLT.UnifiedNetworkCertificate.active_count_le
+#print axioms ResidualSLT.UnifiedNetworkCertificate.active_count_le
+#check ResidualSLT.UnifiedNetworkCertificate.loss_fiber
+#print axioms ResidualSLT.UnifiedNetworkCertificate.loss_fiber
+#check ResidualSLT.UnifiedNetworkCertificate.ordered_fiber
+#print axioms ResidualSLT.UnifiedNetworkCertificate.ordered_fiber
+#check ResidualSLT.UnifiedNetworkCertificate.odd_fiber
+#print axioms ResidualSLT.UnifiedNetworkCertificate.odd_fiber
+#check ResidualSLT.UnifiedNetworkCertificate.even_fiber
+#print axioms ResidualSLT.UnifiedNetworkCertificate.even_fiber
+#check ResidualSLT.UnifiedNetworkCertificate.finite_fiber
+#print axioms ResidualSLT.UnifiedNetworkCertificate.finite_fiber
+#check ResidualSLT.UnifiedNetworkCertificate.fiber_cardinality
+#print axioms ResidualSLT.UnifiedNetworkCertificate.fiber_cardinality
+#check ResidualSLT.UnifiedNetworkCertificate.local_certificates
+#print axioms ResidualSLT.UnifiedNetworkCertificate.local_certificates
+#check ResidualSLT.UnifiedNetworkCertificate.local_at_arrangement
+#print axioms ResidualSLT.UnifiedNetworkCertificate.local_at_arrangement
+#check ResidualSLT.UnifiedNetworkCertificate.global_dominance
+#print axioms ResidualSLT.UnifiedNetworkCertificate.global_dominance
+#check ResidualSLT.UnifiedNetworkCertificate.global_attained
+#print axioms ResidualSLT.UnifiedNetworkCertificate.global_attained
+#check ResidualSLT.UnifiedNetworkCertificate.global_integrability
+#print axioms ResidualSLT.UnifiedNetworkCertificate.global_integrability
+#check ResidualSLT.UnifiedNetworkCertificate.global_boundary
+#print axioms ResidualSLT.UnifiedNetworkCertificate.global_boundary
+#check ResidualSLT.UnifiedNetworkCertificate.global_laplace
+#print axioms ResidualSLT.UnifiedNetworkCertificate.global_laplace
+#check ResidualSLT.UnifiedNetworkCertificate.mk
+#print axioms ResidualSLT.UnifiedNetworkCertificate.mk

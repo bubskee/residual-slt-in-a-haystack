@@ -1,0 +1,38 @@
+module
+import ResidualSLT
+
+#check @ResidualSLT.criticalLaplaceKernel
+#check @ResidualSLT.criticalLaplace
+#check @ResidualSLT.gaussian_unit_section_le
+#check @ResidualSLT.criticalLaplaceKernel_bounds
+#check @ResidualSLT.criticalLaplaceKernel_integrable
+#check @ResidualSLT.criticalLaplaceKernel_section_integrable
+#check @ResidualSLT.criticalLaplaceKernel_section_upper
+#check @ResidualSLT.criticalLaplaceKernel_strip_lower
+#check @ResidualSLT.integral_Ioo_split
+#check @ResidualSLT.criticalLaplaceKernel_sections_integrable
+#check @ResidualSLT.criticalLaplaceKernel_fubini
+#check @ResidualSLT.integral_Ioo_inv_positive
+#check @ResidualSLT.integrableOn_Ioo_inv_positive
+#check @ResidualSLT.criticalLaplaceKernel_lower
+#check @ResidualSLT.criticalLaplaceKernel_upper
+#check @ResidualSLT.criticalLaplace_bounds
+#check @ResidualSLT.criticalLaplace_two_sided
+
+#print axioms ResidualSLT.criticalLaplaceKernel
+#print axioms ResidualSLT.criticalLaplace
+#print axioms ResidualSLT.gaussian_unit_section_le
+#print axioms ResidualSLT.criticalLaplaceKernel_bounds
+#print axioms ResidualSLT.criticalLaplaceKernel_integrable
+#print axioms ResidualSLT.criticalLaplaceKernel_section_integrable
+#print axioms ResidualSLT.criticalLaplaceKernel_section_upper
+#print axioms ResidualSLT.criticalLaplaceKernel_strip_lower
+#print axioms ResidualSLT.integral_Ioo_split
+#print axioms ResidualSLT.criticalLaplaceKernel_sections_integrable
+#print axioms ResidualSLT.criticalLaplaceKernel_fubini
+#print axioms ResidualSLT.integral_Ioo_inv_positive
+#print axioms ResidualSLT.integrableOn_Ioo_inv_positive
+#print axioms ResidualSLT.criticalLaplaceKernel_lower
+#print axioms ResidualSLT.criticalLaplaceKernel_upper
+#print axioms ResidualSLT.criticalLaplace_bounds
+#print axioms ResidualSLT.criticalLaplace_two_sided

@@ -1,0 +1,155 @@
+module
+import ResidualSLT
+
+#check @ResidualSLT.criticalLaplaceKernel
+#print axioms ResidualSLT.criticalLaplaceKernel
+#check @ResidualSLT.criticalLaplace
+#print axioms ResidualSLT.criticalLaplace
+#check @ResidualSLT.gaussian_unit_section_le
+#print axioms ResidualSLT.gaussian_unit_section_le
+#check @ResidualSLT.criticalLaplaceKernel_bounds
+#print axioms ResidualSLT.criticalLaplaceKernel_bounds
+#check @ResidualSLT.criticalLaplaceKernel_integrable
+#print axioms ResidualSLT.criticalLaplaceKernel_integrable
+#check @ResidualSLT.criticalLaplaceKernel_section_integrable
+#print axioms ResidualSLT.criticalLaplaceKernel_section_integrable
+#check @ResidualSLT.criticalLaplaceKernel_section_upper
+#print axioms ResidualSLT.criticalLaplaceKernel_section_upper
+#check @ResidualSLT.criticalLaplaceKernel_strip_lower
+#print axioms ResidualSLT.criticalLaplaceKernel_strip_lower
+#check @ResidualSLT.integral_Ioo_split
+#print axioms ResidualSLT.integral_Ioo_split
+#check @ResidualSLT.criticalLaplaceKernel_sections_integrable
+#print axioms ResidualSLT.criticalLaplaceKernel_sections_integrable
+#check @ResidualSLT.criticalLaplaceKernel_fubini
+#print axioms ResidualSLT.criticalLaplaceKernel_fubini
+#check @ResidualSLT.integral_Ioo_inv_positive
+#print axioms ResidualSLT.integral_Ioo_inv_positive
+#check @ResidualSLT.integrableOn_Ioo_inv_positive
+#print axioms ResidualSLT.integrableOn_Ioo_inv_positive
+#check @ResidualSLT.criticalLaplaceKernel_lower
+#print axioms ResidualSLT.criticalLaplaceKernel_lower
+#check @ResidualSLT.criticalLaplaceKernel_upper
+#print axioms ResidualSLT.criticalLaplaceKernel_upper
+#check @ResidualSLT.criticalLaplace_bounds
+#print axioms ResidualSLT.criticalLaplace_bounds
+#check @ResidualSLT.criticalLaplace_two_sided
+#print axioms ResidualSLT.criticalLaplace_two_sided
+#check @ResidualSLT.criticalLaplaceRate
+#print axioms ResidualSLT.criticalLaplaceRate
+#check @ResidualSLT.CriticalLaplaceUpper
+#print axioms ResidualSLT.CriticalLaplaceUpper
+#check @ResidualSLT.CriticalLaplaceLower
+#print axioms ResidualSLT.CriticalLaplaceLower
+#check @ResidualSLT.HasCriticalLaplaceOrder
+#print axioms ResidualSLT.HasCriticalLaplaceOrder
+#check @ResidualSLT.criticalLaplaceRate_eventually_pos
+#print axioms ResidualSLT.criticalLaplaceRate_eventually_pos
+#check @ResidualSLT.criticalLaplaceRate_scale
+#print axioms ResidualSLT.criticalLaplaceRate_scale
+#check @ResidualSLT.CriticalLaplaceUpper.mono
+#print axioms ResidualSLT.CriticalLaplaceUpper.mono
+#check @ResidualSLT.CriticalLaplaceLower.mono
+#print axioms ResidualSLT.CriticalLaplaceLower.mono
+#check @ResidualSLT.CriticalLaplaceUpper.const_mul
+#print axioms ResidualSLT.CriticalLaplaceUpper.const_mul
+#check @ResidualSLT.CriticalLaplaceLower.const_mul
+#print axioms ResidualSLT.CriticalLaplaceLower.const_mul
+#check @ResidualSLT.CriticalLaplaceUpper.comp_mul
+#print axioms ResidualSLT.CriticalLaplaceUpper.comp_mul
+#check @ResidualSLT.CriticalLaplaceLower.comp_mul
+#print axioms ResidualSLT.CriticalLaplaceLower.comp_mul
+#check @ResidualSLT.CriticalLaplaceUpper.add
+#print axioms ResidualSLT.CriticalLaplaceUpper.add
+#check @ResidualSLT.criticalLaplaceUpper_zero
+#print axioms ResidualSLT.criticalLaplaceUpper_zero
+#check @ResidualSLT.CriticalLaplaceUpper.finset_sum
+#print axioms ResidualSLT.CriticalLaplaceUpper.finset_sum
+#check @ResidualSLT.criticalLaplace_has_order
+#print axioms ResidualSLT.criticalLaplace_has_order
+#check @ResidualSLT.HasCriticalLaplaceOrder.bounds
+#print axioms ResidualSLT.HasCriticalLaplaceOrder.bounds
+#check @ResidualSLT.CriticalLaplaceUpper.const_mul_nonneg
+#print axioms ResidualSLT.CriticalLaplaceUpper.const_mul_nonneg
+#check @ResidualSLT.normalizedLaplaceBox
+#print axioms ResidualSLT.normalizedLaplaceBox
+#check @ResidualSLT.normalizedLaplaceBox_integrable
+#print axioms ResidualSLT.normalizedLaplaceBox_integrable
+#check @ResidualSLT.normalizedLaplaceBox_square
+#print axioms ResidualSLT.normalizedLaplaceBox_square
+#check @ResidualSLT.normalizedLaplaceBox_mono
+#print axioms ResidualSLT.normalizedLaplaceBox_mono
+#check @ResidualSLT.normalizedLaplaceBox_has_order
+#print axioms ResidualSLT.normalizedLaplaceBox_has_order
+#check @ResidualSLT.integral_radial_power_substitution
+#print axioms ResidualSLT.integral_radial_power_substitution
+#check @ResidualSLT.weightedLaplaceBox
+#print axioms ResidualSLT.weightedLaplaceBox
+#check @ResidualSLT.weightedLaplaceBox_eq
+#print axioms ResidualSLT.weightedLaplaceBox_eq
+#check @ResidualSLT.weightedLaplaceBox_has_order
+#print axioms ResidualSLT.weightedLaplaceBox_has_order
+#check @ResidualSLT.integral_even_Ioo
+#print axioms ResidualSLT.integral_even_Ioo
+#check @ResidualSLT.weightedLaplaceSymmetric
+#print axioms ResidualSLT.weightedLaplaceSymmetric
+#check @ResidualSLT.weightedLaplaceSymmetric_eq
+#print axioms ResidualSLT.weightedLaplaceSymmetric_eq
+#check @ResidualSLT.weightedLaplaceSymmetric_has_order
+#print axioms ResidualSLT.weightedLaplaceSymmetric_has_order
+#check @ResidualSLT.integral_image_bounds_of_bounded_jacobian
+#print axioms ResidualSLT.integral_image_bounds_of_bounded_jacobian
+#check @ResidualSLT.TransverseChart.radial_integral_bounds
+#print axioms ResidualSLT.TransverseChart.radial_integral_bounds
+#check @ResidualSLT.angularCylinder_integral
+#print axioms ResidualSLT.angularCylinder_integral
+#check @ResidualSLT.radialBlowup_integral_image
+#print axioms ResidualSLT.radialBlowup_integral_image
+#check @ResidualSLT.setIntegral_le_add_sum_of_cover
+#print axioms ResidualSLT.setIntegral_le_add_sum_of_cover
+#check @ResidualSLT.criticalAngularKernel
+#print axioms ResidualSLT.criticalAngularKernel
+#check @ResidualSLT.criticalAngularKernel_nonneg
+#print axioms ResidualSLT.criticalAngularKernel_nonneg
+#check @ResidualSLT.criticalAngularKernel_integrable
+#print axioms ResidualSLT.criticalAngularKernel_integrable
+#check @ResidualSLT.criticalAngularCylinder_integrable
+#print axioms ResidualSLT.criticalAngularCylinder_integrable
+#check @ResidualSLT.criticalAngularCylinder_integral
+#print axioms ResidualSLT.criticalAngularCylinder_integral
+#check @ResidualSLT.criticalAngular_patch_upper
+#print axioms ResidualSLT.criticalAngular_patch_upper
+#check @ResidualSLT.criticalAngular_lower_of_zero
+#print axioms ResidualSLT.criticalAngular_lower_of_zero
+#check @ResidualSLT.critical_radial_gaussian_upper
+#print axioms ResidualSLT.critical_radial_gaussian_upper
+#check @ResidualSLT.criticalAngular_off_zero_upper
+#print axioms ResidualSLT.criticalAngular_off_zero_upper
+#check @ResidualSLT.criticalAngular_regular_upper
+#print axioms ResidualSLT.criticalAngular_regular_upper
+#check @ResidualSLT.criticalAngular_has_order
+#print axioms ResidualSLT.criticalAngular_has_order
+#check @ResidualSLT.criticalFermat_projective_integral
+#print axioms ResidualSLT.criticalFermat_projective_integral
+#check @ResidualSLT.laplace_order_of_projective_cones
+#print axioms ResidualSLT.laplace_order_of_projective_cones
+#check @ResidualSLT.criticalFermat_laplace_order
+#print axioms ResidualSLT.criticalFermat_laplace_order
+#check @ResidualSLT.laplace_order_of_comparable
+#print axioms ResidualSLT.laplace_order_of_comparable
+#check @ResidualSLT.laplace_order_withDensity
+#print axioms ResidualSLT.laplace_order_withDensity
+#check @ResidualSLT.odd_critical_network_volume_laplace_order
+#print axioms ResidualSLT.odd_critical_network_volume_laplace_order
+#check @ResidualSLT.odd_critical_network_laplace_order
+#print axioms ResidualSLT.odd_critical_network_laplace_order
+#check @ResidualSLT.odd_critical_network_laplace_bounds
+#print axioms ResidualSLT.odd_critical_network_laplace_bounds
+
+#print ResidualSLT.HasCriticalLaplaceOrder
+#print ResidualSLT.CriticalLaplaceLower
+#print ResidualSLT.CriticalLaplaceUpper
+#print ResidualSLT.networkPopulationLoss
+#print ResidualSLT.networkSquaredError
+#print ResidualSLT.FinitePositiveFeatureGram
+#print ResidualSLT.BoundedPositivePriorOn

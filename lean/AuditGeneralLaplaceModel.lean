@@ -1,0 +1,43 @@
+module
+import ResidualSLT.GeneralAngularLaplace
+
+#check @ResidualSLT.generalWeightedKernel
+#print axioms ResidualSLT.generalWeightedKernel
+#check @ResidualSLT.generalWeightedBox
+#print axioms ResidualSLT.generalWeightedBox
+#check @ResidualSLT.generalWeighted_integrable
+#print axioms ResidualSLT.generalWeighted_integrable
+#check @ResidualSLT.productGaussian_upper
+#print axioms ResidualSLT.productGaussian_upper
+#check @ResidualSLT.generalWeightedBox_upper
+#print axioms ResidualSLT.generalWeightedBox_upper
+#check @ResidualSLT.generalWeightedBox_strip_lower
+#print axioms ResidualSLT.generalWeightedBox_strip_lower
+#check @ResidualSLT.generalWeightedBox_lower
+#print axioms ResidualSLT.generalWeightedBox_lower
+#check @ResidualSLT.generalWeightedBox_has_order
+#print axioms ResidualSLT.generalWeightedBox_has_order
+#check @ResidualSLT.generalWeightedSymmetric
+#print axioms ResidualSLT.generalWeightedSymmetric
+#check @ResidualSLT.generalWeightedSymmetric_eq
+#print axioms ResidualSLT.generalWeightedSymmetric_eq
+#check @ResidualSLT.generalWeightedSymmetric_has_order
+#print axioms ResidualSLT.generalWeightedSymmetric_has_order
+#check @ResidualSLT.generalAngularKernel
+#print axioms ResidualSLT.generalAngularKernel
+#check @ResidualSLT.generalAngularKernel_nonneg
+#print axioms ResidualSLT.generalAngularKernel_nonneg
+#check @ResidualSLT.generalAngularKernel_integrable
+#print axioms ResidualSLT.generalAngularKernel_integrable
+#check @ResidualSLT.generalAngularCylinder_integrable
+#print axioms ResidualSLT.generalAngularCylinder_integrable
+#check @ResidualSLT.generalAngularCylinder_integral
+#print axioms ResidualSLT.generalAngularCylinder_integral
+#check @ResidualSLT.generalAngular_patch_upper
+#print axioms ResidualSLT.generalAngular_patch_upper
+#check @ResidualSLT.generalAngular_lower_of_zero
+#print axioms ResidualSLT.generalAngular_lower_of_zero
+#check @ResidualSLT.generalAngular_off_zero_upper
+#print axioms ResidualSLT.generalAngular_off_zero_upper
+#check @ResidualSLT.generalAngular_regular_upper
+#print axioms ResidualSLT.generalAngular_regular_upper

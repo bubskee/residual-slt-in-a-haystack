@@ -1,0 +1,30 @@
+module
+import ResidualSLT
+
+#check @ResidualSLT.radial_interval_laplace_order
+#print axioms ResidualSLT.radial_interval_laplace_order
+#check @ResidualSLT.fin_one_norm_laplace_order
+#print axioms ResidualSLT.fin_one_norm_laplace_order
+#check @ResidualSLT.one_fermat_laplace_order
+#print axioms ResidualSLT.one_fermat_laplace_order
+#check @ResidualSLT.odd_offcritical_fermat_laplace_order
+#print axioms ResidualSLT.odd_offcritical_fermat_laplace_order
+#check @ResidualSLT.odd_offcritical_fermat_all_depths_laplace_order
+#print axioms ResidualSLT.odd_offcritical_fermat_all_depths_laplace_order
+#check @ResidualSLT.odd_offcritical_network_volume_laplace_order
+#print axioms ResidualSLT.odd_offcritical_network_volume_laplace_order
+#check @ResidualSLT.odd_offcritical_network_laplace_order
+#print axioms ResidualSLT.odd_offcritical_network_laplace_order
+#check @ResidualSLT.odd_offcritical_network_laplace_bounds
+#print axioms ResidualSLT.odd_offcritical_network_laplace_bounds
+#check @ResidualSLT.odd_offcritical_network_certificate
+#print axioms ResidualSLT.odd_offcritical_network_certificate
+
+#print ResidualSLT.networkPopulationLoss
+#print ResidualSLT.networkSquaredError
+#print ResidualSLT.networkFeatures
+#print ResidualSLT.FinitePositiveFeatureGram
+#print ResidualSLT.BoundedPositivePriorOn
+#print ResidualSLT.HasPowerLaplaceOrder
+#print ResidualSLT.PowerLaplaceLower
+#print ResidualSLT.PowerLaplaceUpper
