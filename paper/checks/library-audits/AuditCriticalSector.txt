@@ -1,0 +1,51 @@
+ResidualSLT.criticalCoreSection : ℝ → ℝ → ℝ
+ResidualSLT.criticalOuterSection : ℝ → ℝ → ℝ
+ResidualSLT.criticalSectorMellin : ℝ → ℝ
+ResidualSLT.integral_Ioo_zero_rpow : ∀ (b p : ℝ),
+  0 < b → -1 < p → ∫ (x : ℝ) in Set.Ioo 0 b, x ^ p = b ^ (p + 1) / (p + 1)
+ResidualSLT.criticalCoreSection_eq : ∀ (s u : ℝ), 0 < u → ResidualSLT.criticalCoreSection s u = u ^ (1 - 4 * s)
+ResidualSLT.criticalOuterSection_eq : ∀ (s t : ℝ),
+  0 < t → s < 1 / 2 → ResidualSLT.criticalOuterSection s t = t ^ (1 - 4 * s) / (1 - 2 * s)
+ResidualSLT.criticalSectorMellin_integrable : ∀ s < 1 / 2,
+  (∀ (u : ℝ), 0 < u → MeasureTheory.IntegrableOn (fun x => (u ^ 4) ^ (-s)) (Set.Ioo 0 u) MeasureTheory.volume) ∧
+    (∀ (t : ℝ),
+        0 < t → MeasureTheory.IntegrableOn (fun u => (u ^ 2 * t ^ 2) ^ (-s)) (Set.Ioo 0 t) MeasureTheory.volume) ∧
+      MeasureTheory.IntegrableOn (ResidualSLT.criticalCoreSection s) (Set.Ioo 0 1) MeasureTheory.volume ∧
+        MeasureTheory.IntegrableOn (ResidualSLT.criticalOuterSection s) (Set.Ioo 0 1) MeasureTheory.volume
+ResidualSLT.criticalSectorMellin_eq : ∀ s < 1 / 2,
+  ResidualSLT.criticalSectorMellin s = 1 / (2 - 4 * s) + 1 / ((1 - 2 * s) * (2 - 4 * s))
+ResidualSLT.criticalSectorMellin_scaled_limit : Filter.Tendsto
+  (fun s => (1 / 2 - s) ^ 2 * ResidualSLT.criticalSectorMellin s) (nhdsWithin (1 / 2) (Set.Iio (1 / 2))) (nhds (1 / 8))
+ResidualSLT.criticalSectorLoss : ℝ × ℝ → ℝ
+ResidualSLT.criticalSectorLoss_comparison : ∀ (z : ℝ × ℝ),
+  ResidualSLT.criticalSectorLoss z ≤ z.1 ^ 2 * (z.2 ^ 2 + z.1 ^ 2) ∧
+    z.1 ^ 2 * (z.2 ^ 2 + z.1 ^ 2) ≤ 2 * ResidualSLT.criticalSectorLoss z
+ResidualSLT.criticalSectorLoss_integrable : ∀ s < 1 / 2,
+  MeasureTheory.IntegrableOn (fun z => ResidualSLT.criticalSectorLoss z ^ (-s)) ResidualSLT.cancellationRectangle
+    MeasureTheory.volume
+ResidualSLT.criticalSectorLoss_core : ∀ (u t : ℝ), 0 ≤ t → t ≤ u → ResidualSLT.criticalSectorLoss (u, t) = u ^ 4
+ResidualSLT.criticalSectorLoss_outer : ∀ (u t : ℝ),
+  0 ≤ u → u ≤ t → ResidualSLT.criticalSectorLoss (u, t) = u ^ 2 * t ^ 2
+ResidualSLT.criticalSectorMellin_eq_square_integral : ∀ s < 1 / 2,
+  ResidualSLT.criticalSectorMellin s =
+    ∫ (z : ℝ × ℝ) in ResidualSLT.cancellationRectangle, ResidualSLT.criticalSectorLoss z ^ (-s)
+ResidualSLT.criticalSectorMellin_square_scaled_limit : Filter.Tendsto
+  (fun s =>
+    (1 / 2 - s) ^ 2 * ∫ (z : ℝ × ℝ) in ResidualSLT.cancellationRectangle, ResidualSLT.criticalSectorLoss z ^ (-s))
+  (nhdsWithin (1 / 2) (Set.Iio (1 / 2))) (nhds (1 / 8))
+'ResidualSLT.criticalCoreSection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalOuterSection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorMellin' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integral_Ioo_zero_rpow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalCoreSection_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalOuterSection_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorMellin_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorMellin_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorMellin_scaled_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorLoss_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorLoss_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorLoss_core' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorLoss_outer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorMellin_eq_square_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalSectorMellin_square_scaled_limit' depends on axioms: [propext, Classical.choice, Quot.sound]

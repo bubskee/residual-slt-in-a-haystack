@@ -1,0 +1,70 @@
+ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos (μ : MeasureTheory.Measure ℝ) (r k : ℕ)
+  (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : (Fin (arrangementDepth k n k ⋯) → ℝ) → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε) MeasureTheory.volume →
+                  (∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn
+                          (fun w => networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯) w ^ (-s))
+                          (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε)
+                          (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                        s < (arrangementLearningPair r k n).1) ∧
+                    HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+                      ∫ (w : Fin (arrangementDepth k n k ⋯) → ℝ) in Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε,
+                        Real.exp
+                          (-N *
+                            networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯)
+                              w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+ResidualSLT.arrangement_raw_network_boundary_divergence (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : (Fin (arrangementDepth k n k ⋯) → ℝ) → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε) MeasureTheory.volume →
+                  ¬MeasureTheory.IntegrableOn
+                      (fun w =>
+                        networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯) w ^ (-(arrangementLearningPair r k n).1))
+                      (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε)
+                      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+ResidualSLT.arrangement_network_local_comparison (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ c C,
+    0 < c ∧
+      0 < C ∧
+        ∀ᶠ (w : ArrangementAux k n) in nhds 0,
+          c * arrangementComparisonLoss r k n w ≤ arrangementPopulationLoss μ r k n τ w ∧
+            arrangementPopulationLoss μ r k n τ w ≤ C * arrangementComparisonLoss r k n w
+ResidualSLT.arrangementCoordinateEquiv_preimage_ball (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (ε : ℝ) :
+  ⇑(arrangementCoordinateEquiv k n τ) ⁻¹' Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε = Metric.ball 0 ε
+ResidualSLT.arrangementCoordinateEquiv_measure_comparison (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  ∃ d,
+    0 < d ∧
+      MeasureTheory.MeasurePreserving (⇑(arrangementCoordinateEquiv k n τ)) MeasureTheory.volume
+        (d • MeasureTheory.volume)
+ResidualSLT.arrangementLearningPair_odd_multiplicity (r k : ℕ) (n : Fin (k + 1) → ℕ) (hodd : Odd r) :
+  (arrangementLearningPair r k n).2 = 1 + {g | n g = r}.card
+ResidualSLT.arrangementLearningPair_even (r k : ℕ) (n : Fin (k + 1) → ℕ) (heven : Even r) :
+  arrangementLearningPair r k n = (↑k / 2 + (∑ g, ↑(n g)) / (2 * ↑r), 1)
+ResidualSLT.arrangementLearningPair_one (r p q : ℕ) : arrangementLearningPair r 1 ![p, q] = oneActiveLearningPair r p q
+ResidualSLT.arrangementFlatten_target (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  network r (fun i => zeroExtend (arrangementFlatten k n τ 0 k ⋯) i ^ r) (arrangementDepth k n k ⋯) =
+    network r (zeroExtend fun j => τ j ^ r) k
+'ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ResidualSLT.arrangement_raw_network_boundary_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]

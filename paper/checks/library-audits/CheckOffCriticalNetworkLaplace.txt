@@ -1,0 +1,15 @@
+'_private.CheckOffCriticalNetworkLaplace.0.ResidualSLT.Examples.cubic_depth_one_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalNetworkLaplace.0.ResidualSLT.Examples.cubic_depth_two_network_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalNetworkLaplace.0.ResidualSLT.Examples.cubic_depth_four_network_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalNetworkLaplace.0.ResidualSLT.Examples.quintic_depth_six_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalNetworkLaplace.0.ResidualSLT.Examples.cubic_depth_two_network_boundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

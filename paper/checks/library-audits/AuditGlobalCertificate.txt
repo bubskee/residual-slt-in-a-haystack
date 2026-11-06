@@ -1,0 +1,407 @@
+ResidualSLT.twoActiveTarget (r : ℕ) (c d : ℝ) : Polynomial ℝ
+'ResidualSLT.twoActiveTarget' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.twoActiveEffective (c d : ℝ) (i : ℕ) : ℝ
+'ResidualSLT.twoActiveEffective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_two_active (r : ℕ) (c d : ℝ) :
+  ResidualSLT.network r (ResidualSLT.twoActiveEffective c d) 2 = ResidualSLT.twoActiveTarget r c d
+'ResidualSLT.network_two_active' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.twoActiveTarget_natDegree (r : ℕ) (hr : 2 ≤ r) (c d : ℝ) (hc : c ≠ 0) (hd : d ≠ 0) :
+  (ResidualSLT.twoActiveTarget r c d).natDegree = r ^ 2
+'ResidualSLT.twoActiveTarget_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeTarget_injective (r : ℕ) (hr : 2 ≤ r) : Function.Injective (ResidualSLT.activeTarget r)
+'ResidualSLT.activeTarget_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.coeff_one_add_C_mul_X_pow (r j : ℕ) (c : ℝ) :
+  ((1 + Polynomial.C c * Polynomial.X) ^ r).coeff j = ↑(r.choose j) * c ^ j
+'ResidualSLT.coeff_one_add_C_mul_X_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_graded_coefficients (r : ℕ) (c d : ℝ) :
+  (ResidualSLT.graded r (ResidualSLT.twoActiveEffective c d) 2).coeff 1 = c + d ∧
+    (ResidualSLT.graded r (ResidualSLT.twoActiveEffective c d) 2).coeff 2 = ↑r * c * d ∧
+      (ResidualSLT.graded r (ResidualSLT.twoActiveEffective c d) 2).coeff 3 = ↑(r.choose 2) * c ^ 2 * d
+'ResidualSLT.two_active_graded_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.twoActiveTarget_injective (r : ℕ) (hr : 2 ≤ r) (c d u v : ℝ) (hc : c ≠ 0) (hd : d ≠ 0)
+  (he : ResidualSLT.twoActiveTarget r u v = ResidualSLT.twoActiveTarget r c d) : u = c ∧ v = d
+'ResidualSLT.twoActiveTarget_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_single_support (r L i : ℕ) (u : ℕ → ℝ) (hi : i < L) (hs : ∀ j < L, j ≠ i → u j = 0) :
+  ResidualSLT.network r u L = ResidualSLT.activeTarget r (u i)
+'ResidualSLT.network_single_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_pair_support (r L i j : ℕ) (u : ℕ → ℝ) (hij : i < j) (hj : j < L)
+  (hs : ∀ a < L, a ≠ i → a ≠ j → u a = 0) : ResidualSLT.network r u L = ResidualSLT.twoActiveTarget r (u i) (u j)
+'ResidualSLT.network_pair_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_effective_fiber (r L : ℕ) (hr : 2 ≤ r) (c : ℝ) (hc : c ≠ 0) (u : ℕ → ℝ) :
+  ResidualSLT.network r u L = ResidualSLT.activeTarget r c ↔ ∃ i < L, u i = c ∧ ∀ j < L, j ≠ i → u j = 0
+'ResidualSLT.one_active_effective_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_effective_fiber (r L : ℕ) (hr : 2 ≤ r) (c d : ℝ) (hc : c ≠ 0) (hd : d ≠ 0) (u : ℕ → ℝ) :
+  ResidualSLT.network r u L = ResidualSLT.twoActiveTarget r c d ↔
+    ∃ i j, i < j ∧ j < L ∧ u i = c ∧ u j = d ∧ ∀ a < L, a ≠ i → a ≠ j → u a = 0
+'ResidualSLT.two_active_effective_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_raw_fiber (r L : ℕ) (hr : 2 ≤ r) (c : ℝ) (hc : c ≠ 0) (w : Fin L → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.activeTarget r c ↔
+    ∃ i, w i ^ r = c ∧ ∀ (j : Fin L), j ≠ i → w j = 0
+'ResidualSLT.one_active_raw_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_raw_fiber (r L : ℕ) (hr : 2 ≤ r) (c d : ℝ) (hc : c ≠ 0) (hd : d ≠ 0) (w : Fin L → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.twoActiveTarget r c d ↔
+    ∃ i j, i < j ∧ w i ^ r = c ∧ w j ^ r = d ∧ ∀ (a : Fin L), a ≠ i → a ≠ j → w a = 0
+'ResidualSLT.two_active_raw_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_raw_fiber_odd (r L : ℕ) (hr : 2 ≤ r) (hodd : Odd r) (α : ℝ) (hα : α ≠ 0) (w : Fin L → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.activeTarget r (α ^ r) ↔
+    ∃ i, w i = α ∧ ∀ (j : Fin L), j ≠ i → w j = 0
+'ResidualSLT.one_active_raw_fiber_odd' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_raw_fiber_even (r L : ℕ) (hr : 2 ≤ r) (heven : Even r) (α : ℝ) (hα : α ≠ 0) (w : Fin L → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.activeTarget r (α ^ r) ↔
+    ∃ i, (w i = α ∨ w i = -α) ∧ ∀ (j : Fin L), j ≠ i → w j = 0
+'ResidualSLT.one_active_raw_fiber_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_raw_fiber_odd (r L : ℕ) (hr : 2 ≤ r) (hodd : Odd r) (α β : ℝ) (hα : α ≠ 0) (hβ : β ≠ 0)
+  (w : Fin L → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.twoActiveTarget r (α ^ r) (β ^ r) ↔
+    ∃ i j, i < j ∧ w i = α ∧ w j = β ∧ ∀ (a : Fin L), a ≠ i → a ≠ j → w a = 0
+'ResidualSLT.two_active_raw_fiber_odd' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_raw_fiber_even (r L : ℕ) (hr : 2 ≤ r) (heven : Even r) (α β : ℝ) (hα : α ≠ 0) (hβ : β ≠ 0)
+  (w : Fin L → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.twoActiveTarget r (α ^ r) (β ^ r) ↔
+    ∃ i j, i < j ∧ (w i = α ∨ w i = -α) ∧ (w j = β ∨ w j = -β) ∧ ∀ (a : Fin L), a ≠ i → a ≠ j → w a = 0
+'ResidualSLT.two_active_raw_fiber_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.finite_real_power_fiber (r : ℕ) (hr : 0 < r) (c : ℝ) : {x | x ^ r = c}.Finite
+'ResidualSLT.finite_real_power_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_raw_fiber_finite (r L : ℕ) (hr : 2 ≤ r) (c : ℝ) (hc : c ≠ 0) :
+  {w | ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.activeTarget r c}.Finite
+'ResidualSLT.one_active_raw_fiber_finite' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_raw_fiber_finite (r L : ℕ) (hr : 2 ≤ r) (c d : ℝ) (hc : c ≠ 0) (hd : d ≠ 0) :
+  {w | ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.twoActiveTarget r c d}.Finite
+'ResidualSLT.two_active_raw_fiber_finite' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_eq_zero_iff (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t w : Fin L → ℝ) :
+  ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+    ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+      ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L
+'ResidualSLT.networkTargetLoss_eq_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_raw_norm_le_coefficients (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L) (w : Fin L → ℝ) :
+  ‖w‖ ≤ 1 + ‖ResidualSLT.networkCoefficients r w‖ ^ 2 + ‖ResidualSLT.networkCoefficients r w‖
+'ResidualSLT.network_raw_norm_le_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_sublevel_bounded (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ) (B : ℝ) :
+  ∃ R, ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w ≤ B → ‖w‖ ≤ R
+'ResidualSLT.networkTargetLoss_sublevel_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_isCompact_sublevel (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ) (B : ℝ) :
+  IsCompact {w | ResidualSLT.networkTargetLoss μ r t w ≤ B}
+'ResidualSLT.networkTargetLoss_isCompact_sublevel' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_gap_outside (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (U : Set (Fin L → ℝ)) (hU : IsOpen U) (hzero : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → w ∈ U) :
+  ∃ b, 0 < b ∧ ∀ w ∉ U, b ≤ ResidualSLT.networkTargetLoss μ r t w
+'ResidualSLT.networkTargetLoss_gap_outside' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.globalLearningPair (r k n : ℕ) : ℝ × ℕ
+'ResidualSLT.globalLearningPair' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.sum_nat_sub_le.{u_1} {ι : Type u_1} (s : Finset ι) (n : ι → ℕ) (r : ℕ) :
+  ∑ i ∈ s, (n i - r) ≤ ∑ i ∈ s, n i - r
+'ResidualSLT.sum_nat_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.sum_nat_sub_saturation.{u_1} {ι : Type u_1} (s : Finset ι) (n : ι → ℕ) (r : ℕ) (hr : 0 < r)
+  (hgt : r < ∑ i ∈ s, n i) (he : ∑ i ∈ s, (n i - r) = ∑ i ∈ s, n i - r) : ∃ i ∈ s, r < n i ∧ ∀ j ∈ s, j ≠ i → n j = 0
+'ResidualSLT.sum_nat_sub_saturation' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.identityLearningPair_odd_deficit (r n : ℕ) (hr : 0 < r) (hodd : Odd r) :
+  (ResidualSLT.identityLearningPair r n).1 = ↑n / (2 * ↑r) - ↑(n - r) / (4 * ↑r)
+'ResidualSLT.identityLearningPair_odd_deficit' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.identityLearningPair_empty (r : ℕ) (hr : 0 < r) : ResidualSLT.identityLearningPair r 0 = (0, 1)
+'ResidualSLT.identityLearningPair_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_global_exponent_le (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) :
+  (ResidualSLT.globalLearningPair r k (∑ g, n g)).1 ≤ (ResidualSLT.arrangementLearningPair r k n).1
+'ResidualSLT.arrangement_global_exponent_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_global_multiplicity_le_of_exponent_eq (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ)
+  (heq : (ResidualSLT.arrangementLearningPair r k n).1 = (ResidualSLT.globalLearningPair r k (∑ g, n g)).1) :
+  (ResidualSLT.arrangementLearningPair r k n).2 ≤ (ResidualSLT.globalLearningPair r k (∑ g, n g)).2
+'ResidualSLT.arrangement_global_multiplicity_le_of_exponent_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ResidualSLT.concentratedGroups (k n : ℕ) : Fin (k + 1) → ℕ
+'ResidualSLT.concentratedGroups' depends on axioms: [propext]
+ResidualSLT.concentratedGroups_sum (k n : ℕ) : ∑ g, ResidualSLT.concentratedGroups k n g = n
+'ResidualSLT.concentratedGroups_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair_concentrated (r k n : ℕ) (hr : 2 ≤ r) :
+  ResidualSLT.arrangementLearningPair r k (ResidualSLT.concentratedGroups k n) = ResidualSLT.globalLearningPair r k n
+'ResidualSLT.arrangementLearningPair_concentrated' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.laplaceRate_eventually_le (a b : ℝ) (m n : ℕ) (h : a < b ∨ a = b ∧ n ≤ m) :
+  ∀ᶠ (N : ℝ) in Filter.atTop, ResidualSLT.laplaceRate b n N ≤ ResidualSLT.laplaceRate a m N
+'ResidualSLT.laplaceRate_eventually_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.exp_neg_eventually_le_laplaceRate (a : ℝ) (m : ℕ) (b : ℝ) (hb : 0 < b) :
+  ∀ᶠ (N : ℝ) in Filter.atTop, Real.exp (-b * N) ≤ ResidualSLT.laplaceRate a m N
+'ResidualSLT.exp_neg_eventually_le_laplaceRate' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.HasLaplaceOrder.upper_of_dominates {a b : ℝ} {m n : ℕ} {Z : ℝ → ℝ} (hZ : ResidualSLT.HasLaplaceOrder b n Z)
+  (h : a < b ∨ a = b ∧ n ≤ m) : ∃ C, 0 < C ∧ ∀ᶠ (N : ℝ) in Filter.atTop, Z N ≤ C * ResidualSLT.laplaceRate a m N
+'ResidualSLT.HasLaplaceOrder.upper_of_dominates' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.integrable_exp_neg_loss.{u_1} {E : Type u_1} [MeasurableSpace E] (ν : MeasureTheory.Measure E)
+  [MeasureTheory.IsFiniteMeasure ν] (K : E → ℝ) (hK : Measurable K) (hpos : ∀ (x : E), 0 ≤ K x) (N : ℝ) (hN : 0 ≤ N) :
+  MeasureTheory.Integrable (fun x => Real.exp (-N * K x)) ν
+'ResidualSLT.integrable_exp_neg_loss' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.laplace_integral_le_finite_local_sum.{u_1, u_2} {E : Type u_1} {ι : Type u_2} [MeasurableSpace E]
+  [Fintype ι] (ν : MeasureTheory.Measure E) [MeasureTheory.IsFiniteMeasure ν] (K : E → ℝ) (hK : Measurable K)
+  (hpos : ∀ (x : E), 0 ≤ K x) (D : ι → Set E) (hD : ∀ (i : ι), MeasurableSet (D i)) (b : ℝ)
+  (hgap : ∀ (x : E), (∀ (i : ι), x ∉ D i) → b ≤ K x) (N : ℝ) (hN : 0 ≤ N) :
+  ∫ (x : E), Real.exp (-N * K x) ∂ν ≤
+    ∑ i, ∫ (x : E) in D i, Real.exp (-N * K x) ∂ν + ν.real Set.univ * Real.exp (-b * N)
+'ResidualSLT.laplace_integral_le_finite_local_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.finite_local_laplace_assembly.{u_1, u_2} {E : Type u_1} {ι : Type u_2} [MeasurableSpace E] [Fintype ι]
+  (ν : MeasureTheory.Measure E) [MeasureTheory.IsFiniteMeasure ν] (K : E → ℝ) (hK : Measurable K)
+  (hpos : ∀ (x : E), 0 ≤ K x) (D : ι → Set E) (hD : ∀ (i : ι), MeasurableSet (D i)) (b : ℝ) (hb : 0 < b)
+  (hgap : ∀ (x : E), (∀ (i : ι), x ∉ D i) → b ≤ K x) (a : ℝ) (m : ℕ)
+  (hupper :
+    ∀ (i : ι),
+      ∃ C,
+        0 < C ∧
+          ∀ᶠ (N : ℝ) in Filter.atTop, ∫ (x : E) in D i, Real.exp (-N * K x) ∂ν ≤ C * ResidualSLT.laplaceRate a m N)
+  (W : Set E) (hlower : ResidualSLT.HasLaplaceOrder a m fun N => ∫ (x : E) in W, Real.exp (-N * K x) ∂ν) :
+  ResidualSLT.HasLaplaceOrder a m fun N => ∫ (x : E), Real.exp (-N * K x) ∂ν
+'ResidualSLT.finite_local_laplace_assembly' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.continuous_positive_prior_local_bounds.{u_1} {E : Type u_1} [PseudoMetricSpace E] [MeasurableSpace E]
+  [OpensMeasurableSpace E] (μ : MeasureTheory.Measure E) (ρ : E → NNReal) (hρ : Measurable ρ) (x : E)
+  (hc : ContinuousAt ρ x) (hp : 0 < ρ x) : ∃ ε, 0 < ε ∧ ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball x ε) μ
+'ResidualSLT.continuous_positive_prior_local_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.local_laplace_with_continuous_prior.{u_1} {E : Type u_1} [NormedAddCommGroup E] [MeasurableSpace E]
+  [BorelSpace E] (μ : MeasureTheory.Measure E) (K : E → ℝ) (x : E) (a : ℝ) (m : ℕ)
+  (hlocal :
+    ∃ ε₀,
+      0 < ε₀ ∧
+        ε₀ ≤ 1 ∧
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ ε₀ →
+                ∀ (ρ : E → NNReal),
+                  ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball x ε) μ →
+                    ResidualSLT.HasLaplaceOrder a m fun N =>
+                      ∫ (w : E) in Metric.ball x ε, Real.exp (-N * K w) ∂μ.withDensity fun w => ↑(ρ w))
+  (ρ : E → NNReal) (hρ : Measurable ρ) (hc : ContinuousAt ρ x) (hp : 0 < ρ x) :
+  ∃ ε,
+    0 < ε ∧
+      ResidualSLT.HasLaplaceOrder a m fun N =>
+        ∫ (w : E) in Metric.ball x ε, Real.exp (-N * K w) ∂μ.withDensity fun w => ↑(ρ w)
+'ResidualSLT.local_laplace_with_continuous_prior' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.inversePower_integrable_iff_mellin_pos.{u_1} {α : Type u_1} [MeasurableSpace α]
+  (μ : MeasureTheory.Measure α) [MeasureTheory.SFinite μ] (K : α → ℝ) (hK : Measurable K)
+  (hpos : ∀ᵐ (x : α) ∂μ, 0 < K x) (hi : ∀ (t : ℝ), 0 < t → MeasureTheory.Integrable (fun x => Real.exp (-t * K x)) μ)
+  (s : ℝ) (hs : 0 < s) :
+  MeasureTheory.Integrable (fun x => K x ^ (-s)) μ ↔
+    MeasureTheory.IntegrableOn (fun t => t ^ (s - 1) * ∫ (x : α), Real.exp (-t * K x) ∂μ) (Set.Ioi 0)
+      MeasureTheory.volume
+'ResidualSLT.inversePower_integrable_iff_mellin_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.inversePower_integrable_iff_of_laplace_order_pos.{u_1} {α : Type u_1} [MeasurableSpace α]
+  (μ : MeasureTheory.Measure α) [MeasureTheory.IsFiniteMeasure μ] (K : α → ℝ) (hK : Measurable K)
+  (hpos : ∀ᵐ (x : α) ∂μ, 0 < K x) (hi : ∀ (t : ℝ), 0 < t → MeasureTheory.Integrable (fun x => Real.exp (-t * K x)) μ)
+  (a : ℝ) (m : ℕ) (horder : ResidualSLT.HasLaplaceOrder a m fun t => ∫ (x : α), Real.exp (-t * K x) ∂μ) (s : ℝ)
+  (hs : 0 < s) : MeasureTheory.Integrable (fun x => K x ^ (-s)) μ ↔ s < a
+'ResidualSLT.inversePower_integrable_iff_of_laplace_order_pos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ResidualSLT.arrangement_one_depth (p q : ℕ) : ResidualSLT.arrangementDepth 1 ![p, q] 1 ⋯ = p + 1 + q
+'ResidualSLT.arrangement_one_depth' depends on axioms: [propext, Quot.sound]
+ResidualSLT.arrangement_two_depth (p q s : ℕ) : ResidualSLT.arrangementDepth 2 ![p, q, s] 2 ⋯ = p + 1 + q + 1 + s
+'ResidualSLT.arrangement_two_depth' depends on axioms: [propext, Quot.sound]
+ResidualSLT.arrangement_one_center (p q : ℕ) (α : ℝ) (i : Fin (ResidualSLT.arrangementDepth 1 ![p, q] 1 ⋯)) :
+  ResidualSLT.arrangementFlatten 1 ![p, q] ![α] 0 1 ⋯ i = if ↑i = p then α else 0
+'ResidualSLT.arrangement_one_center' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_two_center (p q s : ℕ) (α β : ℝ) (i : Fin (ResidualSLT.arrangementDepth 2 ![p, q, s] 2 ⋯)) :
+  ResidualSLT.arrangementFlatten 2 ![p, q, s] ![α, β] 0 2 ⋯ i = if ↑i = p then α else if ↑i = p + 1 + q then β else 0
+'ResidualSLT.arrangement_two_center' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_raw_certificate_at (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (n : Fin (k + 1) → ℕ)
+  (τ : Fin k → ℝ) (hτ : ∀ (j : Fin k), τ j ≠ 0) (hd : ResidualSLT.arrangementDepth k n k ⋯ = L) (t : Fin L → ℝ)
+  (ht :
+    ∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+      t (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : (Fin L → ℝ) → NNReal),
+                ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball t ε) MeasureTheory.volume →
+                  ResidualSLT.HasLaplaceOrder (ResidualSLT.arrangementLearningPair r k n).1
+                    (ResidualSLT.arrangementLearningPair r k n).2 fun N =>
+                    ∫ (w : Fin L → ℝ) in Metric.ball t ε,
+                      Real.exp
+                        (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.arrangement_raw_certificate_at' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_realization_arrangement (r L : ℕ) (hr : 2 ≤ r) (c : ℝ) (hc : c ≠ 0) (w : Fin L → ℝ)
+  (hw : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.activeTarget r c) :
+  ∃ n τ,
+    (∀ (j : Fin 1), τ j ≠ 0) ∧
+      ∑ g, n g = L - 1 ∧
+        ∃ (hd : ResidualSLT.arrangementDepth 1 n 1 ⋯ = L),
+          ∀ (i : Fin (ResidualSLT.arrangementDepth 1 n 1 ⋯)),
+            w (Fin.cast hd i) = ResidualSLT.arrangementFlatten 1 n τ 0 1 ⋯ i
+'ResidualSLT.one_active_realization_arrangement' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_realization_arrangement (r L : ℕ) (hr : 2 ≤ r) (c d : ℝ) (hc : c ≠ 0) (hd : d ≠ 0)
+  (w : Fin L → ℝ)
+  (hw : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L = ResidualSLT.twoActiveTarget r c d) :
+  ∃ n τ,
+    (∀ (j : Fin 2), τ j ≠ 0) ∧
+      ∑ g, n g = L - 2 ∧
+        ∃ (he : ResidualSLT.arrangementDepth 2 n 2 ⋯ = L),
+          ∀ (i : Fin (ResidualSLT.arrangementDepth 2 n 2 ⋯)),
+            w (Fin.cast he i) = ResidualSLT.arrangementFlatten 2 n τ 0 2 ⋯ i
+'ResidualSLT.two_active_realization_arrangement' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_congr_target (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (t z : Fin L → ℝ)
+  (he :
+    ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L =
+      ResidualSLT.network r (fun i => ResidualSLT.zeroExtend z i ^ r) L) :
+  ResidualSLT.networkTargetLoss μ r t = ResidualSLT.networkTargetLoss μ r z
+'ResidualSLT.networkTargetLoss_congr_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_center_polynomial (r L k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (hd : ResidualSLT.arrangementDepth k n k ⋯ = L) (t : Fin L → ℝ)
+  (ht :
+    ∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+      t (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L =
+    ResidualSLT.network r (ResidualSLT.zeroExtend fun j => τ j ^ r) k
+'ResidualSLT.arrangement_center_polynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.concentrated_realization_local_order (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hk : k ≤ L) (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (τ : Fin k → ℝ) (hτ : ∀ (j : Fin k), τ j ≠ 0)
+  (ht :
+    ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L =
+      ResidualSLT.network r (ResidualSLT.zeroExtend fun j => τ j ^ r) k) :
+  ∃ z,
+    ResidualSLT.networkTargetLoss μ r t z = 0 ∧
+      ∃ ε₀,
+        0 < ε₀ ∧
+          ε₀ ≤ 1 ∧
+            ∀ (ε : ℝ),
+              0 < ε →
+                ε ≤ ε₀ →
+                  ∀ (ρ : (Fin L → ℝ) → NNReal),
+                    ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball z ε) MeasureTheory.volume →
+                      ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r k (L - k)).1
+                        (ResidualSLT.globalLearningPair r k (L - k)).2 fun N =>
+                        ∫ (w : Fin L → ℝ) in Metric.ball z ε,
+                          Real.exp
+                            (-N *
+                              ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.concentrated_realization_local_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.finite_arrangement_fiber_global_laplace (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hk : k ≤ L) (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (hf : {w | ResidualSLT.networkTargetLoss μ r t w = 0}.Finite)
+  (harr :
+    ∀ (w : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t w = 0 →
+        ∃ n τ,
+          (∀ (j : Fin k), τ j ≠ 0) ∧
+            ∑ g, n g = L - k ∧
+              ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+                ∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                  w (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r k (L - k)).1
+    (ResidualSLT.globalLearningPair r k (L - k)).2 fun N =>
+    ∫ (w : Fin L → ℝ),
+      Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.finite_arrangement_fiber_global_laplace' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_global_network_laplace (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (c : ℝ) (hc : c ≠ 0)
+  (t : Fin L → ℝ)
+  (ht : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.activeTarget r c)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r 1 (L - 1)).1
+    (ResidualSLT.globalLearningPair r 1 (L - 1)).2 fun N =>
+    ∫ (w : Fin L → ℝ),
+      Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.one_active_global_network_laplace' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_global_network_laplace (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 2 ≤ L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (c d : ℝ) (hc : c ≠ 0)
+  (hd : d ≠ 0) (t : Fin L → ℝ)
+  (ht : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.twoActiveTarget r c d)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r 2 (L - 2)).1
+    (ResidualSLT.globalLearningPair r 2 (L - 2)).2 fun N =>
+    ∫ (w : Fin L → ℝ),
+      Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.two_active_global_network_laplace' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_finite_fiber_ae_pos (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hL : 0 < L) (t : Fin L → ℝ)
+  (hf : {w | ResidualSLT.networkTargetLoss μ r t w = 0}.Finite) (ρ : (Fin L → ℝ) → NNReal) :
+  ∀ᵐ (w : Fin L → ℝ) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w), 0 < ResidualSLT.networkTargetLoss μ r t w
+'ResidualSLT.network_finite_fiber_ae_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_global_inversePower_iff (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (hf : {w | ResidualSLT.networkTargetLoss μ r t w = 0}.Finite) (ρ : (Fin L → ℝ) → NNReal)
+  (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤) (a : ℝ) (m : ℕ)
+  (ho :
+    ResidualSLT.HasLaplaceOrder a m fun N =>
+      ∫ (w : Fin L → ℝ),
+        Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+  (s : ℝ) (hs : 0 < s) :
+  MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s))
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    s < a
+'ResidualSLT.network_global_inversePower_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.globalLearningPair_pos (r k n : ℕ) (hk : 0 < k) : 0 < (ResidualSLT.globalLearningPair r k n).1
+'ResidualSLT.globalLearningPair_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_global_rlct_laplace_certificate (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (c : ℝ) (hc : c ≠ 0)
+  (t : Fin L → ℝ)
+  (ht : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.activeTarget r c)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  (∀ (s : ℝ),
+      0 < s →
+        (MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s))
+            (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+          s < (ResidualSLT.globalLearningPair r 1 (L - 1)).1)) ∧
+    ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r 1 (L - 1)).1
+      (ResidualSLT.globalLearningPair r 1 (L - 1)).2 fun N =>
+      ∫ (w : Fin L → ℝ),
+        Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.one_active_global_rlct_laplace_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_global_rlct_laplace_certificate (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 2 ≤ L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (c d : ℝ) (hc : c ≠ 0)
+  (hd : d ≠ 0) (t : Fin L → ℝ)
+  (ht : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.twoActiveTarget r c d)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  (∀ (s : ℝ),
+      0 < s →
+        (MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s))
+            (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+          s < (ResidualSLT.globalLearningPair r 2 (L - 2)).1)) ∧
+    ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r 2 (L - 2)).1
+      (ResidualSLT.globalLearningPair r 2 (L - 2)).2 fun N =>
+      ∫ (w : Fin L → ℝ),
+        Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.two_active_global_rlct_laplace_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_global_boundary_diverges (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (hf : {w | ResidualSLT.networkTargetLoss μ r t w = 0}.Finite) (ρ : (Fin L → ℝ) → NNReal)
+  (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤) (a : ℝ) (m : ℕ) (ha : 0 < a)
+  (ho :
+    ResidualSLT.HasLaplaceOrder a m fun N =>
+      ∫ (w : Fin L → ℝ),
+        Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)) :
+  ¬MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-a))
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+'ResidualSLT.network_global_boundary_diverges' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_raw_target_exists (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L) (α : ℝ) (hα : α ≠ 0) :
+  ∃ t, ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.activeTarget r (α ^ r)
+'ResidualSLT.one_active_raw_target_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_raw_target_exists (r L : ℕ) (hr : 2 ≤ r) (hL : 2 ≤ L) (α β : ℝ) (hα : α ≠ 0) (hβ : β ≠ 0) :
+  ∃ t, ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.twoActiveTarget r (α ^ r) (β ^ r)
+'ResidualSLT.two_active_raw_target_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.one_active_global_boundary_diverges (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (c : ℝ) (hc : c ≠ 0)
+  (t : Fin L → ℝ)
+  (ht : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.activeTarget r c)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  ¬MeasureTheory.Integrable
+      (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-(ResidualSLT.globalLearningPair r 1 (L - 1)).1))
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+'ResidualSLT.one_active_global_boundary_diverges' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.two_active_global_boundary_diverges (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 2 ≤ L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (c d : ℝ) (hc : c ≠ 0)
+  (hd : d ≠ 0) (t : Fin L → ℝ)
+  (ht : ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) L = ResidualSLT.twoActiveTarget r c d)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  ¬MeasureTheory.Integrable
+      (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-(ResidualSLT.globalLearningPair r 2 (L - 2)).1))
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+'ResidualSLT.two_active_global_boundary_diverges' depends on axioms: [propext, Classical.choice, Quot.sound]

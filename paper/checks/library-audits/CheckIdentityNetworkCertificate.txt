@@ -1,0 +1,21 @@
+'_private.CheckIdentityNetworkCertificate.0.ResidualSLT.Examples.unified_quadratic_equal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckIdentityNetworkCertificate.0.ResidualSLT.Examples.unified_quadratic_deep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckIdentityNetworkCertificate.0.ResidualSLT.Examples.unified_quintic_depth_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckIdentityNetworkCertificate.0.ResidualSLT.Examples.unified_cubic_shallow' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckIdentityNetworkCertificate.0.ResidualSLT.Examples.unified_cubic_critical' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckIdentityNetworkCertificate.0.ResidualSLT.Examples.unified_cubic_deep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckIdentityNetworkCertificate.0.ResidualSLT.Examples.unified_identity_boundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

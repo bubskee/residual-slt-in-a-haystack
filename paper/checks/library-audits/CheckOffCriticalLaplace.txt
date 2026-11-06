@@ -1,0 +1,18 @@
+'_private.CheckOffCriticalLaplace.0.ResidualSLT.Examples.linear_sextic_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalLaplace.0.ResidualSLT.Examples.odd_offcritical_fermat_via_general' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalLaplace.0.ResidualSLT.Examples.cubic_dimension_two_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalLaplace.0.ResidualSLT.Examples.cubic_dimension_four_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalLaplace.0.ResidualSLT.Examples.weighted_subcritical_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOffCriticalLaplace.0.ResidualSLT.Examples.weighted_supercritical_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

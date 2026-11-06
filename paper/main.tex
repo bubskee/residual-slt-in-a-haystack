@@ -20,11 +20,11 @@
 \DeclareMathOperator{\supp}{supp}
 \title{Learning Coefficients and Active-Block Arrangements\\in Scalar Residual Networks}
 \author{Bobby Faber\\\small Independent}
-\date{5 November 2026}
+\date{6 November 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
-We study squared-error population losses of scalar polynomial residual networks in their raw weights. At the identity target, odd activation degree permits cancellation and produces a depth-dependent transition, including a logarithmic factor at the critical depth. At an arbitrary realization, nonzero active blocks separate consecutive inactive groups: the local learning coefficient is the sum of a regular active contribution and the identity contributions of those groups. This gives realizations of the same function with different local exponents or multiplicities. Complete fiber classifications yield global formulas for targets with one or two active blocks. The identity-target integrability thresholds and boundary divergence are also certified in Lean under explicit Gram and prior assumptions.
+We study squared-error population losses of scalar polynomial residual networks in their raw weights. At the identity target, odd activation degree permits cancellation and produces a depth-dependent transition, including a logarithmic factor at the critical depth. At an arbitrary realization, nonzero active blocks separate consecutive inactive groups: the local learning coefficient is the sum of a regular active contribution and the identity contributions of those groups. This gives realizations of the same function with different local exponents or multiplicities. An ordered-chain classification gives exact fiber sizes and a global formula for every realizable target. The fiber classification, counts, and local and global power/logarithmic Laplace orders are certified in Lean under the stated sparse Gram and prior assumptions.
 \end{abstract}
 
 \section{Introduction}
@@ -34,7 +34,7 @@ Learning coefficients capture singular geometry beyond parameter counting or Jac
 
 An inactive residual block is the identity, so moving the sole active block preserves the output. Perturbing inactive weights, however, introduces terms at different stages of composition. The active block separates the resulting cancellation opportunities.
 
-For odd degree $r$, signed $r$th powers can cancel within a consecutive group of inactive blocks. Active blocks separate these groups into independent leading loss directions, so their positions determine the available cancellation regimes. A group's contribution changes regime when its length reaches $r$, where a logarithm appears. Theorem~\ref{thm:arrangement} adds these group contributions to the regular contribution of the active weights. Global asymptotics then select among the local contributions of all realizations, as Theorem~\ref{thm:global} shows for one- and two-active targets.
+For odd degree $r$, signed $r$th powers can cancel within a consecutive group of inactive blocks. Active blocks separate these groups into independent leading loss directions, so their positions determine the available cancellation regimes. A group's contribution changes regime when its length reaches $r$, where a logarithm appears. Theorem~\ref{thm:arrangement} adds these group contributions to the regular contribution of the active weights. Theorem~\ref{thm:global} classifies every target fiber and selects its global pair: local pairs depend on the inactive-group lengths, while the global pair depends only on degree, depth, and active count.
 
 The architecture is the scalar monomial specialization of the polynomial ResNets studied by \citet{dahlgren2026}. Related work connects sparse subnetworks to singularities of polynomial function spaces \citep{shahverdi2026}. Here we compute local loss-volume exponents, giving exact examples relevant to local learning coefficient estimation \citep{lau2025}. Exact coefficients are also known for reduced-rank regression and multilayer linear networks \citep{aoyagiwatanabe2005,aoyagi2024}. Our calculations use the singular learning framework and monomial rules of \citet{watanabe2009,lin2017}; they concern deterministic population-loss integrals.
 
@@ -63,7 +63,7 @@ At a realization $w^*$, let $\pi$ be a smooth positive density on a full neighbo
 \end{equation}
 The symbol $\asym$ denotes bounds by positive constant multiples. The local threshold $\lambda$ satisfies: $K_f^{-s}$ is integrable for $s<\lambda$ and diverges at $s=\lambda$. The integer $m$ records the logarithmic power, equivalently the order of the first positive pole of the local zeta integral for this analytic loss. These interpretations follow from the usual resolution framework \citep[Theorem 2.10 and Proposition 3.2]{lin2017}; our calculations below determine the logarithmic power as well as the threshold. Our normalization uses a \emph{squared} loss; Lin's coefficient-ideal threshold is $2\lambda$ (his zeta convention is $(\sum_i f_i^2)^{-z/2}$). A measurable density bounded above and away from zero already suffices for the order in \eqref{eq:pair}; smoothness supplies the customary pole interpretation.
 
-All local constants may depend on $r,L,w^*$ and $\mu$; the estimates are pointwise in the nonzero active weights. Global statements below use a proper density on $\R^L$, normalized to integral one, smooth and positive near every point of the target fiber. No independence assumption on the prior is needed.
+All local constants may depend on $r,L,w^*$ and $\mu$; the estimates are pointwise in the nonzero active weights. Global statements use a nonnegative measurable density on $\R^L$ with finite mass, continuous and strictly positive at every point of the target fiber. Probability normalization and independence are unnecessary.
 
 \section{The identity-target phase transition}
 Write $K_0=K_x$. Effective coefficients $u_i=w_i^r$ will be used only as algebraic notation: the integration variables remain the raw weights. Set
@@ -84,7 +84,7 @@ The local pair is
  ((L+r)/(4r),1),&r\text{ odd},\ L>r.
  \end{cases}
 \end{equation}
-Moreover, $K_0$ is coercive and has zero set $\{0\}$. Thus the same pair governs the global integral under a proper prior smooth and positive near zero.
+Moreover, $K_0$ is coercive and has zero set $\{0\}$. Thus the same pair governs the global integral under a finite-mass prior continuous and positive at zero.
 \end{theorem}
 
 The first two output error coefficients are exactly $S$ and
@@ -165,25 +165,23 @@ Depth $L$ & Active position $j$ & Inactive lengths $(n_0,n_1)$ & Local $(\lambda
 At depth four, moving the active block changes the logarithmic factor. At depth five, it can change the exponent itself. All these points have raw coefficient-Jacobian rank one; that rank does not determine either pair. The theorem also permits more than one logarithm: two groups of length $r$ give $m=3$. Such a local statement need not describe the globally dominant realization.
 
 \clearpage
-\section{Global one- and two-active fibers}
-The arrangement theorem describes a neighborhood of one realization. A global integral combines the neighborhoods of the entire target fiber, whose classification is explicit in the following two cases.
-\begin{theorem}[Global selection for one or two active blocks]\label{thm:global}
-Assume \eqref{eq:gram}, $k\in\{1,2\}$, and $L\ge k$. For $k=1$, let $f=F_c$ with $c\ne0$. For $k=2$, let $f=F_d\circ F_c$ with $c,d\ne0$. Require $c>0$ (and $d>0$) when $r$ is even. The complete effective fiber is obtained by placing the ordered active coefficient or coefficients in any $k$ positions, with all others zero. Each such placement has one raw realization for odd $r$ and $2^k$ sign choices for even $r$.
-
-For every proper prior smooth and strictly positive near all these points,
+\section{Full fibers and global selection}
+The arrangement theorem describes one realization. The global integral combines the local contributions over the complete target fiber.
+\begin{theorem}[Full fibers and global selection]\label{thm:global}
+Assume \eqref{eq:gram} and $0\le k\le L$. Let $f=F_{c_k}\circ\cdots\circ F_{c_1}$, with $c_j\ne0$ and, for even $r$, $c_j>0$. For $k=0$, set $f=x$. The complete effective fiber consists of the ordered coefficients $c_1,\ldots,c_k$ placed in any $k$ positions, with all other coefficients zero. Its raw fiber $\mathcal F_f=\{w:K_f(w)=0\}$ has size
+\[
+ \#\mathcal F_f=\begin{cases}\binom Lk,&r\text{ odd},\\2^k\binom Lk,&r\text{ even}.\end{cases}
+\]
+For every prior satisfying the global conditions of Section~\ref{sec:model},
 \begin{equation}\label{eq:globalpair}
  \int_{\R^L}e^{-N K_f(w)}\pi(w)\,dw
  \asym N^{-[k/2+A_r(L-k)]}(\log N)^{M_r(L-k)-1}.
 \end{equation}
-This includes equality or opposite signs of $c,d$ whenever realizable.
+Repeated coefficients and opposite signs are included whenever realizable.
 \end{theorem}
 
 
-For two active coefficients $u,v$, the first three residual coefficients are
-\[
- C_1=u+v,\qquad C_2=ruv,\qquad C_3=\binom r2u^2v.
-\]
-Degree forces two active blocks, and $C_2\ne0$ recovers their order and values: $u=2C_3/((r-1)C_2)$, $v=C_1-u$.
+The classification follows by removing outer active blocks successively. For normalized polynomials $H,G$ with constant coefficient zero and linear coefficient one, equality $H+cH^r=G+dG^r$ with $c,d\ne0$ forces $H=G$ and $c=d$. A leading-coefficient and degree argument proves this recovery step (Appendix~\ref{app:global}).
 
 The identity loss is coercive, and the $L^2(\mu)$ triangle inequality gives
 \[
@@ -192,12 +190,12 @@ The identity loss is coercive, and the $L^2(\mu)$ triangle inequality gives
 Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, making the complementary integral exponentially small. Among local contributions, minimize $\lambda$, then maximize $m$ among ties. For $n=L-k$, the inequality $\sum_g\pos{n_g-r}\le\pos{n-r}$ gives \eqref{eq:globalpair} (Appendix~\ref{app:global}). The cubic examples have global pairs $(1,2)$ and $(13/12,1)$; a prior supported near another realization instead retains its local pair.
 
 \paragraph{Scope.}
-The local arrangement theorem applies to arbitrary active counts; the complete nonidentity fiber classification and global selection here cover one or two active blocks. The results use priors in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. The proved scope is scalar, bias-free polynomial residual networks and deterministic population-loss integrals; higher-dimensional, biased, and more general architectures are outside it.
+The results cover every active count in scalar, bias-free polynomial residual networks and concern deterministic population-loss integrals. Priors are in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. Higher-dimensional, biased, and more general architectures are outside the proved scope.
 
 \section{Formal verification}\label{sec:formal}
 Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions (Appendix~\ref{app:repro}).
 
-The current certificates establish the identity-target loss comparison, integrability thresholds, and divergence at and above the threshold, for all positive depths, even $r\ge2$, and odd $r\ge3$. They assume a finite positive-definite Gram for $x^r,x^{r+1},\ldots,x^{r^L}$, strictly stronger than \eqref{eq:gram}, and a measurable prior bounded above and away from zero on the raw parameter ball. Section~\ref{sec:model}'s sufficient condition implies both Gram assumptions. Multiplicities, Laplace asymptotics, arrangements, and global selection have paper proofs only.
+The unified certificate covers all $r\ge2$, positive depths, and active counts: complete raw fibers and their exact sizes, local arrangement pairs, and the globally selected pair. It uses the sparse Gram assumption \eqref{eq:gram} and the global prior conditions of Section~\ref{sec:model}; standalone local certificates allow measurable priors bounded above and away from zero. The analytic conclusions include inverse-power integrability thresholds, boundary divergence, and two-sided Laplace bounds with the stated logarithmic powers. The zeta-pole interpretation uses the cited resolution theory; meromorphic continuation and leading asymptotic constants are not part of the Lean certificate.
 
 \label{main-end}
 
@@ -219,7 +217,7 @@ Locally $S^4\le C S^2$, so $Q^2\le C(S^2+B^2)$. This proves \eqref{eq:identityre
 \[
  Q\le K_0/\gamma+(2/r)\sqrt{K_0/\gamma}.
 \]
-Since $Q=\sum_iw_i^{2r}\to\infty$ as $\norm{w}\to\infty$, $K_0$ is coercive. Also $K_0=0$ implies $S=B=Q=0$, hence $w=0$. For a proper prior the integral outside any sufficiently small fixed neighborhood is therefore $O(e^{-bN})$ for some $b>0$.
+Since $Q=\sum_iw_i^{2r}\to\infty$ as $\norm{w}\to\infty$, $K_0$ is coercive. Also $K_0=0$ implies $S=B=Q=0$, hence $w=0$. For a finite-mass prior the integral outside any sufficiently small fixed neighborhood is therefore $O(e^{-bN})$ for some $b>0$.
 
 \section{Angular sectors and the logarithmic factor}\label{app:sectors}
 For even $r$, $S\asym\norm{w}^r$ and \eqref{eq:identityreduction} reduces the integral to an ordinary radial integral with density $\rho^{L-1}$ and loss $\rho^{2r}$. The pair is $(L/(2r),1)$. At depth one the loss is exactly a positive constant times $w^{2r}$ for either parity.
@@ -349,10 +347,24 @@ for each nonempty group, proving \eqref{eq:arrangementeven}.
 \paragraph{Integration.}
 The active coordinate map has Jacobian determinant $\prod_j r(w^*_{i_j})^{r-1}\ne0$. Its inverse absolute Jacobian and the prior are bounded above and away from zero locally. Inner and outer product boxes in $(\delta,a_0,\ldots,a_k)$ bound the cutoff integral. On each box the comparison integral factors into Gaussian active integrals and identity-group integrals. Theorem~\ref{thm:identity}, or the usual addition rule \citep[Proposition 3.7]{lin2017}, gives \eqref{eq:arrangementpair}: exponents add and $m-1=\sum_g(M_r(n_g)-1)$. Empty groups contribute one. All comparison losses vanish only at the base point, so shrinking cutoffs does not change the pair. Integration uses $(\delta,a_0,\ldots,a_k)$; $z$ records coefficients rather than raw coordinates.
 
+\clearpage
 \section{Full fibers and global selection}\label{app:global}
-Every block $F_c$ with $c\ne0$ has degree $r$ and nonzero leading coefficient. Composition multiplies degrees, over either $\R$ or $\mathbb C$. A network with exactly $q$ nonzero effective coefficients therefore has degree $r^q$; inactive blocks are identities. This proves the active-count restriction in Theorem~\ref{thm:global}. In the one-active case the coefficient of $x^r$ fixes $c$. In the two-active case direct expansion of $F_v\circ F_u$ gives the displayed $C_1,C_2,C_3$ and hence the unique ordered pair $(u,v)=(c,d)$. Positive-definite $G$ ensures that zero population loss is equivalent to polynomial equality. Taking real $r$th roots gives exactly the raw fibers in that theorem, including all even-degree signs.
+\paragraph{Ordered recovery.}
+Every active block has degree $r$, so a network with $q$ active blocks has degree $r^q$. Equal outputs therefore have the same active count. To recover their coefficients, suppose
+\[
+ H+cH^r=G+dG^r,\qquad c,d\ne0,
+\]
+where $H(0)=G(0)=0$ and $H'(0)=G'(0)=1$. Equality of output degrees gives $\deg H=\deg G=D\ge1$. Choose $a\ne0$ so that $U=aG$ and $H$ have the same leading coefficient. Comparing leading output coefficients gives $d=ca^r$, hence
+\[
+ c(H-U)\sum_{i=0}^{r-1}H^iU^{r-1-i}=G-H.
+\]
+The sum has degree $(r-1)D$: its leading coefficient is $r$ times the $(r-1)$st power of the common leading coefficient. If $H-U\ne0$, its zero constant coefficient forces degree at least one. The left side would then have degree greater than $D$, while the right side has degree at most $D$. Thus $H=U$; the linear coefficients give $a=1$, and consequently $H=G$ and $c=d$. Iterating this step recovers the ordered active chain, including repeated or opposite coefficients. The empty chain gives the identity.
 
-Coercivity from Appendix~\ref{app:coeff} and the $L^2$ triangle inequality makes every sublevel set of $K_f$ compact. Delete disjoint small neighborhoods of the finite fiber. Choose a large ball outside which $K_f\ge1$. Within the ball, the complement of the open fiber neighborhoods is compact and zero-free, so continuity gives a positive minimum whenever that complement is nonempty. Set $b=1$ if that complement is empty; otherwise take the smaller of its minimum and one. Then $K_f\ge b>0$ on the entire remaining set, so the prior-weighted tail is at most $e^{-bN}$. Each fiber neighborhood has the local pair of Theorem~\ref{thm:arrangement} with a positive contribution. A finite sum of terms $N^{-\lambda_i}(\log N)^{m_i-1}$ has the smallest $\lambda_i$ and then the largest $m_i$ among ties. Several realizations with that same pair affect the multiplicative constants, not the logarithmic power; multiplicities do not add across disjoint neighborhoods.
+\paragraph{Fiber size.}
+The positive-definite feature Gram makes zero population loss equivalent to polynomial equality. The recovered chain can occupy any $k$ of the $L$ positions, in its fixed order. Each placement has one raw realization for odd $r$ and $2^k$ independent sign choices for even $r$. Different supports or signs give different vectors, even when active coefficients repeat. This proves the stated count, including the singleton identity fiber at $k=0$.
+
+\paragraph{Global selection.}
+Coercivity from Appendix~\ref{app:coeff} and the $L^2$ triangle inequality make every sublevel set of $K_f$ compact. Delete disjoint small neighborhoods of the finite fiber. Choose a large ball outside which $K_f\ge1$. Within the ball, the complement of the open fiber neighborhoods is compact and zero-free, so continuity gives a positive minimum whenever that complement is nonempty. Set $b=1$ if that complement is empty; otherwise take the smaller of its minimum and one. Then $K_f\ge b>0$ on the entire remaining set, so the prior-weighted tail is at most $e^{-bN}\int\pi$. Continuity and positivity of the prior at each fiber point give local upper and positive lower bounds. Each fiber neighborhood therefore has the pair of Theorem~\ref{thm:arrangement} with a positive contribution. A finite sum of terms $N^{-\lambda_i}(\log N)^{m_i-1}$ has the smallest $\lambda_i$ and then the largest $m_i$ among ties. Several realizations with that same pair affect the multiplicative constants, not the logarithmic power; multiplicities do not add across disjoint neighborhoods.
 
 For even $r$, every placement has pair $(k/2+(L-k)/(2r),1)$. For odd $r$, write $n=L-k=\sum_g n_g$. Then
 \[
@@ -361,35 +373,35 @@ For even $r$, every placement has pair $(k/2+(L-k)/(2r),1)$. For odd $r$, write 
 \]
 If $n<r$, all placements have the same exponent and $m=1$. If $n=r$, all exponents agree and concentrating the inactive blocks in one gap gives $m=2$, the largest multiplicity. If $n>r$, the inequality is strict whenever at least two gaps are nonempty: if any gap exceeds $r$, the other nonempty gaps strictly reduce the sum of positive parts from $n-r$; if none does, that sum is zero. Hence concentration in one gap uniquely describes the minimizing patterns, and these have $m=1$. Such a placement exists before, between, or after the ordered active blocks. When $n=0$ these descriptions coincide. This proves \eqref{eq:globalpair}, without requiring adjacent active blocks or comparing leading constants.
 
+\clearpage
 \section{Lean source and audit record}\label{app:repro}
 The proof source is available at \url{https://github.com/bubskee/residual-slt-in-a-haystack}. The audited proof-source commit is
-\begin{center}\small\ttfamily dfd9f7ee8c4338256a7cb7426ceaae7a038fbf00\end{center}
+\begin{center}\small\ttfamily 3aa873960d83313e44d966ebc124655e87aa0982\end{center}
 It uses Lean \texttt{v4.35.0} and mathlib commit
 \begin{center}\small\ttfamily 56a005855ea17e0b0958f73ec801ae140b0a1679\end{center}
 The principal declarations, all in namespace \texttt{ResidualSLT}, are
 \begin{itemize}\setlength{\itemsep}{0pt}
-\item \nolinkurl{signed_network_certificate}: actual identity-target loss comparison;
-\item \nolinkurl{even_network_prior_integrableOn_iff}: the even threshold;
-\item \nolinkurl{odd_network_prior_phase_transition}: the odd threshold;
-\item \nolinkurl{even_network_prior_not_integrable}: even boundary divergence;
-\item \nolinkurl{odd_network_prior_not_integrable}: odd boundary divergence.
+\item \nolinkurl{unified_residual_network_certificate}: full fibers, exact counts, and local/global learning pairs;
+\item \nolinkurl{sparse_identity_network_rlct_laplace_certificate}: the identity pair;
+\item \nolinkurl{arrangement_raw_network_rlct_laplace_certificate_of_depth_pos}: the local arrangement pair;
+\item \nolinkurl{network_full_raw_fiber}: ordered active-chain classification;
+\item \nolinkurl{raw_network_fiber_cardinality}: exact raw-fiber size.
 \end{itemize}
-Both divergence declarations include every larger exponent. The four other audited declarations are \nolinkurl{signed_network_loss_comparison}, \nolinkurl{even_network_certificate}, \nolinkurl{odd_network_certificate}, and \nolinkurl{parameter_ball_eq_cube}.
 
 \noindent\begin{minipage}{\linewidth}
-Exact hypotheses are recorded in \path{formalization_status.md}. From the repository root, run:
+Exact hypotheses are recorded in \path{paper/formalization_status.md}. From the repository root, run:
 \begingroup\small
 \begin{verbatim}
 cd lean
 lake exe cache get
 lake build
 lake env lean -DwarningAsError=true -DautoImplicit=false \
-  ../paper/checks/IdentityAudit.lean
+  ../paper/checks/NetworkAudit.lean
 \end{verbatim}
 \endgroup
 \end{minipage}
 
-The audit prints types and axiom dependencies for all nine declarations. Every dependency set is exactly \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; none contains \texttt{sorryAx}. The logs are in \path{paper/checks/}: \mbox{\path{lean-build.txt}} and \mbox{\path{IdentityAudit.txt}}.
+The audit prints the certificate definitions and the types and axiom dependencies of these five declarations. Every dependency set is exactly \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; none contains \texttt{sorryAx}. The logs are in \path{paper/checks/}: \mbox{\path{lean-build.txt}} and \mbox{\path{NetworkAudit.txt}}.
 
 \paragraph{Tool and computational resource disclosure.}
 Following the disclosure recommendation of the Leiden Declaration on Artificial Intelligence and Mathematics \citep{leiden2026}, we report substantial AI assistance. Astra and Opus 5.5 assisted with writing, proof development, and Lean formalization. Fable 5.1 provided adversarial review and attempted to find errors in the arguments. The author retains responsibility for the results, arguments, and citations.

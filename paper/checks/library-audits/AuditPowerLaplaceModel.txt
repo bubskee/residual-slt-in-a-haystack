@@ -1,0 +1,270 @@
+ResidualSLT.PowerLaplaceUpper : ℝ → (ℝ → ℝ) → Prop
+'ResidualSLT.PowerLaplaceUpper' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.PowerLaplaceLower : ℝ → (ℝ → ℝ) → Prop
+'ResidualSLT.PowerLaplaceLower' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.HasPowerLaplaceOrder : ℝ → (ℝ → ℝ) → Prop
+'ResidualSLT.HasPowerLaplaceOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceUpper.mono : ∀ {ℓ : ℝ} {F G : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceUpper ℓ G → (∀ᶠ (N : ℝ) in Filter.atTop, F N ≤ G N) → ResidualSLT.PowerLaplaceUpper ℓ F
+'ResidualSLT.PowerLaplaceUpper.mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceLower.mono : ∀ {ℓ : ℝ} {F G : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceLower ℓ F → (∀ᶠ (N : ℝ) in Filter.atTop, F N ≤ G N) → ResidualSLT.PowerLaplaceLower ℓ G
+'ResidualSLT.PowerLaplaceLower.mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceUpper.const_mul : ∀ {ℓ : ℝ} {F : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceUpper ℓ F → ∀ (a : ℝ), 0 < a → ResidualSLT.PowerLaplaceUpper ℓ fun N => a * F N
+'ResidualSLT.PowerLaplaceUpper.const_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceLower.const_mul : ∀ {ℓ : ℝ} {F : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceLower ℓ F → ∀ (a : ℝ), 0 < a → ResidualSLT.PowerLaplaceLower ℓ fun N => a * F N
+'ResidualSLT.PowerLaplaceLower.const_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceUpper.comp_mul : ∀ {ℓ : ℝ} {F : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceUpper ℓ F → ∀ (b : ℝ), 0 < b → ResidualSLT.PowerLaplaceUpper ℓ fun N => F (b * N)
+'ResidualSLT.PowerLaplaceUpper.comp_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceLower.comp_mul : ∀ {ℓ : ℝ} {F : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceLower ℓ F → ∀ (b : ℝ), 0 < b → ResidualSLT.PowerLaplaceLower ℓ fun N => F (b * N)
+'ResidualSLT.PowerLaplaceLower.comp_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceUpper.add : ∀ {ℓ : ℝ} {F G : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceUpper ℓ F →
+    ResidualSLT.PowerLaplaceUpper ℓ G → ResidualSLT.PowerLaplaceUpper ℓ fun N => F N + G N
+'ResidualSLT.PowerLaplaceUpper.add' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerLaplaceUpper_zero : ∀ (ℓ : ℝ), ResidualSLT.PowerLaplaceUpper ℓ fun x => 0
+'ResidualSLT.powerLaplaceUpper_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceUpper.finset_sum : ∀ {ℓ : ℝ} {ι : Type u_1} (s : Finset ι) (F : ι → ℝ → ℝ),
+  (∀ i ∈ s, ResidualSLT.PowerLaplaceUpper ℓ (F i)) → ResidualSLT.PowerLaplaceUpper ℓ fun N => ∑ i ∈ s, F i N
+'ResidualSLT.PowerLaplaceUpper.finset_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.HasPowerLaplaceOrder.bounds : ∀ {ℓ : ℝ} {F : ℝ → ℝ},
+  ResidualSLT.HasPowerLaplaceOrder ℓ F →
+    ∃ c C N₀, 0 < c ∧ 0 < C ∧ 1 < N₀ ∧ ∀ (N : ℝ), N₀ ≤ N → c * N ^ (-ℓ) ≤ F N ∧ F N ≤ C * N ^ (-ℓ)
+'ResidualSLT.HasPowerLaplaceOrder.bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceUpper.const_mul_nonneg : ∀ {ℓ : ℝ} {F : ℝ → ℝ},
+  ResidualSLT.PowerLaplaceUpper ℓ F → ∀ (a : ℝ), 0 ≤ a → ResidualSLT.PowerLaplaceUpper ℓ fun N => a * F N
+'ResidualSLT.PowerLaplaceUpper.const_mul_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.PowerLaplaceUpper.weaken : ∀ {ℓ : ℝ} {F : ℝ → ℝ} {κ : ℝ},
+  ResidualSLT.PowerLaplaceUpper κ F → ℓ ≤ κ → ResidualSLT.PowerLaplaceUpper ℓ F
+'ResidualSLT.PowerLaplaceUpper.weaken' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.coneLaplaceExponent : ℕ → ℕ → ℕ → ℝ
+'ResidualSLT.coneLaplaceExponent' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedKernel : ℕ → ℕ → ℕ → ℝ → ℝ × ℝ → ℝ
+'ResidualSLT.powerWeightedKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedBox : ℕ → ℕ → ℕ → ℝ → ℝ → ℝ → ℝ
+'ResidualSLT.powerWeightedBox' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.radialGammaConstant : ℕ → ℕ → ℝ
+'ResidualSLT.radialGammaConstant' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.radialGammaConstant_pos : ∀ (a r : ℕ), 0 < a → 0 < r → 0 < ResidualSLT.radialGammaConstant a r
+'ResidualSLT.radialGammaConstant_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.radialGamma_integrable : ∀ (a r : ℕ),
+  0 < a →
+    0 < r →
+      ∀ (b : ℝ),
+        0 < b →
+          MeasureTheory.IntegrableOn (fun x => x ^ (a - 1) * Real.exp (-b * x ^ (2 * r))) (Set.Ioi 0)
+            MeasureTheory.volume
+'ResidualSLT.radialGamma_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.radialGamma_integral : ∀ (a r : ℕ),
+  0 < a →
+    0 < r →
+      ∀ (b : ℝ),
+        0 < b →
+          ∫ (x : ℝ) in Set.Ioi 0, x ^ (a - 1) * Real.exp (-b * x ^ (2 * r)) =
+            b ^ (-(↑a / (2 * ↑r))) * ResidualSLT.radialGammaConstant a r
+'ResidualSLT.radialGamma_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeighted_integrable : ∀ (a r q : ℕ) (N ε b c : ℝ),
+  MeasureTheory.IntegrableOn (ResidualSLT.powerWeightedKernel a r q N) (Set.Ioo 0 ε ×ˢ Set.Ioo b c) MeasureTheory.volume
+'ResidualSLT.powerWeighted_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.radialGamma_interval_le : ∀ (a r : ℕ),
+  0 < a →
+    0 < r →
+      ∀ (b ε : ℝ),
+        0 < b →
+          ∫ (x : ℝ) in Set.Ioo 0 ε, x ^ (a - 1) * Real.exp (-b * x ^ (2 * r)) ≤
+            b ^ (-(↑a / (2 * ↑r))) * ResidualSLT.radialGammaConstant a r
+'ResidualSLT.radialGamma_interval_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.gaussian_interval_le : ∀ (b δ : ℝ),
+  0 < b → ∫ (t : ℝ) in Set.Ioo 0 δ, Real.exp (-b * t ^ 2) ≤ √Real.pi * b ^ (-(1 / 2))
+'ResidualSLT.gaussian_interval_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedBox_upper_lt : ∀ (a r q : ℕ),
+  0 < a →
+    0 < r →
+      a < r →
+        ∀ (ε δ : ℝ), 0 < δ → ResidualSLT.PowerLaplaceUpper (↑a / (2 * ↑r)) (ResidualSLT.powerWeightedBox a r q ε δ)
+'ResidualSLT.powerWeightedBox_upper_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedBox_upper_gt : ∀ (a r q : ℕ),
+  0 < r →
+    0 < q →
+      r < a →
+        ∀ (ε δ : ℝ),
+          ResidualSLT.PowerLaplaceUpper ((↑a + ↑q) / (2 * (↑r + ↑q))) (ResidualSLT.powerWeightedBox a r q ε δ)
+'ResidualSLT.powerWeightedBox_upper_gt' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.integral_radial_nat_power : ∀ (a : ℕ),
+  0 < a → ∀ (s : ℝ), 0 < s → ∫ (u : ℝ) in Set.Ioo 0 s, u ^ (a - 1) = s ^ a / ↑a
+'ResidualSLT.integral_radial_nat_power' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedBox_inner_lower : ∀ (a r q b : ℕ),
+  0 < a →
+    b ≤ q →
+      ∀ (ε δ N s : ℝ),
+        0 < δ →
+          0 < s →
+            s ≤ 1 →
+              s ≤ ε →
+                0 < N →
+                  N * s ^ (2 * (r + b)) = 1 →
+                    Real.exp (-(δ ^ 2 + 1)) * δ / ↑a * s ^ (a + b) ≤ ResidualSLT.powerWeightedBox a r q ε δ N
+'ResidualSLT.powerWeightedBox_inner_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedBox_lower : ∀ (a r q b : ℕ),
+  0 < a →
+    0 < r →
+      b ≤ q →
+        ∀ (ε δ : ℝ),
+          0 < ε →
+            0 < δ → ResidualSLT.PowerLaplaceLower ((↑a + ↑b) / (2 * (↑r + ↑b))) (ResidualSLT.powerWeightedBox a r q ε δ)
+'ResidualSLT.powerWeightedBox_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.coneLaplaceExponent_of_le : ∀ (a r q : ℕ),
+  0 < r → a ≤ r → ResidualSLT.coneLaplaceExponent a r q = ↑a / (2 * ↑r)
+'ResidualSLT.coneLaplaceExponent_of_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.coneLaplaceExponent_of_ge : ∀ (a r q : ℕ),
+  0 < r → r ≤ a → ResidualSLT.coneLaplaceExponent a r q = (↑a + ↑q) / (2 * (↑r + ↑q))
+'ResidualSLT.coneLaplaceExponent_of_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedBox_has_order : ∀ (a r q : ℕ),
+  0 < a →
+    0 < r →
+      0 < q →
+        a ≠ r →
+          ∀ (ε δ : ℝ),
+            0 < ε →
+              0 < δ →
+                ResidualSLT.HasPowerLaplaceOrder (ResidualSLT.coneLaplaceExponent a r q)
+                  (ResidualSLT.powerWeightedBox a r q ε δ)
+'ResidualSLT.powerWeightedBox_has_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedSymmetric : ℕ → ℕ → ℕ → ℝ → ℝ → ℝ → ℝ
+'ResidualSLT.powerWeightedSymmetric' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedSymmetric_eq : ∀ (a r q : ℕ) (ε δ N : ℝ),
+  0 < δ → ResidualSLT.powerWeightedSymmetric a r q ε δ N = 2 * ResidualSLT.powerWeightedBox a r q ε δ N
+'ResidualSLT.powerWeightedSymmetric_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerWeightedSymmetric_has_order : ∀ (a r q : ℕ),
+  0 < a →
+    0 < r →
+      0 < q →
+        a ≠ r →
+          ∀ (ε δ : ℝ),
+            0 < ε →
+              0 < δ →
+                ResidualSLT.HasPowerLaplaceOrder (ResidualSLT.coneLaplaceExponent a r q)
+                  (ResidualSLT.powerWeightedSymmetric a r q ε δ)
+'ResidualSLT.powerWeightedSymmetric_has_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.radialGamma_laplace_upper : ∀ (a r : ℕ),
+  0 < a →
+    0 < r →
+      ∀ (ε : ℝ),
+        ResidualSLT.PowerLaplaceUpper (↑a / (2 * ↑r)) fun N =>
+          ∫ (u : ℝ) in Set.Ioo 0 ε, u ^ (a - 1) * Real.exp (-N * u ^ (2 * r))
+'ResidualSLT.radialGamma_laplace_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngularKernel : {n : ℕ} → ℕ → ℕ → ℕ → ((Fin n → ℝ) → ℝ) → ℝ → ℝ × (Fin n → ℝ) → ℝ
+'ResidualSLT.powerAngularKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngularKernel_nonneg : ∀ {n : ℕ} (a r q : ℕ) (f : (Fin n → ℝ) → ℝ) (N : ℝ) (z : ℝ × (Fin n → ℝ)),
+  0 ≤ z.1 → 0 ≤ ResidualSLT.powerAngularKernel a r q f N z
+'ResidualSLT.powerAngularKernel_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngularKernel_integrable : ∀ {n : ℕ} (a r q : ℕ) (f : (Fin n → ℝ) → ℝ),
+  Continuous f →
+    ∀ (N ε R : ℝ),
+      MeasureTheory.IntegrableOn (ResidualSLT.powerAngularKernel a r q f N) (Set.Ioo 0 ε ×ˢ Metric.closedBall 0 R)
+        MeasureTheory.volume
+'ResidualSLT.powerAngularKernel_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngularCylinder_integrable : ∀ {n : ℕ} (a r q : ℕ) (j : Fin (n + 1)) (N ε δ : ℝ)
+  (B : Set (Fin n → ℝ)),
+  MeasureTheory.volume B ≠ ⊤ →
+    MeasureTheory.volume B ≠ 0 →
+      MeasureTheory.IntegrableOn (ResidualSLT.powerAngularKernel a r q (fun y => y j) N)
+        (Set.Ioo 0 ε ×ˢ ResidualSLT.angularCylinder j (Set.Ioo (-δ) δ) B) MeasureTheory.volume
+'ResidualSLT.powerAngularCylinder_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngularCylinder_integral : ∀ {n : ℕ} (a r q : ℕ) (j : Fin (n + 1)) (N ε δ : ℝ) (B : Set (Fin n → ℝ)),
+  ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ ResidualSLT.angularCylinder j (Set.Ioo (-δ) δ) B,
+      ResidualSLT.powerAngularKernel a r q (fun y => y j) N z =
+    (MeasureTheory.volume B).toReal * ResidualSLT.powerWeightedSymmetric a r q ε δ N
+'ResidualSLT.powerAngularCylinder_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngular_patch_upper : ∀ {n : ℕ} (a r q : ℕ),
+  0 < a →
+    0 < r →
+      0 < q →
+        a ≠ r →
+          ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+            ContDiff ℝ 1 f →
+              ∀ (c : ResidualSLT.TransverseChart f) (ε : ℝ),
+                0 < ε →
+                  ∀ {D : Set (Fin (n + 1) → ℝ)},
+                    MeasurableSet D →
+                      D ⊆ Metric.closedBall 0 1 →
+                        D ⊆ c.chart.source →
+                          (∀ y ∈ D, f y ∈ Set.Ioo (-1) 1) →
+                            ResidualSLT.PowerLaplaceUpper (ResidualSLT.coneLaplaceExponent a r q) fun N =>
+                              ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ D,
+                                ResidualSLT.powerAngularKernel a r q f N z
+'ResidualSLT.powerAngular_patch_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngular_lower_of_zero : ∀ {n : ℕ} (a r q : ℕ),
+  0 < a →
+    0 < r →
+      0 < q →
+        a ≠ r →
+          ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+            ContDiff ℝ 1 f →
+              ∀ (R ε : ℝ),
+                0 < ε →
+                  ∀ y ∈ Metric.ball 0 R,
+                    f y = 0 →
+                      (∃ j, (fderiv ℝ f y) (Pi.single j 1) ≠ 0) →
+                        ResidualSLT.PowerLaplaceLower (ResidualSLT.coneLaplaceExponent a r q) fun N =>
+                          ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ Metric.closedBall 0 R,
+                            ResidualSLT.powerAngularKernel a r q f N z
+'ResidualSLT.powerAngular_lower_of_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.powerAngular_off_zero_upper : ∀ {n : ℕ} (a r q : ℕ),
+  0 < a →
+    0 < r →
+      ∀ (f : (Fin n → ℝ) → ℝ),
+        Continuous f →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                ∀ {D : Set (Fin n → ℝ)},
+                  MeasurableSet D →
+                    D ⊆ Metric.closedBall 0 1 →
+                      ∀ (c : ℝ),
+                        0 < c →
+                          (∀ y ∈ D, c ≤ |f y|) →
+                            ResidualSLT.PowerLaplaceUpper (ResidualSLT.coneLaplaceExponent a r q) fun N =>
+                              ∫ (z : ℝ × (Fin n → ℝ)) in Set.Ioo 0 ε ×ˢ D, ResidualSLT.powerAngularKernel a r q f N z
+'ResidualSLT.powerAngular_off_zero_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.powerAngular_regular_upper : ∀ (a r q n : ℕ),
+  0 < a →
+    0 < r →
+      0 < q →
+        a ≠ r →
+          ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+            ContDiff ℝ 1 f →
+              ∀ (ε : ℝ),
+                0 < ε →
+                  ε ≤ 1 →
+                    (∀ y ∈ Metric.closedBall 0 1, f y = 0 → ∃ j, (fderiv ℝ f y) (Pi.single j 1) ≠ 0) →
+                      ResidualSLT.PowerLaplaceUpper (ResidualSLT.coneLaplaceExponent a r q) fun N =>
+                        ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ Metric.closedBall 0 1,
+                          ResidualSLT.powerAngularKernel a r q f N z
+'ResidualSLT.powerAngular_regular_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.power_laplace_order_of_comparable : ∀ {ℓ : ℝ} {α : Type u_1} [inst : MeasurableSpace α]
+  (μ : MeasureTheory.Measure α) (D : Set α) (K J : α → ℝ),
+  (∀ (N : ℝ), MeasureTheory.IntegrableOn (fun x => Real.exp (-N * K x)) D μ) →
+    (∀ (N : ℝ), MeasureTheory.IntegrableOn (fun x => Real.exp (-N * J x)) D μ) →
+      ∀ (c C : ℝ),
+        0 < c →
+          0 < C →
+            (∀ᵐ (x : α) ∂μ.restrict D, c * K x ≤ J x ∧ J x ≤ C * K x) →
+              (ResidualSLT.HasPowerLaplaceOrder ℓ fun N => ∫ (x : α) in D, Real.exp (-N * K x) ∂μ) →
+                ResidualSLT.HasPowerLaplaceOrder ℓ fun N => ∫ (x : α) in D, Real.exp (-N * J x) ∂μ
+'ResidualSLT.power_laplace_order_of_comparable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.power_laplace_order_withDensity : ∀ {ℓ : ℝ} {α : Type u_1} [inst : MeasurableSpace α]
+  (μ : MeasureTheory.Measure α) {D : Set α},
+  MeasurableSet D →
+    ∀ (K : α → ℝ),
+      (∀ (N : ℝ), MeasureTheory.IntegrableOn (fun x => Real.exp (-N * K x)) D μ) →
+        ∀ (ρ : α → NNReal),
+          ResidualSLT.BoundedPositivePriorOn ρ D μ →
+            (ResidualSLT.HasPowerLaplaceOrder ℓ fun N => ∫ (x : α) in D, Real.exp (-N * K x) ∂μ) →
+              ResidualSLT.HasPowerLaplaceOrder ℓ fun N =>
+                ∫ (x : α) in D, Real.exp (-N * K x) ∂μ.withDensity fun x => ↑(ρ x)
+'ResidualSLT.power_laplace_order_withDensity' depends on axioms: [propext, Classical.choice, Quot.sound]

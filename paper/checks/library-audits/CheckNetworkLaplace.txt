@@ -1,0 +1,9 @@
+'_private.CheckNetworkLaplace.0.ResidualSLT.Examples.cubic_identity_laplace_order' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckNetworkLaplace.0.ResidualSLT.Examples.quintic_identity_laplace_order' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckNetworkLaplace.0.ResidualSLT.Examples.cubic_weighted_small_rectangle' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

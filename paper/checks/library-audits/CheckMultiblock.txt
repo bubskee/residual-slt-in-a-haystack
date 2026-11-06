@@ -1,0 +1,10 @@
+'_private.CheckMultiblock.0.threePoint_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckMultiblock.0.threePoint_gram_matrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckMultiblock.0.threePoint_positive_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckMultiblock.0.threePoint_twoBlock_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckMultiblock.0.compactPlanePrior_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckMultiblock.0.threePoint_twoBlock_prior_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckMultiblock.0.threePoint_twoBlock_prior_boundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckMultiblock.0.dirac_one_gram_excluded' depends on axioms: [propext, Classical.choice, Quot.sound]

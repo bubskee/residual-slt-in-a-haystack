@@ -1,0 +1,12 @@
+'_private.CheckSignedNetwork.0.cubic_three_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckSignedNetwork.0.cubic_model_on_cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckSignedNetwork.0.cubic_second_on_cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckSignedNetwork.0.cubic_loss_on_cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckSignedNetwork.0.cubic_loss_positive_on_cancellation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSignedNetwork.0.cubicCompactPrior_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckSignedNetwork.0.cubic_prior_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckSignedNetwork.0.cubic_single_block_second_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

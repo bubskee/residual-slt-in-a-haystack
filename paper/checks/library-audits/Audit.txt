@@ -1,0 +1,891 @@
+def ResidualSLT.HasIntegrabilityThresholdOn.{u_1} : {α : Type u_1} →
+  [inst : MeasurableSpace α] → (α → ℝ) → Set α → MeasureTheory.Measure α → ℝ → Prop :=
+fun {α} [MeasurableSpace α] K D μ threshold =>
+  (∀ᵐ (x : α) ∂μ.restrict D, 0 < K x) ∧
+    ∀ (s : ℝ), 0 ≤ s → (MeasureTheory.IntegrableOn (fun x => K x ^ (-s)) D μ ↔ s < threshold)
+def ResidualSLT.oneBlockSquaredError : ℕ → ℝ → ℝ → ℝ :=
+fun r w x => (Polynomial.eval x (ResidualSLT.network r (fun x => w ^ r) 1) - x) ^ 2
+def ResidualSLT.oneBlockLoss : MeasureTheory.Measure ℝ → ℕ → ℝ → ℝ :=
+fun μ r w => ∫ (x : ℝ), ResidualSLT.oneBlockSquaredError r w x ∂μ
+def ResidualSLT.evenMoment : MeasureTheory.Measure ℝ → ℕ → ℝ :=
+fun μ r => ∫ (x : ℝ), x ^ (2 * r) ∂μ
+structure ResidualSLT.FinitePositiveEvenMoment (μ : MeasureTheory.Measure ℝ) (r : ℕ) : Prop
+number of parameters: 2
+fields:
+  ResidualSLT.FinitePositiveEvenMoment.integrable : MeasureTheory.Integrable (fun x => x ^ (2 * r)) μ
+  ResidualSLT.FinitePositiveEvenMoment.positive : 0 < ResidualSLT.evenMoment μ r
+constructor:
+  ResidualSLT.FinitePositiveEvenMoment.mk {μ : MeasureTheory.Measure ℝ} {r : ℕ}
+    (integrable : MeasureTheory.Integrable (fun x => x ^ (2 * r)) μ) (positive : 0 < ResidualSLT.evenMoment μ r) :
+    ResidualSLT.FinitePositiveEvenMoment μ r
+ResidualSLT.raw_coefficients.{u_1} {R : Type u_1} [CommRing R] (r : ℕ) (hr : 2 ≤ r) (w : ℕ → R) (n : ℕ) :
+  (ResidualSLT.network r (fun i => w i ^ r) n).coeff r = ∑ i ∈ Finset.range n, w i ^ r ∧
+    2 * (ResidualSLT.network r (fun i => w i ^ r) n).coeff (2 * r - 1) =
+      ↑r * ((∑ i ∈ Finset.range n, w i ^ r) ^ 2 - ∑ i ∈ Finset.range n, w i ^ (2 * r))
+ResidualSLT.network_natDegree.{u_1} {R : Type u_1} [CommRing R] [IsDomain R] (r : ℕ) (hr : 2 ≤ r) (u : ℕ → R) (n : ℕ) :
+  (ResidualSLT.network r u n).natDegree = r ^ ResidualSLT.activeCount u n
+ResidualSLT.raw_network_eq_X_iff.{u_1} {R : Type u_1} [CommRing R] [IsDomain R] (r : ℕ) (hr : 2 ≤ r) (w : ℕ → R)
+  (n : ℕ) : ResidualSLT.network r (fun i => w i ^ r) n = Polynomial.X ↔ ∀ i < n, w i = 0
+ResidualSLT.real_raw_two_coefficients_zero_iff (r : ℕ) (hr : 2 ≤ r) (w : ℕ → ℝ) (n : ℕ) :
+  (ResidualSLT.network r (fun i => w i ^ r) n).coeff r = 0 ∧
+      (ResidualSLT.network r (fun i => w i ^ r) n).coeff (2 * r - 1) = 0 ↔
+    ∀ i < n, w i = 0
+ResidualSLT.active_factor_relation.{u_1} {F : Type u_1} [Field F] [CharZero F] (r : ℕ) (hr : 2 ≤ r) (H Q : Polynomial F)
+  (e t : F) (he : e ≠ 0) (hH : 0 < H.natDegree)
+  (h : (1 + Polynomial.C (↑r * e) * H ^ (r - 1)) * Q + Polynomial.C t * H ^ r = 0) : Q = 0 ∧ t = 0
+ResidualSLT.monomial_thresholdOn_symmetric (r : ℕ) (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) :
+  ResidualSLT.HasIntegrabilityThresholdOn (fun x => x ^ (2 * r)) (Set.Ioo (-ε) ε) MeasureTheory.volume (1 / (2 * ↑r))
+ResidualSLT.integrableOn_rpow_const_mul_iff.{u_1} {α : Type u_1} [MeasurableSpace α] {K : α → ℝ} {D : Set α}
+  {μ : MeasureTheory.Measure α} {c : ℝ} (hc : 0 < c) (hK : ∀ᵐ (x : α) ∂μ.restrict D, 0 ≤ K x) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun x => (c * K x) ^ (-s)) D μ ↔ MeasureTheory.IntegrableOn (fun x => K x ^ (-s)) D μ
+ResidualSLT.integrableOn_rpow_iff_of_comparable.{u_1} {α : Type u_1} [MeasurableSpace α] {K J : α → ℝ} {D : Set α}
+  {μ : MeasureTheory.Measure α} {c C : ℝ} (hK : AEMeasurable K (μ.restrict D)) (hJ : AEMeasurable J (μ.restrict D))
+  (hKpos : ∀ᵐ (x : α) ∂μ.restrict D, 0 < K x) (hc : 0 < c) (hC : 0 < C)
+  (hlower : ∀ᵐ (x : α) ∂μ.restrict D, c * K x ≤ J x) (hupper : ∀ᵐ (x : α) ∂μ.restrict D, J x ≤ C * K x) (s : ℝ)
+  (hs : 0 ≤ s) :
+  MeasureTheory.IntegrableOn (fun x => J x ^ (-s)) D μ ↔ MeasureTheory.IntegrableOn (fun x => K x ^ (-s)) D μ
+ResidualSLT.HasIntegrabilityThresholdOn.mul_bounded.{u_1} {α : Type u_1} [MeasurableSpace α] {K U : α → ℝ} {D : Set α}
+  {μ : MeasureTheory.Measure α} {c C threshold : ℝ} (h : ResidualSLT.HasIntegrabilityThresholdOn K D μ threshold)
+  (hK : AEMeasurable K (μ.restrict D)) (hU : AEMeasurable U (μ.restrict D)) (hc : 0 < c) (hC : 0 < C)
+  (hbound : ∀ᵐ (x : α) ∂μ.restrict D, c ≤ U x ∧ U x ≤ C) :
+  ResidualSLT.HasIntegrabilityThresholdOn (fun x => U x * K x) D μ threshold
+ResidualSLT.finitePositiveEvenMoment_of_mass_ne_zero (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 0 < r)
+  (hfin : MeasureTheory.Integrable (fun x => x ^ (2 * r)) μ) (hmass : 0 < μ {x | x ≠ 0}) :
+  ResidualSLT.FinitePositiveEvenMoment μ r
+ResidualSLT.oneBlock_loss_eq (μ : MeasureTheory.Measure ℝ) (r : ℕ) (w : ℝ) :
+  ResidualSLT.oneBlockLoss μ r w = ResidualSLT.evenMoment μ r * w ^ (2 * r)
+ResidualSLT.oneBlock_certificate (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveEvenMoment μ r) (ε : ℝ) (hε : 0 < ε) :
+  (∀ (w : ℝ), MeasureTheory.Integrable (ResidualSLT.oneBlockSquaredError r w) μ) ∧
+    (∀ (w : ℝ), ResidualSLT.oneBlockLoss μ r w = ResidualSLT.evenMoment μ r * w ^ (2 * r)) ∧
+      ResidualSLT.HasIntegrabilityThresholdOn (ResidualSLT.oneBlockLoss μ r) (Set.Ioo (-ε) ε) MeasureTheory.volume
+        (1 / (2 * ↑r))
+ResidualSLT.oneBlock_integrableOn_iff (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveEvenMoment μ r) (ε : ℝ) (hε : 0 < ε) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.oneBlockLoss μ r w ^ (-s)) (Set.Ioo (-ε) ε) MeasureTheory.volume ↔
+    s < 1 / (2 * ↑r)
+ResidualSLT.oneBlock_not_integrable_at_threshold (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveEvenMoment μ r) (ε : ℝ) (hε : 0 < ε) :
+  ¬MeasureTheory.IntegrableOn (fun w => ResidualSLT.oneBlockLoss μ r w ^ (-(1 / (2 * ↑r)))) (Set.Ioo (-ε) ε)
+      MeasureTheory.volume
+structure ResidualSLT.BoundedPositivePriorOn.{u_1} {α : Type u_1} [MeasurableSpace α] (ρ : α → NNReal) (D : Set α)
+  (μ : MeasureTheory.Measure α) : Prop
+number of parameters: 5
+fields:
+  ResidualSLT.BoundedPositivePriorOn.measurable : Measurable ρ
+  ResidualSLT.BoundedPositivePriorOn.bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C
+constructor:
+  ResidualSLT.BoundedPositivePriorOn.mk.{u_1} {α : Type u_1} [MeasurableSpace α] {ρ : α → NNReal} {D : Set α}
+    {μ : MeasureTheory.Measure α} (measurable : Measurable ρ)
+    (bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C) : ResidualSLT.BoundedPositivePriorOn ρ D μ
+ResidualSLT.integrableOn_withDensity_iff_weighted.{u_1} {α : Type u_1} [MeasurableSpace α] {μ : MeasureTheory.Measure α}
+  {D : Set α} {ρ : α → NNReal} {f : α → ℝ} (hD : MeasurableSet D) (hρ : Measurable ρ) :
+  MeasureTheory.IntegrableOn f D (μ.withDensity fun x => ↑(ρ x)) ↔
+    MeasureTheory.IntegrableOn (fun x => ↑(ρ x) * f x) D μ
+ResidualSLT.integrableOn_withDensity_iff_of_boundedPositive.{u_1} {α : Type u_1} [MeasurableSpace α]
+  {μ : MeasureTheory.Measure α} {D : Set α} {ρ : α → NNReal} {f : α → ℝ} (hD : MeasurableSet D)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ D μ) :
+  MeasureTheory.IntegrableOn f D (μ.withDensity fun x => ↑(ρ x)) ↔ MeasureTheory.IntegrableOn f D μ
+ResidualSLT.HasIntegrabilityThresholdOn.withDensity.{u_1} {α : Type u_1} [MeasurableSpace α]
+  {μ : MeasureTheory.Measure α} {D : Set α} {ρ : α → NNReal} {K : α → ℝ} {t : ℝ}
+  (h : ResidualSLT.HasIntegrabilityThresholdOn K D μ t) (hD : MeasurableSet D)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ D μ) :
+  ResidualSLT.HasIntegrabilityThresholdOn K D (μ.withDensity fun x => ↑(ρ x)) t
+ResidualSLT.oneBlock_prior_integrableOn_iff (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveEvenMoment μ r) (ε : ℝ) (hε : 0 < ε) (ρ : ℝ → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Set.Ioo (-ε) ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.oneBlockLoss μ r w ^ (-s)) (Set.Ioo (-ε) ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    s < 1 / (2 * ↑r)
+ResidualSLT.oneBlock_prior_weighted_integrableOn_iff (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveEvenMoment μ r) (ε : ℝ) (hε : 0 < ε) (ρ : ℝ → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Set.Ioo (-ε) ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ↑(ρ w) * ResidualSLT.oneBlockLoss μ r w ^ (-s)) (Set.Ioo (-ε) ε)
+      MeasureTheory.volume ↔
+    s < 1 / (2 * ↑r)
+ResidualSLT.oneBlock_prior_certificate (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveEvenMoment μ r) (ε : ℝ) (hε : 0 < ε) (ρ : ℝ → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Set.Ioo (-ε) ε) MeasureTheory.volume) :
+  (∀ (w : ℝ), MeasureTheory.Integrable (ResidualSLT.oneBlockSquaredError r w) μ) ∧
+    (∀ (w : ℝ), ResidualSLT.oneBlockLoss μ r w = ResidualSLT.evenMoment μ r * w ^ (2 * r)) ∧
+      ResidualSLT.HasIntegrabilityThresholdOn (ResidualSLT.oneBlockLoss μ r) (Set.Ioo (-ε) ε)
+        (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) (1 / (2 * ↑r))
+ResidualSLT.oneBlock_prior_not_integrable_at_threshold (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveEvenMoment μ r) (ε : ℝ) (hε : 0 < ε) (ρ : ℝ → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Set.Ioo (-ε) ε) MeasureTheory.volume) :
+  ¬MeasureTheory.IntegrableOn (fun w => ResidualSLT.oneBlockLoss μ r w ^ (-(1 / (2 * ↑r)))) (Set.Ioo (-ε) ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+ResidualSLT.norm_rpow_integrableOn_ball_iff.{u_1} {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [Nontrivial E] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
+  [μ.IsAddHaarMeasure] (ε : ℝ) (hε : 0 < ε) (p : ℝ) :
+  MeasureTheory.IntegrableOn (fun x => ‖x‖ ^ p) (Metric.ball 0 ε) μ ↔ -↑(Module.finrank ℝ E) < p
+ResidualSLT.normPower_threshold.{u_1} {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+  [Nontrivial E] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E) [μ.IsAddHaarMeasure] (m : ℕ)
+  (hm : 0 < m) (ε : ℝ) (hε : 0 < ε) :
+  ResidualSLT.HasIntegrabilityThresholdOn (fun x => ‖x‖ ^ m) (Metric.ball 0 ε) μ (↑(Module.finrank ℝ E) / ↑m)
+ResidualSLT.positive_homogeneous_bounds.{u_1} {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [Nontrivial E] {Q : E → ℝ} (m : ℕ) (hm : 0 < m) (hQ : Continuous Q)
+  (hpos : ∀ (x : E), x ≠ 0 → 0 < Q x) (hhom : ∀ (a : ℝ), 0 ≤ a → ∀ (x : E), Q (a • x) = a ^ m * Q x) :
+  ∃ c C, 0 < c ∧ 0 < C ∧ ∀ (x : E), c * ‖x‖ ^ m ≤ Q x ∧ Q x ≤ C * ‖x‖ ^ m
+ResidualSLT.positive_homogeneous_threshold.{u_1} {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [Nontrivial E] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
+  [μ.IsAddHaarMeasure] {Q : E → ℝ} (m : ℕ) (hm : 0 < m) (hQ : Continuous Q) (hpos : ∀ (x : E), x ≠ 0 → 0 < Q x)
+  (hhom : ∀ (a : ℝ), 0 ≤ a → ∀ (x : E), Q (a • x) = a ^ m * Q x) (ε : ℝ) (hε : 0 < ε) :
+  ResidualSLT.HasIntegrabilityThresholdOn Q (Metric.ball 0 ε) μ (↑(Module.finrank ℝ E) / ↑m)
+ResidualSLT.feature_square_integrable.{u_1} {ι : Type u_1} [Fintype ι] (μ : MeasureTheory.Measure ℝ) (φ : ι → ℝ → ℝ)
+  (h : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ) (c : ι → ℝ) :
+  MeasureTheory.Integrable (fun x => (∑ i, c i * φ i x) ^ 2) μ
+ResidualSLT.feature_integral_eq_gram.{u_1} {ι : Type u_1} [Fintype ι] (μ : MeasureTheory.Measure ℝ) (φ : ι → ℝ → ℝ)
+  (h : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ) (c : ι → ℝ) :
+  ∫ (x : ℝ), (∑ i, c i * φ i x) ^ 2 ∂μ = ResidualSLT.gramValue (ResidualSLT.featureGram μ φ) c
+ResidualSLT.gramValue_bounds.{u_1} {ι : Type u_1} [Fintype ι] [Nonempty ι] (G : Matrix ι ι ℝ) (hG : G.PosDef) :
+  ∃ c C,
+    0 < c ∧ 0 < C ∧ ∀ (v : ι → ℝ), c * ‖v‖ ^ 2 ≤ ResidualSLT.gramValue G v ∧ ResidualSLT.gramValue G v ≤ C * ‖v‖ ^ 2
+ResidualSLT.quadratic_network_polynomial (a b : ℝ) :
+  ResidualSLT.network 2 (fun i => if i = 0 then a ^ 2 else b ^ 2) 2 - Polynomial.X =
+    Polynomial.C (a ^ 2 + b ^ 2) * Polynomial.X ^ 2 + Polynomial.C (2 * a ^ 2 * b ^ 2) * Polynomial.X ^ 3 +
+      Polynomial.C (a ^ 4 * b ^ 2) * Polynomial.X ^ 4
+ResidualSLT.quadratic_loss_comparison (μ : MeasureTheory.Measure ℝ)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ ResidualSLT.quadraticFeatures) :
+  ∃ c C,
+    0 < c ∧
+      0 < C ∧
+        ∀ w ∈ Metric.ball 0 1,
+          c * ResidualSLT.quadraticModel w ≤ ResidualSLT.quadraticLoss μ w ∧
+            ResidualSLT.quadraticLoss μ w ≤ C * ResidualSLT.quadraticModel w
+ResidualSLT.parameter_ball_eq_square (ε : ℝ) : Metric.ball 0 ε = Set.Ioo (-ε) ε ×ˢ Set.Ioo (-ε) ε
+ResidualSLT.quadratic_twoBlock_certificate (μ : MeasureTheory.Measure ℝ)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ ResidualSLT.quadraticFeatures) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
+  (ρ : ℝ × ℝ → NNReal) (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) :
+  (∀ (w : ℝ × ℝ), MeasureTheory.Integrable (ResidualSLT.quadraticSquaredError w) μ) ∧
+    (∀ (w : ℝ × ℝ),
+        ResidualSLT.quadraticLoss μ w =
+          ResidualSLT.gramValue (ResidualSLT.featureGram μ ResidualSLT.quadraticFeatures)
+            (ResidualSLT.quadraticCoefficients w)) ∧
+      ResidualSLT.HasIntegrabilityThresholdOn (ResidualSLT.quadraticLoss μ) (Metric.ball 0 ε)
+        (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) (1 / 2)
+ResidualSLT.quadratic_prior_not_integrable (μ : MeasureTheory.Measure ℝ)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ ResidualSLT.quadraticFeatures) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
+  (ρ : ℝ × ℝ → NNReal) (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ)
+  (hs : 1 / 2 ≤ s) :
+  ¬MeasureTheory.IntegrableOn (fun w => ResidualSLT.quadraticLoss μ w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+structure ResidualSLT.FinitePositiveFeatureGram.{u_1} {ι : Type u_1} (μ : MeasureTheory.Measure ℝ) (φ : ι → ℝ → ℝ) :
+  Prop
+number of parameters: 3
+fields:
+  ResidualSLT.FinitePositiveFeatureGram.integrable : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ
+  ResidualSLT.FinitePositiveFeatureGram.positive : (ResidualSLT.featureGram μ φ).PosDef
+constructor:
+  ResidualSLT.FinitePositiveFeatureGram.mk.{u_1} {ι : Type u_1} {μ : MeasureTheory.Measure ℝ} {φ : ι → ℝ → ℝ}
+    (integrable : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ)
+    (positive : (ResidualSLT.featureGram μ φ).PosDef) : ResidualSLT.FinitePositiveFeatureGram μ φ
+ResidualSLT.integrableOn_rpow_iff_of_comparable_all.{u_1} {α : Type u_1} [MeasurableSpace α] {K J : α → ℝ} {D : Set α}
+  {μ : MeasureTheory.Measure α} {c C : ℝ} (hK : AEMeasurable K (μ.restrict D)) (hJ : AEMeasurable J (μ.restrict D))
+  (hKpos : ∀ᵐ (x : α) ∂μ.restrict D, 0 < K x) (hc : 0 < c) (hC : 0 < C)
+  (hlower : ∀ᵐ (x : α) ∂μ.restrict D, c * K x ≤ J x) (hupper : ∀ᵐ (x : α) ∂μ.restrict D, J x ≤ C * K x) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun x => J x ^ (-s)) D μ ↔ MeasureTheory.IntegrableOn (fun x => K x ^ (-s)) D μ
+ResidualSLT.raw_residual_coefficients.{u_1} {R : Type u_1} [CommRing R] (r : ℕ) (hr : 2 ≤ r) (w : ℕ → R) (n : ℕ) :
+  (ResidualSLT.network r (fun i => w i ^ r) n - Polynomial.X).coeff r = ∑ i ∈ Finset.range n, w i ^ r ∧
+    (ResidualSLT.network r (fun i => w i ^ r) n - Polynomial.X).coeff (2 * r - 1) =
+      ↑r * ∑ j ∈ Finset.range n, (∑ i ∈ Finset.range j, w i ^ r) * w j ^ r
+ResidualSLT.positive_homogeneous_integrableOn_iff.{u_1} {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [Nontrivial E] [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
+  [μ.IsAddHaarMeasure] {Q : E → ℝ} (m : ℕ) (hm : 0 < m) (hQ : Continuous Q) (hpos : ∀ (x : E), x ≠ 0 → 0 < Q x)
+  (hhom : ∀ (a : ℝ), 0 ≤ a → ∀ (x : E), Q (a • x) = a ^ m * Q x) (ε : ℝ) (hε : 0 < ε) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun x => Q x ^ (-s)) (Metric.ball 0 ε) μ ↔ s < ↑(Module.finrank ℝ E) / ↑m
+ResidualSLT.quadratic_prior_integrableOn_iff (μ : MeasureTheory.Measure ℝ)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ ResidualSLT.quadraticFeatures) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
+  (ρ : ℝ × ℝ → NNReal) (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.quadraticLoss μ w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    s < 1 / 2
+ResidualSLT.quadratic_prior_weighted_integrableOn_iff (μ : MeasureTheory.Measure ℝ)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ ResidualSLT.quadraticFeatures) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
+  (ρ : ℝ × ℝ → NNReal) (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ↑(ρ w) * ResidualSLT.quadraticLoss μ w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume ↔
+    s < 1 / 2
+ResidualSLT.sumEvenPowers_integrableOn_iff (L : ℕ) (hL : 0 < L) (r : ℕ) (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.sumEvenPowers r w ^ (-s)) (Metric.ball 0 ε) MeasureTheory.volume ↔
+    s < ↑L / (2 * ↑r)
+ResidualSLT.sumEvenPowers_prior_integrableOn_iff (L : ℕ) (hL : 0 < L) (r : ℕ) (hr : 0 < r) (ε : ℝ) (hε : 0 < ε)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume)
+  (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.sumEvenPowers r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    s < ↑L / (2 * ↑r)
+ResidualSLT.productPowers_integrableOn_iff (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (ε : ℝ) (hε : 0 < ε) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun z => (z.1 ^ (2 * a) * z.2 ^ (2 * b)) ^ (-s)) (Set.Ioo (-ε) ε ×ˢ Set.Ioo (-ε) ε)
+      MeasureTheory.volume ↔
+    s < min (1 / (2 * ↑a)) (1 / (2 * ↑b))
+ResidualSLT.productPowers_prior_integrableOn_iff (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (ε : ℝ) (hε : 0 < ε)
+  (ρ : ℝ × ℝ → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Set.Ioo (-ε) ε ×ˢ Set.Ioo (-ε) ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun z => (z.1 ^ (2 * a) * z.2 ^ (2 * b)) ^ (-s)) (Set.Ioo (-ε) ε ×ˢ Set.Ioo (-ε) ε)
+      (MeasureTheory.volume.withDensity fun z => ↑(ρ z)) ↔
+    s < min (1 / (2 * ↑a)) (1 / (2 * ↑b))
+ResidualSLT.normalCrossingCutoff_integrable (δ : ℝ) (hδ : 0 < δ) :
+  MeasureTheory.IntegrableOn (fun z => (z.1 ^ 2 * z.2 ^ 2) ^ (-(1 / 2))) (Set.Ioo δ 1 ×ˢ Set.Ioo δ 1)
+    MeasureTheory.volume
+ResidualSLT.normalCrossingCutoff_eq (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ ≤ 1) :
+  ResidualSLT.normalCrossingCutoff δ = Real.log δ ^ 2
+ResidualSLT.normalCrossingCutoff_log_equivalent :
+  Asymptotics.IsEquivalent (nhdsWithin 0 (Set.Ioi 0)) ResidualSLT.normalCrossingCutoff fun δ => Real.log δ ^ 2
+ResidualSLT.active_family_independent.{u_1, u_2} {F : Type u_1} [Field F] {ι : Type u_2} [CharZero F] (r : ℕ)
+  (hr : 2 ≤ r) (H : Polynomial F) (e : F) (he : e ≠ 0) (hH : 0 < H.natDegree) (v : ι → Polynomial F)
+  (hv : LinearIndependent F v) :
+  LinearIndependent F fun o => o.casesOn' (H ^ r) fun i => (1 + Polynomial.C (↑r * e) * H ^ (r - 1)) * v i
+ResidualSLT.network_raw_step (r L n : ℕ) (w : Fin L → ℝ) (x : ℝ) :
+  Polynomial.eval x (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) (n + 1)) =
+    Polynomial.eval x (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) n) +
+      (ResidualSLT.zeroExtend w n *
+          Polynomial.eval x (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) n)) ^
+        r
+ResidualSLT.network_feature_expansion (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L) (u : ℕ → ℝ) (x : ℝ) :
+  Polynomial.eval x (ResidualSLT.network r u L) - x =
+    ∑ j, (ResidualSLT.network r u L - Polynomial.X).coeff (r + ↑j) * ResidualSLT.networkFeatures r L j x
+ResidualSLT.network_squaredError_integrable (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (w : Fin L → ℝ) :
+  MeasureTheory.Integrable (ResidualSLT.networkSquaredError r w) μ
+ResidualSLT.network_loss_eq_gram (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (w : Fin L → ℝ) :
+  ResidualSLT.networkPopulationLoss μ r w =
+    ResidualSLT.gramValue (ResidualSLT.featureGram μ (ResidualSLT.networkFeatures r L))
+      (ResidualSLT.networkCoefficients r w)
+ResidualSLT.networkCoefficients_first (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L) (w : Fin L → ℝ) :
+  ResidualSLT.networkCoefficients r w ⟨0, ⋯⟩ = ResidualSLT.weightPowerSum r w
+ResidualSLT.residual_coeff_uniform_bound (r n : ℕ) (u : ℕ → ℝ) (hu : ∀ i < n, 0 ≤ u i ∧ u i ≤ 1) (k : ℕ) :
+  0 ≤ (ResidualSLT.network r u n - Polynomial.X).coeff k ∧
+    (ResidualSLT.network r u n - Polynomial.X).coeff k ≤ ResidualSLT.networkEnvelope r n * ∑ i ∈ Finset.range n, u i
+ResidualSLT.even_residual_coeff_bound (r L : ℕ) (heven : Even r) (w : Fin L → ℝ) (hw : w ∈ Metric.ball 0 1) (k : ℕ) :
+  0 ≤ (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L - Polynomial.X).coeff k ∧
+    (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L - Polynomial.X).coeff k ≤
+      ResidualSLT.networkEnvelope r L * ResidualSLT.weightPowerSum r w
+ResidualSLT.even_network_coefficients_bounds (r : ℕ) (hr : 2 ≤ r) (heven : Even r) (L : ℕ) (hL : 0 < L) (w : Fin L → ℝ)
+  (hw : w ∈ Metric.ball 0 1) :
+  ResidualSLT.weightPowerSum r w ≤ ‖ResidualSLT.networkCoefficients r w‖ ∧
+    ‖ResidualSLT.networkCoefficients r w‖ ≤ ResidualSLT.networkEnvelope r L * ResidualSLT.weightPowerSum r w
+ResidualSLT.even_network_loss_comparison (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (heven : Even r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) :
+  ∃ c C,
+    0 < c ∧
+      0 < C ∧
+        ∀ w ∈ Metric.ball 0 1,
+          c * ResidualSLT.evenNetworkModel r w ≤ ResidualSLT.networkPopulationLoss μ r w ∧
+            ResidualSLT.networkPopulationLoss μ r w ≤ C * ResidualSLT.evenNetworkModel r w
+ResidualSLT.parameter_ball_eq_cube (L : ℕ) (ε : ℝ) (hε : 0 < ε) : Metric.ball 0 ε = Set.univ.pi fun x => Set.Ioo (-ε) ε
+ResidualSLT.even_network_integrableOn_iff (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (heven : Even r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume ↔
+    s < ↑L / (2 * ↑r)
+ResidualSLT.even_network_prior_integrableOn_iff (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (heven : Even r)
+  (L : ℕ) (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ)
+  (hε : 0 < ε) (hε1 : ε ≤ 1) (ρ : (Fin L → ℝ) → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    s < ↑L / (2 * ↑r)
+ResidualSLT.even_network_prior_weighted_integrableOn_iff (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (heven : Even r) (L : ℕ) (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L))
+  (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (ρ : (Fin L → ℝ) → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ↑(ρ w) * ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume ↔
+    s < ↑L / (2 * ↑r)
+ResidualSLT.even_network_certificate (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (heven : Even r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (ρ : (Fin L → ℝ) → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) :
+  (∀ (w : Fin L → ℝ), MeasureTheory.Integrable (ResidualSLT.networkSquaredError r w) μ) ∧
+    (∀ (w : Fin L → ℝ),
+        ResidualSLT.networkPopulationLoss μ r w =
+          ResidualSLT.gramValue (ResidualSLT.featureGram μ (ResidualSLT.networkFeatures r L))
+            (ResidualSLT.networkCoefficients r w)) ∧
+      ResidualSLT.HasIntegrabilityThresholdOn (ResidualSLT.networkPopulationLoss μ r) (Metric.ball 0 ε)
+        (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) (↑L / (2 * ↑r))
+ResidualSLT.even_network_prior_not_integrable (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (heven : Even r)
+  (L : ℕ) (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ)
+  (hε : 0 < ε) (hε1 : ε ≤ 1) (ρ : (Fin L → ℝ) → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) (hs : ↑L / (2 * ↑r) ≤ s) :
+  ¬MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+ResidualSLT.atomic_shiftedPower_gram (r N : ℕ) (v : Fin N → ℝ) (hv : Function.Injective v)
+  (hne : ∀ (i : Fin N), v i ≠ 0) :
+  ResidualSLT.FinitePositiveFeatureGram (ResidualSLT.atomicInput v) fun j x => x ^ (r + ↑j)
+ResidualSLT.network_atomic_gram (r L : ℕ) :
+  ResidualSLT.FinitePositiveFeatureGram (ResidualSLT.atomicInput fun i => ↑↑i + 1) (ResidualSLT.networkFeatures r L)
+def ResidualSLT.networkSquaredError : ℕ → {L : ℕ} → (Fin L → ℝ) → ℝ → ℝ :=
+fun r {L} w x => (Polynomial.eval x (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L) - x) ^ 2
+def ResidualSLT.networkPopulationLoss : MeasureTheory.Measure ℝ → ℕ → {L : ℕ} → (Fin L → ℝ) → ℝ :=
+fun μ r {L} w => ∫ (x : ℝ), ResidualSLT.networkSquaredError r w x ∂μ
+def ResidualSLT.networkFeatures : (r L : ℕ) → Fin (ResidualSLT.networkFeatureCount r L) → ℝ → ℝ :=
+fun r L j x => x ^ (r + ↑j)
+def ResidualSLT.networkCoefficients : (r : ℕ) → {L : ℕ} → (Fin L → ℝ) → Fin (ResidualSLT.networkFeatureCount r L) → ℝ :=
+fun r {L} w j => (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L - Polynomial.X).coeff (r + ↑j)
+structure ResidualSLT.BoundedPositivePriorOn.{u_1} {α : Type u_1} [MeasurableSpace α] (ρ : α → NNReal) (D : Set α)
+  (μ : MeasureTheory.Measure α) : Prop
+number of parameters: 5
+fields:
+  ResidualSLT.BoundedPositivePriorOn.measurable : Measurable ρ
+  ResidualSLT.BoundedPositivePriorOn.bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C
+constructor:
+  ResidualSLT.BoundedPositivePriorOn.mk.{u_1} {α : Type u_1} [MeasurableSpace α] {ρ : α → NNReal} {D : Set α}
+    {μ : MeasureTheory.Measure α} (measurable : Measurable ρ)
+    (bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C) : ResidualSLT.BoundedPositivePriorOn ρ D μ
+def ResidualSLT.HasIntegrabilityThresholdOn.{u_1} : {α : Type u_1} →
+  [inst : MeasurableSpace α] → (α → ℝ) → Set α → MeasureTheory.Measure α → ℝ → Prop :=
+fun {α} [MeasurableSpace α] K D μ threshold =>
+  (∀ᵐ (x : α) ∂μ.restrict D, 0 < K x) ∧
+    ∀ (s : ℝ), 0 ≤ s → (MeasureTheory.IntegrableOn (fun x => K x ^ (-s)) D μ ↔ s < threshold)
+ResidualSLT.networkRemainder_abs_majorized (r n : ℕ) (u : ℕ → ℝ) :
+  ResidualSLT.CoeffMajorized (ResidualSLT.networkRemainder r n u) (ResidualSLT.networkRemainder r n fun i => |u i|)
+ResidualSLT.signed_remainder_coeff_bound (r n : ℕ) (u : ℕ → ℝ) (hu : ∀ i < n, |u i| ≤ 1) (k : ℕ) :
+  |(ResidualSLT.networkRemainder r n u).coeff k| ≤
+    ResidualSLT.signedRemainderEnvelope r n * ↑n * ∑ i ∈ Finset.range n, u i ^ 2
+ResidualSLT.signed_higher_coeff_bound (r n : ℕ) (u : ℕ → ℝ) (hu : ∀ i < n, |u i| ≤ 1) (k : ℕ) (hk : k ≠ r) :
+  |(ResidualSLT.network r u n - Polynomial.X).coeff k| ≤
+    ResidualSLT.signedRemainderEnvelope r n * ↑n * ∑ i ∈ Finset.range n, u i ^ 2
+ResidualSLT.signed_raw_higher_coeff_bound (r L : ℕ) (w : Fin L → ℝ) (hw : w ∈ Metric.ball 0 1) (k : ℕ) (hk : k ≠ r) :
+  |(ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L - Polynomial.X).coeff k| ≤
+    ResidualSLT.signedRemainderEnvelope r L * ↑L * ResidualSLT.weightSquareSum r w
+ResidualSLT.residual_coeff_le_norm (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L) (w : Fin L → ℝ) (k : ℕ) :
+  |(ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L - Polynomial.X).coeff k| ≤
+    ‖ResidualSLT.networkCoefficients r w‖
+ResidualSLT.residual_second_SQ (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (w : Fin L → ℝ) :
+  2 * (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L - Polynomial.X).coeff (2 * r - 1) =
+    ↑r * (ResidualSLT.weightPowerSum r w ^ 2 - ResidualSLT.weightSquareSum r w)
+ResidualSLT.signed_network_coefficients_upper (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L) (w : Fin L → ℝ)
+  (hw : w ∈ Metric.ball 0 1) :
+  ‖ResidualSLT.networkCoefficients r w‖ ≤
+    |ResidualSLT.weightPowerSum r w| + ResidualSLT.signedRemainderEnvelope r L * ↑L * ResidualSLT.weightSquareSum r w
+ResidualSLT.signed_network_coefficients_lower (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L) (w : Fin L → ℝ)
+  (hw : w ∈ Metric.ball 0 1) :
+  |ResidualSLT.weightPowerSum r w| ≤ ‖ResidualSLT.networkCoefficients r w‖ ∧
+    ResidualSLT.weightSquareSum r w ≤ (↑L + 1) * ‖ResidualSLT.networkCoefficients r w‖
+ResidualSLT.signed_network_coefficients_bounds (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L) (w : Fin L → ℝ)
+  (hw : w ∈ Metric.ball 0 1) :
+  ResidualSLT.cancellationModel r w ≤ (1 + (↑L + 1) ^ 2) * ‖ResidualSLT.networkCoefficients r w‖ ^ 2 ∧
+    ‖ResidualSLT.networkCoefficients r w‖ ^ 2 ≤
+      2 * (1 + (ResidualSLT.signedRemainderEnvelope r L * ↑L) ^ 2) * ResidualSLT.cancellationModel r w
+ResidualSLT.signed_network_loss_comparison (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) :
+  ∃ c C,
+    0 < c ∧
+      0 < C ∧
+        ∀ w ∈ Metric.ball 0 1,
+          c * ResidualSLT.cancellationModel r w ≤ ResidualSLT.networkPopulationLoss μ r w ∧
+            ResidualSLT.networkPopulationLoss μ r w ≤ C * ResidualSLT.cancellationModel r w
+ResidualSLT.signed_network_certificate (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ) (hL : 0 < L)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) :
+  (∀ (w : Fin L → ℝ), MeasureTheory.Integrable (ResidualSLT.networkSquaredError r w) μ) ∧
+    (∀ (w : Fin L → ℝ),
+        ResidualSLT.networkPopulationLoss μ r w =
+          ResidualSLT.gramValue (ResidualSLT.featureGram μ (ResidualSLT.networkFeatures r L))
+            (ResidualSLT.networkCoefficients r w)) ∧
+      ∃ c C,
+        0 < c ∧
+          0 < C ∧
+            ∀ w ∈ Metric.ball 0 1,
+              c * ResidualSLT.cancellationModel r w ≤ ResidualSLT.networkPopulationLoss μ r w ∧
+                ResidualSLT.networkPopulationLoss μ r w ≤ C * ResidualSLT.cancellationModel r w
+ResidualSLT.signed_network_cancellation_comparison (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) :
+  ∃ c C,
+    0 < c ∧
+      0 < C ∧
+        ∀ w ∈ Metric.ball 0 1,
+          ResidualSLT.weightPowerSum r w = 0 →
+            c * ResidualSLT.weightSquareSum r w ^ 2 ≤ ResidualSLT.networkPopulationLoss μ r w ∧
+              ResidualSLT.networkPopulationLoss μ r w ≤ C * ResidualSLT.weightSquareSum r w ^ 2
+ResidualSLT.cancellationModel_pos (r L : ℕ) (w : Fin L → ℝ) (hw : w ≠ 0) : 0 < ResidualSLT.cancellationModel r w
+ResidualSLT.signed_network_integrableOn_iff_model (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε1 : ε ≤ 1)
+  (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume ↔
+    MeasureTheory.IntegrableOn (fun w => ResidualSLT.cancellationModel r w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume
+ResidualSLT.signed_network_prior_integrableOn_iff_model (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε1 : ε ≤ 1)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume)
+  (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    MeasureTheory.IntegrableOn (fun w => ResidualSLT.cancellationModel r w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume
+ResidualSLT.signed_network_prior_weighted_integrableOn_iff_model (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r)
+  (L : ℕ) (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ)
+  (hε1 : ε ≤ 1) (ρ : (Fin L → ℝ) → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ↑(ρ w) * ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume ↔
+    MeasureTheory.IntegrableOn (fun w => ResidualSLT.cancellationModel r w ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume
+def ResidualSLT.CoeffMajorized : Polynomial ℝ → Polynomial ℝ → Prop :=
+fun p q => ∀ (k : ℕ), |p.coeff k| ≤ q.coeff k
+def ResidualSLT.networkRemainder : ℕ → ℕ → (ℕ → ℝ) → Polynomial ℝ :=
+fun r n u => ResidualSLT.network r u n - Polynomial.X - Polynomial.C (∑ i ∈ Finset.range n, u i) * Polynomial.X ^ r
+def ResidualSLT.signedRemainderEnvelope : ℕ → ℕ → ℝ :=
+fun r x => Nat.brecOn x (ResidualSLT.signedRemainderEnvelope._f r)
+def ResidualSLT.weightSquareSum : ℕ → {L : ℕ} → (Fin L → ℝ) → ℝ :=
+fun r {L} w => ∑ i, (w i ^ r) ^ 2
+def ResidualSLT.cancellationModel : ℕ → {L : ℕ} → (Fin L → ℝ) → ℝ :=
+fun r {L} w => ResidualSLT.weightPowerSum r w ^ 2 + ResidualSLT.weightSquareSum r w ^ 2
+'ResidualSLT.separator_family_independent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.active_family_independent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.atomicInput_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.atomicInput_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.atomic_shiftedPower_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_atomic_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.coeff_pow_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_residual_coeff_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.coeff_le_eval_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkEnvelope_one_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_eval_one_control' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.residual_coeff_uniform_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.coeff_one_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_coeff_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_coeff_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_coeff_two_SQ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_coeff_graded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_coeff_r' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_coeff_two_mul_sub_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.raw_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.raw_residual_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.activeCount_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.activeCount_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.activeCount_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_natDegree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_eq_X_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.raw_network_eq_X_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightPowerSum_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenNetworkModel_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenNetworkModel_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightPowerSum_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenNetworkModel_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenNetworkModel_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenNetworkModel_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_effective_weights_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_residual_coeff_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_coefficients_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_loss_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.parameter_ball_eq_cube' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_prior_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_prior_weighted_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_network_prior_not_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.feature_square_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.feature_square_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.feature_integral_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gramValue_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gramValue_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gramValue_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gramValue_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.monomial_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.monomial_thresholdOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.monomial_integrableOn_symmetric_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.monomial_thresholdOn_symmetric' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_rpow_const_mul_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.HasIntegrabilityThresholdOn.const_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_rpow_iff_of_comparable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.HasIntegrabilityThresholdOn.of_comparable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.HasIntegrabilityThresholdOn.mul_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_rpow_iff_of_comparable_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_raw_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkFeatureCount_pos' depends on axioms: [propext, Quot.sound]
+'ResidualSLT.network_residual_X_pow_dvd' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_feature_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_squaredError_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_squaredError_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_loss_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkCoefficients_first' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.continuous_coeff_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_coeff_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkCoefficients_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkPopulationLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.normalCrossingCutoff_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.normalCrossingCutoff_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.normalCrossingCutoff_log_equivalent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_squaredError_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_squaredError_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_loss_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.finitePositiveEvenMoment_of_mass_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_not_integrable_at_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_prior_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_prior_weighted_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_prior_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_prior_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneBlock_prior_not_integrable_at_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_coeff_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_eq_graded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_zero_weights' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_succ_of_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.eval_network_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_withDensity_iff_weighted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_withDensity_iff_of_boundedPositive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.HasIntegrabilityThresholdOn.withDensity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrable_prod_mul_iff_of_ae_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.productPowers_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.productPowers_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.productPowers_prior_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_network_polynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_squaredError_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_squaredError_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_loss_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadraticLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_coefficients_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_loss_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.parameter_ball_eq_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadraticModel_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadraticModel_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadraticModel_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadraticModel_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_prior_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_twoBlock_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_prior_not_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_prior_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.quadratic_prior_weighted_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.norm_rpow_integrableOn_ball_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.normPower_integrableOn_ball_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.normPower_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.positive_homogeneous_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.positive_homogeneous_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.positive_homogeneous_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.real_two_coefficients_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.real_raw_two_coefficients_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.separator_coprime' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.separator_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.separator_relation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.active_factor_relation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.two_direction_degree_gaps' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.CoeffMajorized.nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.CoeffMajorized.add' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.CoeffMajorized.mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.CoeffMajorized.pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.coeffMajorized_X' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.coeffMajorized_C' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.CoeffMajorized.pow_sub_X' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_abs_majorized' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkRemainder_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkRemainder_abs_majorized' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signedRemainderEnvelope_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_power_eval_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.networkRemainder_eval_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_remainder_coeff_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_higher_coeff_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightSquareSum_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightSquareSum_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_effective_weights_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_raw_higher_coeff_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.residual_coeff_le_norm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.residual_second_SQ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightPowerSum_abs_le_depth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_coefficients_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_coefficients_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_coefficients_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_loss_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_cancellation_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_integrableOn_iff_model' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_prior_integrableOn_iff_model' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_prior_weighted_integrableOn_iff_model' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ResidualSLT.sumEvenPowers_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.sumEvenPowers_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.sumEvenPowers_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.sumEvenPowers_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.sumEvenPowers_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.sumEvenPowers_prior_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_measurable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.rectangle_rpow_integrable_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_le_product' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellation_exponent_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_integrable_of_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_lower_flat' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_lower_core' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_radial_necessary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_core_necessary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_integrable_of_nonpos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedNetworkModel_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_even_transverse_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_symmetric_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedNetworkModel_phase_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem ResidualSLT.weightedCancellation_integrableOn_iff : ∀ (a : ℝ),
+  0 < a →
+    ∀ (r d : ℕ),
+      0 < r →
+        0 < d →
+          ∀ (s : ℝ),
+            MeasureTheory.IntegrableOn (ResidualSLT.weightedCancellation a r d s) ResidualSLT.cancellationRectangle
+                MeasureTheory.volume ↔
+              s < min (a / (2 * ↑r)) ((a + ↑d) / (2 * (↑r + ↑d))) :=
+<not imported>
+theorem ResidualSLT.weightedCancellation_symmetric_integrableOn_iff : ∀ (a : ℝ),
+  0 < a →
+    ∀ (r d : ℕ),
+      0 < r →
+        0 < d →
+          ∀ (s : ℝ),
+            MeasureTheory.IntegrableOn (ResidualSLT.weightedCancellation a r d s) (Set.Ioo 0 1 ×ˢ Set.Ioo (-1) 1)
+                MeasureTheory.volume ↔
+              s < min (a / (2 * ↑r)) ((a + ↑d) / (2 * (↑r + ↑d))) :=
+<not imported>
+theorem ResidualSLT.weightedNetworkModel_phase_transition : ∀ (L r : ℕ),
+  0 < L →
+    0 < r →
+      ∀ (s : ℝ),
+        MeasureTheory.IntegrableOn (ResidualSLT.weightedCancellation (↑L) r r s) (Set.Ioo 0 1 ×ˢ Set.Ioo (-1) 1)
+            MeasureTheory.volume ↔
+          s < if L < r then ↑L / (2 * ↑r) else if L = r then 1 / 2 else (↑L + ↑r) / (4 * ↑r) :=
+<not imported>
+'ResidualSLT.weightedCancellation_smallRectangle_necessary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_local_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationNormalForm_weightedMeasure_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedNetworkModel_local_phase_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedCancellation_local_not_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightPowerSum_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.fermatDifferential_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.fermatDifferential_radial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.fermatDifferential_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.fermat_sphere_transverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_radial_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_fermat_sphere_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_integrableOn_iff_radial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_prior_integrableOn_iff_radial' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.weightedCancellation_local_integrableOn_iff (a : ℝ) (ha : 0 < a) (r d : ℕ) (hr : 0 < r) (hd : 0 < d)
+  (ε δ : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (hδ : 0 < δ) (hδ1 : δ ≤ 1) (s : ℝ) :
+  MeasureTheory.IntegrableOn (ResidualSLT.weightedCancellation a r d s) (Set.Ioo 0 ε ×ˢ Set.Ioo (-δ) δ)
+      MeasureTheory.volume ↔
+    s < min (a / (2 * ↑r)) ((a + ↑d) / (2 * (↑r + ↑d)))
+ResidualSLT.cancellationNormalForm_weightedMeasure_iff (a : ℝ) (ha : 0 < a) (r d : ℕ) (hr : 0 < r) (hd : 0 < d)
+  (ε δ : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (hδ : 0 < δ) (hδ1 : δ ≤ 1) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun z => (z.1 ^ (2 * r) * (z.2 ^ 2 + z.1 ^ (2 * d))) ^ (-s))
+      (Set.Ioo 0 ε ×ˢ Set.Ioo (-δ) δ) (MeasureTheory.volume.withDensity fun z => ENNReal.ofReal (z.1 ^ (a - 1))) ↔
+    s < min (a / (2 * ↑r)) ((a + ↑d) / (2 * (↑r + ↑d)))
+ResidualSLT.weightedNetworkModel_local_phase_transition (L r : ℕ) (hL : 0 < L) (hr : 0 < r) (ε δ : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (hδ : 0 < δ) (hδ1 : δ ≤ 1) (s : ℝ) :
+  MeasureTheory.IntegrableOn (ResidualSLT.weightedCancellation (↑L) r r s) (Set.Ioo 0 ε ×ˢ Set.Ioo (-δ) δ)
+      MeasureTheory.volume ↔
+    s < if L < r then ↑L / (2 * ↑r) else if L = r then 1 / 2 else (↑L + ↑r) / (4 * ↑r)
+ResidualSLT.weightPowerSum_hasFDerivAt (r L : ℕ) (w : Fin L → ℝ) :
+  HasFDerivAt (ResidualSLT.weightPowerSum r) (ResidualSLT.fermatDifferential r w) w
+ResidualSLT.fermat_sphere_transverse (r L : ℕ) (hr : 0 < r) (w : Fin L → ℝ) (hS : ResidualSLT.weightPowerSum r w = 0)
+  (hSphere : ResidualSLT.weightPowerSum 2 w = 1) :
+  ∃ v, (ResidualSLT.fermatDifferential 2 w) v = 0 ∧ (ResidualSLT.fermatDifferential r w) v ≠ 0
+ResidualSLT.cancellationModel_radial_comparison (r L : ℕ) (hr : 0 < r) (hL : 0 < L) :
+  ∃ c C,
+    0 < c ∧
+      0 < C ∧
+        ∀ (w : Fin L → ℝ),
+          c * (ResidualSLT.weightPowerSum r w ^ 2 + ‖w‖ ^ (4 * r)) ≤ ResidualSLT.cancellationModel r w ∧
+            ResidualSLT.cancellationModel r w ≤ C * (ResidualSLT.weightPowerSum r w ^ 2 + ‖w‖ ^ (4 * r))
+ResidualSLT.signed_network_prior_integrableOn_iff_radial (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 2 ≤ r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε1 : ε ≤ 1)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume)
+  (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    MeasureTheory.IntegrableOn (fun w => (ResidualSLT.weightPowerSum r w ^ 2 + ‖w‖ ^ (4 * r)) ^ (-s)) (Metric.ball 0 ε)
+      MeasureTheory.volume
+'ResidualSLT.transverseMap_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.transverseMap_contDiff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.transverseDeriv_det' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.transverseDeriv_bijective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_image_iff_of_bounded_jacobian' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.exists_transverse_chart' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.exists_mem_transverseChart' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.TransverseChart.inverse_coordinate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.TransverseChart.inverse_other' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.TransverseChart.integrableOn_image_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.finite_transverse_chart_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.compact_complement_abs_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.TransverseChart.radial_integrableOn_image_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.angularFermat_contDiff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.angularFermat_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.angularFermat_zero_regular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.angularFermat_exists_chart' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.angularFermat_finite_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.angularFermat_finite_cover_and_complement' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightPowerSum_fixed_coordinate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_chart_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_integrable_off_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_contDiff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_left_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_right_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_injOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowupDeriv_det' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_integrableOn_image_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_eq_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_radialBlowup' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowupInverse_contDiffOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_angular_Q_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_radialBlowup_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_on_radial_patch_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.radialBlowup_dominating_representation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_radialBlowup_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.exists_transverse_chart {n : ℕ} (j : Fin n) {f : (Fin n → ℝ) → ℝ} (hf : ContDiff ℝ 1 f) (a : Fin n → ℝ)
+  (ha : (fderiv ℝ f a) (Pi.single j 1) ≠ 0) :
+  ∃ e,
+    a ∈ e.source ∧
+      ↑e = ResidualSLT.transverseMap j f ∧
+        ContDiffOn ℝ 1 (↑e.symm) e.target ∧
+          ∃ c C,
+            0 < c ∧
+              0 < C ∧
+                (∀ x ∈ e.source,
+                    c ≤ |(fderiv ℝ (ResidualSLT.transverseMap j f) x).det| ∧
+                      |(fderiv ℝ (ResidualSLT.transverseMap j f) x).det| ≤ C) ∧
+                  ∀ (g : (Fin n → ℝ) → ℝ),
+                    MeasureTheory.IntegrableOn g e.target MeasureTheory.volume ↔
+                      MeasureTheory.IntegrableOn (fun x => g (ResidualSLT.transverseMap j f x)) e.source
+                        MeasureTheory.volume
+ResidualSLT.TransverseChart {n : ℕ} (f : (Fin n → ℝ) → ℝ) : Type
+ResidualSLT.TransverseChart.radial_integrableOn_image_iff {n : ℕ} {f : (Fin n → ℝ) → ℝ}
+  (c : ResidualSLT.TransverseChart f) (hf : ContDiff ℝ 1 f) {R : Set ℝ} (hR : MeasurableSet R) {D : Set (Fin n → ℝ)}
+  (hD : MeasurableSet D) (hsub : D ⊆ c.chart.source) (g : ℝ × (Fin n → ℝ) → ℝ) :
+  MeasureTheory.IntegrableOn g (R ×ˢ (↑c.chart '' D)) MeasureTheory.volume ↔
+    MeasureTheory.IntegrableOn (fun z => g (z.1, ↑c.chart z.2)) (R ×ˢ D) MeasureTheory.volume
+ResidualSLT.angularFermat_finite_cover_and_complement (r n : ℕ) (hr : 0 < r) (c : ℝ) (hc : c ≠ 0) (R : ℝ) :
+  ∃ charts,
+    Metric.closedBall 0 R ∩ ResidualSLT.angularFermat r c ⁻¹' {0} ⊆ ⋃ chart ∈ charts, chart.chart.source ∧
+      ∃ b,
+        0 < b ∧
+          ∀ y ∈ Metric.closedBall 0 R \ ⋃ chart ∈ charts, chart.chart.source, b ≤ |ResidualSLT.angularFermat r c y|
+ResidualSLT.weightedAngular_chart_iff {n : ℕ} {f : (Fin n → ℝ) → ℝ} (hf : ContDiff ℝ 1 f)
+  (c : ResidualSLT.TransverseChart f) {R : Set ℝ} (hR : MeasurableSet R) {D : Set (Fin n → ℝ)} (hD : MeasurableSet D)
+  (hsub : D ⊆ c.chart.source) (a : ℝ) (r : ℕ) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r r s (z.1, f z.2)) (R ×ˢ D)
+      MeasureTheory.volume ↔
+    MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r r s (z.1, z.2 c.index))
+      (R ×ˢ (↑c.chart '' D)) MeasureTheory.volume
+ResidualSLT.weightedAngular_integrable_off_zero.{u_1} {α : Type u_1} [MeasurableSpace α] (μ : MeasureTheory.Measure α)
+  [MeasureTheory.SFinite μ] {K : Set α} (hK : MeasurableSet K) (hfinite : μ K ≠ ⊤) {f : α → ℝ} (hf : Measurable f)
+  {c : ℝ} (hc : 0 < c) (hbound : ∀ y ∈ K, c ≤ |f y|) (a : ℝ) (r : ℕ) (s : ℝ) (hs : 0 ≤ s) (hthreshold : 2 * ↑r * s < a)
+  (ε : ℝ) (hε : 0 < ε) :
+  MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r r s (z.1, f z.2)) (Set.Ioo 0 ε ×ˢ K)
+    (MeasureTheory.volume.prod μ)
+ResidualSLT.radialBlowup_integrableOn_image_iff {n : ℕ} (j : Fin n) {D : Set (Fin n → ℝ)} (hD : MeasurableSet D)
+  (hpos : ∀ z ∈ D, 0 < z j) (g : (Fin n → ℝ) → ℝ) :
+  MeasureTheory.IntegrableOn g (ResidualSLT.radialBlowup j '' D) MeasureTheory.volume ↔
+    MeasureTheory.IntegrableOn (fun z => z j ^ (n - 1) * g (ResidualSLT.radialBlowup j z)) D MeasureTheory.volume
+ResidualSLT.cancellationModel_on_radial_patch_iff {n : ℕ} (r : ℕ) (j : Fin n) {D : Set (Fin n → ℝ)}
+  (hD : MeasurableSet D) (hpos : ∀ z ∈ D, 0 < z j) (hangular : ∀ z ∈ D, ∀ (i : Fin n), i ≠ j → |z i| ≤ 1) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.cancellationModel r w ^ (-s)) (ResidualSLT.radialBlowup j '' D)
+      MeasureTheory.volume ↔
+    MeasureTheory.IntegrableOn
+      (fun z => (z j ^ (2 * r) * (ResidualSLT.weightPowerSum r (Function.update z j 1) ^ 2 + z j ^ (2 * r))) ^ (-s)) D
+      (MeasureTheory.volume.withDensity fun z => ENNReal.ofReal (z j ^ (n - 1)))
+ResidualSLT.signed_radialBlowup_cover {n : ℕ} (ε : ℝ) (w : Fin n → ℝ) (hw : w ∈ Metric.ball 0 ε) (hne : w ≠ 0) :
+  ∃ j z,
+    0 < z j ∧
+      z j < ε ∧
+        (∀ (i : Fin n), i ≠ j → |z i| ≤ 1) ∧ (w = ResidualSLT.radialBlowup j z ∨ w = -ResidualSLT.radialBlowup j z)
+'ResidualSLT.cancellationModel_projective_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_transverse_cone_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveConePatch_measurableSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveConePatch_subset_ball' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_prior_integrableOn_iff_model_on_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ResidualSLT.signed_network_prior_transverse_cone_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.cancellationModel_transverse_cone_iff {n : ℕ} (r : ℕ) (j : Fin (n + 1))
+  (c : ResidualSLT.TransverseChart (ResidualSLT.angularFermat r 1)) {R : Set ℝ} (hR : MeasurableSet R)
+  (hpos : ∀ ρ ∈ R, 0 < ρ) {D : Set (Fin n → ℝ)} (hD : MeasurableSet D) (hbound : ∀ y ∈ D, ∀ (i : Fin n), |y i| ≤ 1)
+  (hsub : D ⊆ c.chart.source) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.cancellationModel r w ^ (-s)) (ResidualSLT.projectiveConePatch j R D)
+      MeasureTheory.volume ↔
+    MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation (↑n + 1) r r s (z.1, z.2 c.index))
+      (R ×ˢ (↑c.chart '' D)) MeasureTheory.volume
+ResidualSLT.signed_network_prior_transverse_cone_iff (μ : MeasureTheory.Measure ℝ) {n : ℕ} (r : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r (n + 1))) (j : Fin (n + 1))
+  (c : ResidualSLT.TransverseChart (ResidualSLT.angularFermat r 1)) {R : Set ℝ} (hR : MeasurableSet R)
+  (hpos : ∀ t ∈ R, 0 < t) (hR1 : ∀ t ∈ R, t < 1) {D : Set (Fin n → ℝ)} (hD : MeasurableSet D)
+  (hbound : ∀ y ∈ D, ∀ (i : Fin n), |y i| ≤ 1) (hsub : D ⊆ c.chart.source) (ρ : (Fin (n + 1) → ℝ) → NNReal)
+  (hρ : ResidualSLT.BoundedPositivePriorOn ρ (ResidualSLT.projectiveConePatch j R D) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s))
+      (ResidualSLT.projectiveConePatch j R D) (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+    MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation (↑n + 1) r r s (z.1, z.2 c.index))
+      (R ×ˢ (↑c.chart '' D)) MeasureTheory.volume
+'ResidualSLT.angularCylinder_integrable_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.TransverseChart.image_subset_cylinder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.TransverseChart.exists_inner_cylinder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_integrable_cube' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_necessary_of_interior_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_radial_necessary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_angularFermat_interior_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_integrable_of_angular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_angular_of_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_integrable_nonpos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_cancellationModel_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.cancellationModel_one_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_cancellationModel_all_depths_integrableOn_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ResidualSLT.BoundedPositivePriorOn.mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signed_network_prior_necessary_of_interior_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_prior_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_prior_phase_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_prior_weighted_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_prior_not_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.odd_network_prior_phase_transition (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 3 ≤ r) (hodd : Odd r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (p : (Fin L → ℝ) → NNReal)
+  (hp : ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(p w)) ↔
+    s < if L < r then ↑L / (2 * ↑r) else if L = r then 1 / 2 else (↑L + ↑r) / (4 * ↑r)
+ResidualSLT.odd_network_prior_integrableOn_iff (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 3 ≤ r) (hodd : Odd r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (p : (Fin L → ℝ) → NNReal)
+  (hp : ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ) :
+  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(p w)) ↔
+    s < min (↑L / (2 * ↑r)) ((↑L + ↑r) / (4 * ↑r))
+ResidualSLT.odd_network_certificate (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 3 ≤ r) (hodd : Odd r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (p : (Fin L → ℝ) → NNReal)
+  (hp : ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume) :
+  (∀ (w : Fin L → ℝ), MeasureTheory.Integrable (ResidualSLT.networkSquaredError r w) μ) ∧
+    (∀ (w : Fin L → ℝ),
+        ResidualSLT.networkPopulationLoss μ r w =
+          ResidualSLT.gramValue (ResidualSLT.featureGram μ (ResidualSLT.networkFeatures r L))
+            (ResidualSLT.networkCoefficients r w)) ∧
+      ResidualSLT.HasIntegrabilityThresholdOn (ResidualSLT.networkPopulationLoss μ r) (Metric.ball 0 ε)
+        (MeasureTheory.volume.withDensity fun w => ↑(p w)) (min (↑L / (2 * ↑r)) ((↑L + ↑r) / (4 * ↑r)))
+ResidualSLT.odd_network_prior_not_integrable (μ : MeasureTheory.Measure ℝ) (r : ℕ) (hr : 3 ≤ r) (hodd : Odd r) (L : ℕ)
+  (hL : 0 < L) (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L)) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (p : (Fin L → ℝ) → NNReal)
+  (hp : ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume) (s : ℝ)
+  (hs : min (↑L / (2 * ↑r)) ((↑L + ↑r) / (4 * ↑r)) ≤ s) :
+  ¬MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(p w))
+ResidualSLT.signed_network_prior_necessary_of_interior_zero (μ : MeasureTheory.Measure ℝ) (r n : ℕ) (hr : 2 ≤ r)
+  (h : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r (n + 2))) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) (p : (Fin (n + 2) → ℝ) → NNReal)
+  (hp : ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume) (y : Fin (n + 1) → ℝ)
+  (hy : y ∈ Metric.ball 0 1) (hz : ResidualSLT.angularFermat r 1 y = 0) (s : ℝ)
+  (hi :
+    MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s)) (Metric.ball 0 ε)
+      (MeasureTheory.volume.withDensity fun w => ↑(p w))) :
+  s < min (↑(n + 2) / (2 * ↑r)) ((↑(n + 2) + ↑r) / (4 * ↑r))

@@ -1,0 +1,378 @@
+def ResidualSLT.LocalNetworkCertificate : MeasureTheory.Measure ℝ →
+  ℕ → {L : ℕ} → (Fin L → ℝ) → (Fin L → ℝ) → ((Fin L → ℝ) → NNReal) → ℝ × ℕ → Prop :=
+fun μ r {L} t x ρ p =>
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              (∀ (s : ℝ),
+                  MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s)) (Metric.ball x ε)
+                      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                    s < p.1) ∧
+                ¬MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-p.1)) (Metric.ball x ε)
+                      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ∧
+                  ResidualSLT.HasLaplaceOrder p.1 p.2 fun N =>
+                    ∫ (w : Fin L → ℝ) in Metric.ball x ε,
+                      Real.exp
+                        (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+structure ResidualSLT.UnifiedNetworkCertificate (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (t : Fin L → ℝ)
+  (ρ : (Fin L → ℝ) → NNReal) : Prop
+number of parameters: 6
+fields:
+  ResidualSLT.UnifiedNetworkCertificate.active_count_le : k ≤ L
+  ResidualSLT.UnifiedNetworkCertificate.loss_fiber : {w | ResidualSLT.networkTargetLoss μ r t w = 0} =
+      ResidualSLT.rawNetworkFiber r L L t
+  ResidualSLT.UnifiedNetworkCertificate.ordered_fiber : ∀ (w : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+        ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+          ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend t i ^ r) L
+  ResidualSLT.UnifiedNetworkCertificate.odd_fiber : Odd r →
+      ∀ (w : Fin L → ℝ),
+        ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+          ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L = ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L
+  ResidualSLT.UnifiedNetworkCertificate.even_fiber : Even r →
+      ∀ (w : Fin L → ℝ),
+        ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+          List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L) =
+            List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L)
+  ResidualSLT.UnifiedNetworkCertificate.finite_fiber : (ResidualSLT.rawNetworkFiber r L L t).Finite
+  ResidualSLT.UnifiedNetworkCertificate.fiber_cardinality : (ResidualSLT.rawNetworkFiber r L L t).ncard =
+      (if Even r then 2 ^ k else 1) * L.choose k
+  ResidualSLT.UnifiedNetworkCertificate.local_certificates : ∀ (x : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t x = 0 →
+        ∃ n τ,
+          (∀ (j : Fin k), τ j ≠ 0) ∧
+            ∑ g, n g = L - k ∧
+              ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+                (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                    x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) ∧
+                  ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n)
+  ResidualSLT.UnifiedNetworkCertificate.local_at_arrangement : ∀ (x : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t x = 0 →
+        ∀ (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ),
+          (∀ (j : Fin k), τ j ≠ 0) →
+            ∀ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+              (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                  x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) →
+                ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n)
+  ResidualSLT.UnifiedNetworkCertificate.global_dominance : ∀ (n : Fin (k + 1) → ℕ),
+      ∑ g, n g = L - k →
+        (ResidualSLT.globalLearningPair r k (L - k)).1 ≤ (ResidualSLT.arrangementLearningPair r k n).1 ∧
+          ((ResidualSLT.arrangementLearningPair r k n).1 = (ResidualSLT.globalLearningPair r k (L - k)).1 →
+            (ResidualSLT.arrangementLearningPair r k n).2 ≤ (ResidualSLT.globalLearningPair r k (L - k)).2)
+  ResidualSLT.UnifiedNetworkCertificate.global_attained : ∃ x,
+      ResidualSLT.networkTargetLoss μ r t x = 0 ∧
+        ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.globalLearningPair r k (L - k))
+  ResidualSLT.UnifiedNetworkCertificate.global_integrability : ∀ (s : ℝ),
+      0 < s →
+        (MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s))
+            (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+          s < (ResidualSLT.globalLearningPair r k (L - k)).1)
+  ResidualSLT.UnifiedNetworkCertificate.global_boundary : ¬MeasureTheory.Integrable
+        (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-(ResidualSLT.globalLearningPair r k (L - k)).1))
+        (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+  ResidualSLT.UnifiedNetworkCertificate.global_laplace : ResidualSLT.HasLaplaceOrder
+      (ResidualSLT.globalLearningPair r k (L - k)).1 (ResidualSLT.globalLearningPair r k (L - k)).2 fun N =>
+      ∫ (w : Fin L → ℝ),
+        Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+constructor:
+  ResidualSLT.UnifiedNetworkCertificate.mk {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+    {ρ : (Fin L → ℝ) → NNReal} (active_count_le : k ≤ L)
+    (loss_fiber : {w | ResidualSLT.networkTargetLoss μ r t w = 0} = ResidualSLT.rawNetworkFiber r L L t)
+    (ordered_fiber :
+      ∀ (w : Fin L → ℝ),
+        ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+          ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+            ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend t i ^ r) L)
+    (odd_fiber :
+      Odd r →
+        ∀ (w : Fin L → ℝ),
+          ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+            ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L = ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L)
+    (even_fiber :
+      Even r →
+        ∀ (w : Fin L → ℝ),
+          ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+            List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L) =
+              List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L))
+    (finite_fiber : (ResidualSLT.rawNetworkFiber r L L t).Finite)
+    (fiber_cardinality : (ResidualSLT.rawNetworkFiber r L L t).ncard = (if Even r then 2 ^ k else 1) * L.choose k)
+    (local_certificates :
+      ∀ (x : Fin L → ℝ),
+        ResidualSLT.networkTargetLoss μ r t x = 0 →
+          ∃ n τ,
+            (∀ (j : Fin k), τ j ≠ 0) ∧
+              ∑ g, n g = L - k ∧
+                ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+                  (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                      x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) ∧
+                    ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n))
+    (local_at_arrangement :
+      ∀ (x : Fin L → ℝ),
+        ResidualSLT.networkTargetLoss μ r t x = 0 →
+          ∀ (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ),
+            (∀ (j : Fin k), τ j ≠ 0) →
+              ∀ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+                (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                    x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) →
+                  ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n))
+    (global_dominance :
+      ∀ (n : Fin (k + 1) → ℕ),
+        ∑ g, n g = L - k →
+          (ResidualSLT.globalLearningPair r k (L - k)).1 ≤ (ResidualSLT.arrangementLearningPair r k n).1 ∧
+            ((ResidualSLT.arrangementLearningPair r k n).1 = (ResidualSLT.globalLearningPair r k (L - k)).1 →
+              (ResidualSLT.arrangementLearningPair r k n).2 ≤ (ResidualSLT.globalLearningPair r k (L - k)).2))
+    (global_attained :
+      ∃ x,
+        ResidualSLT.networkTargetLoss μ r t x = 0 ∧
+          ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.globalLearningPair r k (L - k)))
+    (global_integrability :
+      ∀ (s : ℝ),
+        0 < s →
+          (MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s))
+              (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+            s < (ResidualSLT.globalLearningPair r k (L - k)).1))
+    (global_boundary :
+      ¬MeasureTheory.Integrable
+          (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-(ResidualSLT.globalLearningPair r k (L - k)).1))
+          (MeasureTheory.volume.withDensity fun w => ↑(ρ w)))
+    (global_laplace :
+      ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r k (L - k)).1
+        (ResidualSLT.globalLearningPair r k (L - k)).2 fun N =>
+        ∫ (w : Fin L → ℝ),
+          Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)) :
+    ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ
+ResidualSLT.LocalNetworkCertificate (μ : MeasureTheory.Measure ℝ) (r : ℕ) {L : ℕ} (t x : Fin L → ℝ)
+  (ρ : (Fin L → ℝ) → NNReal) (p : ℝ × ℕ) : Prop
+'ResidualSLT.LocalNetworkCertificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_raw_full_certificate_at (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (n : Fin (k + 1) → ℕ)
+  (τ : Fin k → ℝ) (hτ : ∀ (j : Fin k), τ j ≠ 0) (hd : ResidualSLT.arrangementDepth k n k ⋯ = L) (x : Fin L → ℝ)
+  (hx :
+    ∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+      x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : (Fin L → ℝ) → NNReal),
+                ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball x ε) MeasureTheory.volume →
+                  (∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkTargetLoss μ r x w ^ (-s))
+                          (Metric.ball x ε) (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                        s < (ResidualSLT.arrangementLearningPair r k n).1) ∧
+                    ResidualSLT.HasLaplaceOrder (ResidualSLT.arrangementLearningPair r k n).1
+                      (ResidualSLT.arrangementLearningPair r k n).2 fun N =>
+                      ∫ (w : Fin L → ℝ) in Metric.ball x ε,
+                        Real.exp
+                          (-N * ResidualSLT.networkTargetLoss μ r x w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.arrangement_raw_full_certificate_at' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_local_certificate_at_arrangement (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t x : Fin L → ℝ)
+  (hzero : ResidualSLT.networkTargetLoss μ r t x = 0) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) (hd : ResidualSLT.arrangementDepth k n k ⋯ = L)
+  (hx :
+    ∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+      x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i)
+  (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ) (hc : ContinuousAt ρ x) (hp : 0 < ρ x) :
+  ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n)
+'ResidualSLT.network_local_certificate_at_arrangement' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_local_certificate_at_every_fiber (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (hk : ResidualSLT.activeCount (ResidualSLT.zeroExtend t) L = k) (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) (x : Fin L → ℝ)
+  (hzero : ResidualSLT.networkTargetLoss μ r t x = 0) :
+  ∃ n τ,
+    (∀ (j : Fin k), τ j ≠ 0) ∧
+      ∑ g, n g = L - k ∧
+        ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+          (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+              x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) ∧
+            ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n)
+'ResidualSLT.network_local_certificate_at_every_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_global_pair_locally_attained (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (hk : ResidualSLT.activeCount (ResidualSLT.zeroExtend t) L = k) (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  ∃ x,
+    ResidualSLT.networkTargetLoss μ r t x = 0 ∧
+      ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.globalLearningPair r k (L - k))
+'ResidualSLT.network_global_pair_locally_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (t : Fin L → ℝ)
+  (ρ : (Fin L → ℝ) → NNReal) : Prop
+'ResidualSLT.UnifiedNetworkCertificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.unified_residual_network_certificate (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (hk : ResidualSLT.activeCount (ResidualSLT.zeroExtend t) L = k) (ρ : (Fin L → ℝ) → NNReal) (hρ : Measurable ρ)
+  (hfinite : ∫⁻ (w : Fin L → ℝ), ↑(ρ w) < ⊤)
+  (hprior : ∀ (w : Fin L → ℝ), ResidualSLT.networkTargetLoss μ r t w = 0 → ContinuousAt ρ w ∧ 0 < ρ w) :
+  ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ
+'ResidualSLT.unified_residual_network_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.loss_fiber_cardinality {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (h : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  {w | ResidualSLT.networkTargetLoss μ r t w = 0}.Finite ∧
+    {w | ResidualSLT.networkTargetLoss μ r t w = 0}.ncard = (if Even r then 2 ^ k else 1) * L.choose k
+'ResidualSLT.UnifiedNetworkCertificate.loss_fiber_cardinality' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.active_count_le {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) : k ≤ L
+'ResidualSLT.UnifiedNetworkCertificate.active_count_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.loss_fiber {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  {w | ResidualSLT.networkTargetLoss μ r t w = 0} = ResidualSLT.rawNetworkFiber r L L t
+'ResidualSLT.UnifiedNetworkCertificate.loss_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.ordered_fiber {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) (w : Fin L → ℝ) :
+  ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+    ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+      ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend t i ^ r) L
+'ResidualSLT.UnifiedNetworkCertificate.ordered_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.odd_fiber {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  Odd r →
+    ∀ (w : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+        ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L = ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L
+'ResidualSLT.UnifiedNetworkCertificate.odd_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.even_fiber {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  Even r →
+    ∀ (w : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+        List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L) =
+          List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L)
+'ResidualSLT.UnifiedNetworkCertificate.even_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.finite_fiber {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  (ResidualSLT.rawNetworkFiber r L L t).Finite
+'ResidualSLT.UnifiedNetworkCertificate.finite_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.fiber_cardinality {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  (ResidualSLT.rawNetworkFiber r L L t).ncard = (if Even r then 2 ^ k else 1) * L.choose k
+'ResidualSLT.UnifiedNetworkCertificate.fiber_cardinality' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.local_certificates {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) (x : Fin L → ℝ) :
+  ResidualSLT.networkTargetLoss μ r t x = 0 →
+    ∃ n τ,
+      (∀ (j : Fin k), τ j ≠ 0) ∧
+        ∑ g, n g = L - k ∧
+          ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+            (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) ∧
+              ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n)
+'ResidualSLT.UnifiedNetworkCertificate.local_certificates' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.local_at_arrangement {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) (x : Fin L → ℝ) :
+  ResidualSLT.networkTargetLoss μ r t x = 0 →
+    ∀ (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ),
+      (∀ (j : Fin k), τ j ≠ 0) →
+        ∀ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+          (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+              x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) →
+            ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n)
+'ResidualSLT.UnifiedNetworkCertificate.local_at_arrangement' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.global_dominance {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) (n : Fin (k + 1) → ℕ) :
+  ∑ g, n g = L - k →
+    (ResidualSLT.globalLearningPair r k (L - k)).1 ≤ (ResidualSLT.arrangementLearningPair r k n).1 ∧
+      ((ResidualSLT.arrangementLearningPair r k n).1 = (ResidualSLT.globalLearningPair r k (L - k)).1 →
+        (ResidualSLT.arrangementLearningPair r k n).2 ≤ (ResidualSLT.globalLearningPair r k (L - k)).2)
+'ResidualSLT.UnifiedNetworkCertificate.global_dominance' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.global_attained {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  ∃ x,
+    ResidualSLT.networkTargetLoss μ r t x = 0 ∧
+      ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.globalLearningPair r k (L - k))
+'ResidualSLT.UnifiedNetworkCertificate.global_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.global_integrability {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) (s : ℝ) :
+  0 < s →
+    (MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s))
+        (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+      s < (ResidualSLT.globalLearningPair r k (L - k)).1)
+'ResidualSLT.UnifiedNetworkCertificate.global_integrability' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.global_boundary {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  ¬MeasureTheory.Integrable
+      (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-(ResidualSLT.globalLearningPair r k (L - k)).1))
+      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+'ResidualSLT.UnifiedNetworkCertificate.global_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.global_laplace {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (self : ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ) :
+  ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r k (L - k)).1
+    (ResidualSLT.globalLearningPair r k (L - k)).2 fun N =>
+    ∫ (w : Fin L → ℝ),
+      Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.UnifiedNetworkCertificate.global_laplace' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.UnifiedNetworkCertificate.mk {μ : MeasureTheory.Measure ℝ} {r L k : ℕ} {t : Fin L → ℝ}
+  {ρ : (Fin L → ℝ) → NNReal} (active_count_le : k ≤ L)
+  (loss_fiber : {w | ResidualSLT.networkTargetLoss μ r t w = 0} = ResidualSLT.rawNetworkFiber r L L t)
+  (ordered_fiber :
+    ∀ (w : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+        ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+          ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend t i ^ r) L)
+  (odd_fiber :
+    Odd r →
+      ∀ (w : Fin L → ℝ),
+        ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+          ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L = ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L)
+  (even_fiber :
+    Even r →
+      ∀ (w : Fin L → ℝ),
+        ResidualSLT.networkTargetLoss μ r t w = 0 ↔
+          List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L) =
+            List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend t) L))
+  (finite_fiber : (ResidualSLT.rawNetworkFiber r L L t).Finite)
+  (fiber_cardinality : (ResidualSLT.rawNetworkFiber r L L t).ncard = (if Even r then 2 ^ k else 1) * L.choose k)
+  (local_certificates :
+    ∀ (x : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t x = 0 →
+        ∃ n τ,
+          (∀ (j : Fin k), τ j ≠ 0) ∧
+            ∑ g, n g = L - k ∧
+              ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+                (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                    x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) ∧
+                  ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n))
+  (local_at_arrangement :
+    ∀ (x : Fin L → ℝ),
+      ResidualSLT.networkTargetLoss μ r t x = 0 →
+        ∀ (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ),
+          (∀ (j : Fin k), τ j ≠ 0) →
+            ∀ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+              (∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+                  x (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i) →
+                ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.arrangementLearningPair r k n))
+  (global_dominance :
+    ∀ (n : Fin (k + 1) → ℕ),
+      ∑ g, n g = L - k →
+        (ResidualSLT.globalLearningPair r k (L - k)).1 ≤ (ResidualSLT.arrangementLearningPair r k n).1 ∧
+          ((ResidualSLT.arrangementLearningPair r k n).1 = (ResidualSLT.globalLearningPair r k (L - k)).1 →
+            (ResidualSLT.arrangementLearningPair r k n).2 ≤ (ResidualSLT.globalLearningPair r k (L - k)).2))
+  (global_attained :
+    ∃ x,
+      ResidualSLT.networkTargetLoss μ r t x = 0 ∧
+        ResidualSLT.LocalNetworkCertificate μ r t x ρ (ResidualSLT.globalLearningPair r k (L - k)))
+  (global_integrability :
+    ∀ (s : ℝ),
+      0 < s →
+        (MeasureTheory.Integrable (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-s))
+            (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+          s < (ResidualSLT.globalLearningPair r k (L - k)).1))
+  (global_boundary :
+    ¬MeasureTheory.Integrable
+        (fun w => ResidualSLT.networkTargetLoss μ r t w ^ (-(ResidualSLT.globalLearningPair r k (L - k)).1))
+        (MeasureTheory.volume.withDensity fun w => ↑(ρ w)))
+  (global_laplace :
+    ResidualSLT.HasLaplaceOrder (ResidualSLT.globalLearningPair r k (L - k)).1
+      (ResidualSLT.globalLearningPair r k (L - k)).2 fun N =>
+      ∫ (w : Fin L → ℝ),
+        Real.exp (-N * ResidualSLT.networkTargetLoss μ r t w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)) :
+  ResidualSLT.UnifiedNetworkCertificate μ r L k t ρ
+'ResidualSLT.UnifiedNetworkCertificate.mk' depends on axioms: [propext, Classical.choice, Quot.sound]

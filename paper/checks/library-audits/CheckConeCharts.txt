@@ -1,0 +1,24 @@
+'_private.CheckConeCharts.0.ResidualSLT.Examples.cubic_angular_chart' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckConeCharts.0.ResidualSLT.Examples.cubic_transverse_jacobian' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckConeCharts.0.ResidualSLT.Examples.three_dimensional_radial_jacobian' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckConeCharts.0.ResidualSLT.Examples.radial_inverse_checked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckConeCharts.0.ResidualSLT.Examples.cubic_angular_finite_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckConeCharts.0.ResidualSLT.Examples.three_dimensional_signed_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckConeCharts.0.ResidualSLT.Examples.cubic_noncancellation_integrable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckConeCharts.0.ResidualSLT.Examples.cubic_population_chart_transfer' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

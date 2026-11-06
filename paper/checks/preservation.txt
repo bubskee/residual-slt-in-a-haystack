@@ -1,10 +1,13 @@
-theorem: 3 preserved
-lemma: 1 preserved
-equation: 18 preserved
-tabular: 1 preserved
-proof: 1 preserved
-Appendices A-D: unchanged apart from three-sentence C roadmap
-References: 32 unique labels, 9 cited bibliography entries; all resolved
-All 44 Lean source/configuration files identical to prior audited source and isolated audit checkout
-LaTeX: no overfull/underfull boxes, undefined references, or LaTeX warnings
-Focused audit: all nine axiom sets correct; no sorryAx
+equation: all 18 preserved
+lemma: all 1 preserved
+tabular: all 1 preserved
+figure: all 1 preserved
+proof: all 1 preserved
+Three-theorem structure preserved; Theorem 2 unchanged; Theorems 1 and 3 have the documented prior/scope updates
+Appendices A-C preserved except alignment of the finite-mass prior wording in A
+References: 32 unique labels and all 9 bibliography entries resolve
+LaTeX: no box, reference, citation, or LaTeX warnings
+Focused audit: five declarations, exactly propext/Classical.choice/Quot.sound in every dependency set; no sorryAx
+Full library build and all 48 strict library audit/check files pass
+All 176 released Lean source/configuration files match research checkpoint 91b60f5850947f26ba4687d4f458f1ff2c3af6a1; mathlib pin verified
+All 13 pages visually reviewed; unchanged pages in the last layout pass verified pixel-identical

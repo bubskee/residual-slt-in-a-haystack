@@ -1,0 +1,718 @@
+ResidualSLT.high_degree_column_separation (Q H : Polynomial ℝ) (a : ℝ) (hdeg : Q.natDegree < H.natDegree)
+  (hz : Q + Polynomial.C a * H = 0) : Q = 0 ∧ a = 0
+'ResidualSLT.high_degree_column_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.append_active_natDegree (r : ℕ) (hr : 2 ≤ r) (H : Polynomial ℝ) (hH : 0 < H.natDegree) (e : ℝ)
+  (he : e ≠ 0) : (H + Polynomial.C e * H ^ r).natDegree = r * H.natDegree
+'ResidualSLT.append_active_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.append_factor_natDegree (r : ℕ) (hr : 2 ≤ r) (H : Polynomial ℝ) (e : ℝ) (he : e ≠ 0) :
+  (1 + Polynomial.C (↑r * e) * H ^ (r - 1)).natDegree = (r - 1) * H.natDegree
+'ResidualSLT.append_factor_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.signed_arrangement_extension_separation (r : ℕ) (hr : 3 ≤ r) (H Q : Polynomial ℝ) (hH : 0 < H.natDegree)
+  (e a s b : ℝ) (he : e ≠ 0) (hQ : Q.natDegree ≤ (2 * r - 1) * H.natDegree)
+  (hz :
+    (1 + Polynomial.C (↑r * e) * H ^ (r - 1)) * Q + Polynomial.C a * H ^ r +
+          Polynomial.C s * (H + Polynomial.C e * H ^ r) ^ r +
+        Polynomial.C b * (H + Polynomial.C e * H ^ r) ^ (2 * r - 1) =
+      0) :
+  Q = 0 ∧ a = 0 ∧ s = 0 ∧ b = 0
+'ResidualSLT.signed_arrangement_extension_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.even_arrangement_extension_separation (r : ℕ) (hr : 2 ≤ r) (H Q : Polynomial ℝ) (hH : 0 < H.natDegree)
+  (e a s : ℝ) (he : e ≠ 0) (hQ : Q.natDegree ≤ r * H.natDegree)
+  (hz :
+    (1 + Polynomial.C (↑r * e) * H ^ (r - 1)) * Q + Polynomial.C a * H ^ r +
+        Polynomial.C s * (H + Polynomial.C e * H ^ r) ^ r =
+      0) :
+  Q = 0 ∧ a = 0 ∧ s = 0
+'ResidualSLT.even_arrangement_extension_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedJet (r : ℕ) (c a s b : ℕ → ℝ) : ℕ → Polynomial ℝ
+'ResidualSLT.arrangementSignedJet' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenJet (r : ℕ) (c a s : ℕ → ℝ) : ℕ → Polynomial ℝ
+'ResidualSLT.arrangementEvenJet' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_natDegree_pos (r : ℕ) (hr : 2 ≤ r) (c : ℕ → ℝ) (k : ℕ) : 0 < (network r c k).natDegree
+'ResidualSLT.network_natDegree_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedJet_degree (r : ℕ) (hr : 3 ≤ r) (c a s b : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0) :
+  (arrangementSignedJet r c a s b k).natDegree ≤ (2 * r - 1) * (network r c k).natDegree
+'ResidualSLT.arrangementSignedJet_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenJet_degree (r : ℕ) (hr : 2 ≤ r) (c a s : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0) :
+  (arrangementEvenJet r c a s k).natDegree ≤ r * (network r c k).natDegree
+'ResidualSLT.arrangementEvenJet_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedJet_kernel (r : ℕ) (hr : 3 ≤ r) (c a s b : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0)
+  (hz : arrangementSignedJet r c a s b k = 0) : (∀ i < k, a i = 0) ∧ (∀ i ≤ k, s i = 0) ∧ ∀ i ≤ k, b i = 0
+'ResidualSLT.arrangementSignedJet_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenJet_kernel (r : ℕ) (hr : 2 ≤ r) (c a s : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0)
+  (hz : arrangementEvenJet r c a s k = 0) : (∀ i < k, a i = 0) ∧ ∀ i ≤ k, s i = 0
+'ResidualSLT.arrangementEvenJet_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.ArrangementAux (k : ℕ) (d : Fin (k + 1) → ℕ) : Type
+'ResidualSLT.ArrangementAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL (k : ℕ) (d : Fin (k + 1) → ℕ) (j : ℕ) : ArrangementAux k d →L[ℝ] ℝ
+'ResidualSLT.arrangementActiveL' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL (r k : ℕ) (d : Fin (k + 1) → ℕ) (g : ℕ) (x : ℝ) : ArrangementAux k d →L[ℝ] ℝ
+'ResidualSLT.arrangementGroupL' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxEval (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) : ℕ → ArrangementAux k d → ℝ
+'ResidualSLT.arrangementAuxEval' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxDeriv (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) : ℕ → ArrangementAux k d →L[ℝ] ℝ
+'ResidualSLT.arrangementAuxDeriv' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxEval_zero (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) (n : ℕ) :
+  arrangementAuxEval r k d c x n 0 = Polynomial.eval x (network r c n)
+'ResidualSLT.arrangementAuxEval_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroup_hasFDerivAt (r k : ℕ) (d : Fin (k + 1) → ℕ) (g : ℕ) (Y : ArrangementAux k d → ℝ)
+  (D : ArrangementAux k d →L[ℝ] ℝ) (hY : HasFDerivAt Y D 0) :
+  HasFDerivAt (fun v => (arrangementGroupL r k d g (Y v)) v) (arrangementGroupL r k d g (Y 0)) 0
+'ResidualSLT.arrangementGroup_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxEval_hasFDerivAt (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) (n : ℕ) :
+  HasFDerivAt (arrangementAuxEval r k d c x n) (arrangementAuxDeriv r k d c x n) 0
+'ResidualSLT.arrangementAuxEval_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.ArrangementSignedRetained (k : ℕ) : Type
+'ResidualSLT.ArrangementSignedRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.ArrangementEvenRetained (k : ℕ) : Type
+'ResidualSLT.ArrangementEvenRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) :
+  ArrangementSignedRetained k →L[ℝ] ArrangementAux k fun g => d g + 2
+'ResidualSLT.arrangementSignedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) :
+  ArrangementEvenRetained k →L[ℝ] ArrangementAux k fun g => d g + 2
+'ResidualSLT.arrangementEvenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL_signedInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (j : ℕ)
+  (z : ArrangementSignedRetained k) :
+  (arrangementActiveL k (fun g => d g + 2) j) ((arrangementSignedInsert k d κ) z) = zeroExtend (fun i => κ i * z.1 i) j
+'ResidualSLT.arrangementActiveL_signedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL_signedInsert (r k : ℕ) (hr : 2 ≤ r) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (g : ℕ) (x : ℝ)
+  (z : ArrangementSignedRetained k) :
+  (arrangementGroupL r k (fun g => d g + 2) g x) ((arrangementSignedInsert k d κ) z) =
+    zeroExtend z.2.1 g * x ^ r + zeroExtend z.2.2 g * x ^ (2 * r - 1)
+'ResidualSLT.arrangementGroupL_signedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL_evenInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (j : ℕ)
+  (z : ArrangementEvenRetained k) :
+  (arrangementActiveL k (fun g => d g + 2) j) ((arrangementEvenInsert k d κ) z) = zeroExtend (fun i => κ i * z.1 i) j
+'ResidualSLT.arrangementActiveL_evenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL_evenInsert (r k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (g : ℕ) (x : ℝ)
+  (z : ArrangementEvenRetained k) :
+  (arrangementGroupL r k (fun g => d g + 2) g x) ((arrangementEvenInsert k d κ) z) = zeroExtend z.2 g * x ^ r
+'ResidualSLT.arrangementGroupL_evenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxDeriv_signedInsert (r k : ℕ) (hr : 2 ≤ r) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (κ : Fin k → ℝ)
+  (x : ℝ) (n : ℕ) (z : ArrangementSignedRetained k) :
+  (arrangementAuxDeriv r k (fun g => d g + 2) c x n) ((arrangementSignedInsert k d κ) z) =
+    Polynomial.eval x
+      (arrangementSignedJet r c (zeroExtend fun i => κ i * z.1 i) (zeroExtend z.2.1) (zeroExtend z.2.2) n)
+'ResidualSLT.arrangementAuxDeriv_signedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxDeriv_evenInsert (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (κ : Fin k → ℝ) (x : ℝ) (n : ℕ)
+  (z : ArrangementEvenRetained k) :
+  (arrangementAuxDeriv r k (fun g => d g + 2) c x n) ((arrangementEvenInsert k d κ) z) =
+    Polynomial.eval x (arrangementEvenJet r c (zeroExtend fun i => κ i * z.1 i) (zeroExtend z.2) n)
+'ResidualSLT.arrangementAuxDeriv_evenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedInsert_deriv_injective.{u_1} {ι : Type u_1} [Fintype ι] (r k : ℕ) (hr : 3 ≤ r)
+  (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (hc : ∀ j < k, c j ≠ 0) (κ : Fin k → ℝ) (hκ : ∀ (j : Fin k), κ j ≠ 0) (x : ι → ℝ)
+  (hx : Function.Injective x) (hM : (2 * r - 1) * r ^ k < Fintype.card ι) :
+  Function.Injective
+    ⇑((ContinuousLinearMap.pi fun i => arrangementAuxDeriv r k (fun g => d g + 2) c (x i) k) ∘SL
+        arrangementSignedInsert k d κ)
+'ResidualSLT.arrangementSignedInsert_deriv_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenInsert_deriv_injective.{u_1} {ι : Type u_1} [Fintype ι] (r k : ℕ) (hr : 2 ≤ r)
+  (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (hc : ∀ j < k, c j ≠ 0) (κ : Fin k → ℝ) (hκ : ∀ (j : Fin k), κ j ≠ 0) (x : ι → ℝ)
+  (hx : Function.Injective x) (hM : r * r ^ k < Fintype.card ι) :
+  Function.Injective
+    ⇑((ContinuousLinearMap.pi fun i => arrangementAuxDeriv r k (fun g => d g + 2) c (x i) k) ∘SL
+        arrangementEvenInsert k d κ)
+'ResidualSLT.arrangementEvenInsert_deriv_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) :
+  ArrangementAux k fun g => r ^ n g + 2
+'ResidualSLT.arrangementRawAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedRetained (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) :
+  ArrangementSignedRetained k
+'ResidualSLT.arrangementSignedRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenRetained (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) : ArrangementEvenRetained k
+'ResidualSLT.arrangementEvenRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedRemainder (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) :
+  ArrangementAux k fun g => r ^ n g + 2
+'ResidualSLT.arrangementSignedRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenRemainder (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) :
+  ArrangementAux k fun g => r ^ n g + 2
+'ResidualSLT.arrangementEvenRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_signed_decomposition (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) :
+  arrangementRawAux r k n τ w =
+    (arrangementSignedInsert k (fun g => r ^ n g) fun j => ↑r * τ j ^ (r - 1)) (arrangementSignedRetained r k n w) +
+      arrangementSignedRemainder r k n τ w
+'ResidualSLT.arrangementRawAux_signed_decomposition' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_even_decomposition (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) :
+  arrangementRawAux r k n τ w =
+    (arrangementEvenInsert k (fun g => r ^ n g) fun j => ↑r * τ j ^ (r - 1)) (arrangementEvenRetained r k n w) +
+      arrangementEvenRemainder r k n τ w
+'ResidualSLT.arrangementRawAux_even_decomposition' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_tendsto (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  Filter.Tendsto (arrangementRawAux r k n τ) (nhds 0) (nhds 0)
+'ResidualSLT.arrangementRawAux_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.active_power_remainder_isLittleO.{u_1, u_2} {α : Type u_1} {V : Type u_2} [NormedAddCommGroup V]
+  {l : Filter α} (r : ℕ) (τ : ℝ) (h : α → ℝ) (z : α → V) (hh : Filter.Tendsto h l (nhds 0))
+  (hz : ∀ (x : α), ‖h x‖ ≤ ‖z x‖) : (fun x => (τ + h x) ^ r - τ ^ r - ↑r * τ ^ (r - 1) * h x) =o[l] z
+'ResidualSLT.active_power_remainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedRemainder_isLittleO (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  arrangementSignedRemainder r k n τ =o[nhds 0] arrangementSignedRetained r k n
+'ResidualSLT.arrangementSignedRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenRemainder_isLittleO (r k : ℕ) (hr : 2 ≤ r) (heven : Even r) (n : Fin (k + 1) → ℕ)
+  (τ : Fin k → ℝ) : arrangementEvenRemainder r k n τ =o[nhds 0] arrangementEvenRetained r k n
+'ResidualSLT.arrangementEvenRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementDepth (k : ℕ) (n : Fin (k + 1) → ℕ) (m : ℕ) : m ≤ k → ℕ
+'ResidualSLT.arrangementDepth' depends on axioms: [propext, Quot.sound]
+ResidualSLT.arrangementFlatten (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) (m : ℕ)
+  (hm : m ≤ k) : Fin (arrangementDepth k n m hm) → ℝ
+'ResidualSLT.arrangementFlatten' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementDepth_ge (k : ℕ) (n : Fin (k + 1) → ℕ) (m : ℕ) (hm : m ≤ k) : m ≤ arrangementDepth k n m hm
+'ResidualSLT.arrangementDepth_ge' depends on axioms: [propext, Quot.sound]
+ResidualSLT.arrangementFlatten_continuous (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (m : ℕ) (hm : m ≤ k) :
+  Continuous fun w => arrangementFlatten k n τ w m hm
+'ResidualSLT.arrangementFlatten_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL_rawAux (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n)
+  (j : Fin k) :
+  (arrangementActiveL k (fun g => r ^ n g + 2) ↑j) (arrangementRawAux r k n τ w) = (τ j + w.1 j) ^ r - τ j ^ r
+'ResidualSLT.arrangementActiveL_rawAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL_rawAux (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) (g : Fin (k + 1)) (x : ℝ) :
+  x + (arrangementGroupL r k (fun g => r ^ n g + 2) (↑g) x) (arrangementRawAux r k n τ w) =
+    Polynomial.eval x (network r (fun i => zeroExtend (w.2 g) i ^ r) (n g))
+'ResidualSLT.arrangementGroupL_rawAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_eval_network (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) (x : ℝ) (m : ℕ) (hm : m ≤ k) :
+  arrangementAuxEval r k (fun g => r ^ n g + 2) (zeroExtend fun j => τ j ^ r) x m (arrangementRawAux r k n τ w) =
+    Polynomial.eval x
+      (network r (fun i => zeroExtend (arrangementFlatten k n τ w m hm) i ^ r) (arrangementDepth k n m hm))
+'ResidualSLT.arrangementRawAux_eval_network' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_zero (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  arrangementRawAux r k n τ 0 = 0
+'ResidualSLT.arrangementRawAux_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_target (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  network r (fun i => zeroExtend (arrangementFlatten k n τ 0 k ⋯) i ^ r) (arrangementDepth k n k ⋯) =
+    network r (zeroExtend fun j => τ j ^ r) k
+'ResidualSLT.arrangementFlatten_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.HasLaplaceOrder.finset_prod.{u_1} {ι : Type u_1} (s : Finset ι) (a : ι → ℝ) (m : ι → ℕ) (Z : ι → ℝ → ℝ)
+  (h : ∀ i ∈ s, HasLaplaceOrder (a i) (m i) (Z i)) :
+  HasLaplaceOrder (∑ i ∈ s, a i) (1 + ∑ i ∈ s, (m i - 1)) fun N => ∏ i ∈ s, Z i N
+'ResidualSLT.HasLaplaceOrder.finset_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.laplace_integral_sum_pi.{u_1, u_2} {ι : Type u_1} [Fintype ι] {E : ι → Type u_2}
+  [(i : ι) → MeasurableSpace (E i)] (μ : (i : ι) → MeasureTheory.Measure (E i))
+  [∀ (i : ι), MeasureTheory.SigmaFinite (μ i)] (K : (i : ι) → E i → ℝ) (D : (i : ι) → Set (E i)) (N : ℝ) :
+  ∫ (w : (i : ι) → E i) in Set.univ.pi D, Real.exp (-N * ∑ i, K i (w i)) ∂MeasureTheory.Measure.pi μ =
+    ∏ i, ∫ (x : E i) in D i, Real.exp (-N * K i x) ∂μ i
+'ResidualSLT.laplace_integral_sum_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.laplace_order_sum_pi.{u_1, u_2} {ι : Type u_1} [Fintype ι] {E : ι → Type u_2}
+  [(i : ι) → MeasurableSpace (E i)] (μ : (i : ι) → MeasureTheory.Measure (E i))
+  [∀ (i : ι), MeasureTheory.SigmaFinite (μ i)] (K : (i : ι) → E i → ℝ) (D : (i : ι) → Set (E i)) (a : ι → ℝ) (m : ι → ℕ)
+  (h : ∀ (i : ι), HasLaplaceOrder (a i) (m i) fun N => ∫ (x : E i) in D i, Real.exp (-N * K i x) ∂μ i) :
+  HasLaplaceOrder (∑ i, a i) (1 + ∑ i, (m i - 1)) fun N =>
+    ∫ (w : (i : ι) → E i) in Set.univ.pi D, Real.exp (-N * ∑ i, K i (w i)) ∂MeasureTheory.Measure.pi μ
+'ResidualSLT.laplace_order_sum_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair (r k : ℕ) (n : Fin (k + 1) → ℕ) : ℝ × ℕ
+'ResidualSLT.arrangementLearningPair' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementComparisonLoss (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) : ℝ
+'ResidualSLT.arrangementComparisonLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementComparisonLoss_laplace_order (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) :
+  HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+    ∫ (w : ArrangementAux k n) in Metric.ball 0 ε, Real.exp (-N * arrangementComparisonLoss r k n w)
+'ResidualSLT.arrangementComparisonLoss_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss (μ : MeasureTheory.Measure ℝ) (r : ℕ) {L : ℕ} (t w : Fin L → ℝ) : ℝ
+'ResidualSLT.networkTargetLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetCoefficients (r : ℕ) {L : ℕ} (t w : Fin L → ℝ) : Fin (sparseNetworkFeatureCount r L) → ℝ
+'ResidualSLT.networkTargetCoefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTarget_feature_expansion (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L) (t w : Fin L → ℝ) (x : ℝ) :
+  Polynomial.eval x (network r (fun i => zeroExtend w i ^ r) L) -
+      Polynomial.eval x (network r (fun i => zeroExtend t i ^ r) L) =
+    ∑ j, networkTargetCoefficients r t w j * sparseNetworkFeatures r L j x
+'ResidualSLT.networkTarget_feature_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_eq_gram (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)) (t w : Fin L → ℝ) :
+  networkTargetLoss μ r t w = gramValue (featureGram μ (sparseNetworkFeatures r L)) (networkTargetCoefficients r t w)
+'ResidualSLT.networkTargetLoss_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_continuous (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)) (t : Fin L → ℝ) : Continuous (networkTargetLoss μ r t)
+'ResidualSLT.networkTargetLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_coefficient_bounds (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ (t w : Fin L → ℝ),
+          a * ‖networkTargetCoefficients r t w‖ ^ 2 ≤ networkTargetLoss μ r t w ∧
+            networkTargetLoss μ r t w ≤ A * ‖networkTargetCoefficients r t w‖ ^ 2
+'ResidualSLT.networkTargetLoss_coefficient_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_comparable (μ ν : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L))
+  (hν : FinitePositiveFeatureGram ν (sparseNetworkFeatures r L)) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ (t w : Fin L → ℝ),
+          a * networkTargetLoss ν r t w ≤ networkTargetLoss μ r t w ∧
+            networkTargetLoss μ r t w ≤ A * networkTargetLoss ν r t w
+'ResidualSLT.networkTargetLoss_comparable' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementPopulationLoss (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) : ℝ
+'ResidualSLT.arrangementPopulationLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_retained_of_observations.{u_1, u_2} {α : Type u_1} {V : Type u_2} [NormedAddCommGroup V]
+  (μ : MeasureTheory.Measure ℝ) (r L M : ℕ) (hr : 2 ≤ r) (hL : 0 < L) (hM0 : 0 < M)
+  (hM : sparseNetworkFeatureCount r L ≤ M) (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)) (l : Filter α)
+  (t : Fin L → ℝ) (σ : α → Fin L → ℝ) (z : α → V)
+  (hobs :
+    ∃ b B,
+      0 < b ∧
+        0 < B ∧
+          ∀ᶠ (w : α) in l,
+            b * ‖z w‖ ≤
+                ‖fun i =>
+                  Polynomial.eval (↑↑i + 1) (network r (fun j => zeroExtend (σ w) j ^ r) L) -
+                    Polynomial.eval (↑↑i + 1) (network r (fun j => zeroExtend t j ^ r) L)‖ ∧
+              ‖fun i =>
+                  Polynomial.eval (↑↑i + 1) (network r (fun j => zeroExtend (σ w) j ^ r) L) -
+                    Polynomial.eval (↑↑i + 1) (network r (fun j => zeroExtend t j ^ r) L)‖ ≤
+                B * ‖z w‖) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ᶠ (w : α) in l, a * ‖z w‖ ^ 2 ≤ networkTargetLoss μ r t (σ w) ∧ networkTargetLoss μ r t (σ w) ≤ A * ‖z w‖ ^ 2
+'ResidualSLT.networkTargetLoss_retained_of_observations' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_signed_loss_retained_comparison (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 3 ≤ r)
+  (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ᶠ (w : ArrangementAux k n) in nhds 0,
+          a * ‖arrangementSignedRetained r k n w‖ ^ 2 ≤ arrangementPopulationLoss μ r k n τ w ∧
+            arrangementPopulationLoss μ r k n τ w ≤ A * ‖arrangementSignedRetained r k n w‖ ^ 2
+'ResidualSLT.arrangement_signed_loss_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_even_loss_retained_comparison (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (heven : Even r) (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ᶠ (w : ArrangementAux k n) in nhds 0,
+          a * ‖arrangementEvenRetained r k n w‖ ^ 2 ≤ arrangementPopulationLoss μ r k n τ w ∧
+            arrangementPopulationLoss μ r k n τ w ≤ A * ‖arrangementEvenRetained r k n w‖ ^ 2
+'ResidualSLT.arrangement_even_loss_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenRetained_norm_eq (r k : ℕ) (hr : 2 ≤ r) (heven : Even r) (n : Fin (k + 1) → ℕ) :
+  ∀ᶠ (w : ArrangementAux k n) in nhds 0, ‖arrangementSignedRetained r k n w‖ = ‖arrangementEvenRetained r k n w‖
+'ResidualSLT.arrangementEvenRetained_norm_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_loss_retained_comparison (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ᶠ (w : ArrangementAux k n) in nhds 0,
+          a * ‖arrangementSignedRetained r k n w‖ ^ 2 ≤ arrangementPopulationLoss μ r k n τ w ∧
+            arrangementPopulationLoss μ r k n τ w ≤ A * ‖arrangementSignedRetained r k n w‖ ^ 2
+'ResidualSLT.arrangement_loss_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.three_component_sum_sq_bounds (a b c : ℕ) (z : (Fin a → ℝ) × (Fin b → ℝ) × (Fin c → ℝ)) :
+  ‖z‖ ^ 2 ≤ ∑ i, z.1 i ^ 2 + ∑ i, z.2.1 i ^ 2 + ∑ i, z.2.2 i ^ 2 ∧
+    ∑ i, z.1 i ^ 2 + ∑ i, z.2.1 i ^ 2 + ∑ i, z.2.2 i ^ 2 ≤ (↑a + ↑b + ↑c) * ‖z‖ ^ 2
+'ResidualSLT.three_component_sum_sq_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRetainedSquare (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) : ℝ
+'ResidualSLT.arrangementRetainedSquare' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRetainedSquare_bounds (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) :
+  ‖arrangementSignedRetained r k n w‖ ^ 2 ≤ arrangementRetainedSquare r k n w ∧
+    arrangementRetainedSquare r k n w ≤ (3 * ↑k + 2) * ‖arrangementSignedRetained r k n w‖ ^ 2
+'ResidualSLT.arrangementRetainedSquare_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_model_retained_comparison (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ᶠ (w : ArrangementAux k n) in nhds 0,
+          a * ‖arrangementSignedRetained r k n w‖ ^ 2 ≤ arrangementComparisonLoss r k n w ∧
+            arrangementComparisonLoss r k n w ≤ A * ‖arrangementSignedRetained r k n w‖ ^ 2
+'ResidualSLT.arrangement_model_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_network_local_comparison (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ c C,
+    0 < c ∧
+      0 < C ∧
+        ∀ᶠ (w : ArrangementAux k n) in nhds 0,
+          c * arrangementComparisonLoss r k n w ≤ arrangementPopulationLoss μ r k n τ w ∧
+            arrangementPopulationLoss μ r k n τ w ≤ C * arrangementComparisonLoss r k n w
+'ResidualSLT.arrangement_network_local_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementPopulationLoss_continuous (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ) :
+  Continuous (arrangementPopulationLoss μ r k n τ)
+'ResidualSLT.arrangementPopulationLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementComparisonLoss_continuous (r k : ℕ) (n : Fin (k + 1) → ℕ) (hr : 2 ≤ r) :
+  Continuous (arrangementComparisonLoss r k n)
+'ResidualSLT.arrangementComparisonLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_laplace_of_local_comparison (r k : ℕ) (n : Fin (k + 1) → ℕ) (hr : 2 ≤ r)
+  (K : ArrangementAux k n → ℝ) (hK : Continuous K)
+  (hcomp :
+    ∃ c C,
+      0 < c ∧
+        0 < C ∧
+          ∀ᶠ (w : ArrangementAux k n) in nhds 0,
+            c * arrangementComparisonLoss r k n w ≤ K w ∧ K w ≤ C * arrangementComparisonLoss r k n w) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : ArrangementAux k n → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume →
+                  HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+                    ∫ (w : ArrangementAux k n) in Metric.ball 0 ε,
+                      Real.exp (-N * K w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.arrangement_laplace_of_local_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_network_laplace_order (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ)
+  (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : ArrangementAux k n → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume →
+                  HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+                    ∫ (w : ArrangementAux k n) in Metric.ball 0 ε,
+                      Real.exp
+                        (-N * arrangementPopulationLoss μ r k n τ w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.arrangement_network_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair_pos (r k : ℕ) (n : Fin (k + 1) → ℕ) (hk : 0 < k) :
+  0 < (arrangementLearningPair r k n).1
+'ResidualSLT.arrangementLearningPair_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_active_ne_zero_ae (k : ℕ) (n : Fin (k + 1) → ℕ) (j : Fin k) :
+  ∀ᵐ (w : ArrangementAux k n), w.1 j ≠ 0
+'ResidualSLT.arrangement_active_ne_zero_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_network_rlct_laplace_certificate (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (hk : 0 < k) (n : Fin (k + 1) → ℕ)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : ArrangementAux k n → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume →
+                  (∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn (fun w => arrangementPopulationLoss μ r k n τ w ^ (-s))
+                          (Metric.ball 0 ε) (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                        s < (arrangementLearningPair r k n).1) ∧
+                    HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+                      ∫ (w : ArrangementAux k n) in Metric.ball 0 ε,
+                        Real.exp
+                          (-N * arrangementPopulationLoss μ r k n τ w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.arrangement_network_rlct_laplace_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.oneActiveAssemble_zero_norm (p q : ℕ) (w : OneActiveAux p q) : ‖oneActiveAssemble p q 0 w‖ = ‖w‖
+'ResidualSLT.oneActiveAssemble_zero_norm' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_prefix_norm_le (k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) (m : ℕ)
+  (hm : m ≤ k) : ‖arrangementFlatten k n 0 w m hm‖ ≤ ‖w‖
+'ResidualSLT.arrangementFlatten_prefix_norm_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_prefix_coordinates_le (k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) (m : ℕ)
+  (hm : m ≤ k) :
+  (∀ (j : Fin k), ↑j < m → ‖w.1 j‖ ≤ ‖arrangementFlatten k n 0 w m hm‖) ∧
+    ∀ (g : Fin (k + 1)), ↑g ≤ m → ‖w.2 g‖ ≤ ‖arrangementFlatten k n 0 w m hm‖
+'ResidualSLT.arrangementFlatten_prefix_coordinates_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_zero_norm (k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) :
+  ‖arrangementFlatten k n 0 w k ⋯‖ = ‖w‖
+'ResidualSLT.arrangementFlatten_zero_norm' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.oneActiveAssemble_zero_add (p q : ℕ) (u v : OneActiveAux p q) :
+  oneActiveAssemble p q 0 (u + v) = oneActiveAssemble p q 0 u + oneActiveAssemble p q 0 v
+'ResidualSLT.oneActiveAssemble_zero_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.oneActiveAssemble_zero_smul (p q : ℕ) (a : ℝ) (w : OneActiveAux p q) :
+  oneActiveAssemble p q 0 (a • w) = a • oneActiveAssemble p q 0 w
+'ResidualSLT.oneActiveAssemble_zero_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_add (k : ℕ) (n : Fin (k + 1) → ℕ) (u v : ArrangementAux k n) (m : ℕ) (hm : m ≤ k) :
+  arrangementFlatten k n 0 (u + v) m hm = arrangementFlatten k n 0 u m hm + arrangementFlatten k n 0 v m hm
+'ResidualSLT.arrangementFlatten_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_smul (k : ℕ) (n : Fin (k + 1) → ℕ) (a : ℝ) (w : ArrangementAux k n) (m : ℕ)
+  (hm : m ≤ k) : arrangementFlatten k n 0 (a • w) m hm = a • arrangementFlatten k n 0 w m hm
+'ResidualSLT.arrangementFlatten_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementZeroLinearMap (k : ℕ) (n : Fin (k + 1) → ℕ) :
+  ArrangementAux k n →ₗ[ℝ] Fin (arrangementDepth k n k ⋯) → ℝ
+'ResidualSLT.arrangementZeroLinearMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementDepth_eq_sum (k : ℕ) (n : Fin (k + 1) → ℕ) (m : ℕ) (hm : m ≤ k) :
+  arrangementDepth k n m hm = m + ∑ g, n ⟨↑g, ⋯⟩
+'ResidualSLT.arrangementDepth_eq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_finrank (k : ℕ) (n : Fin (k + 1) → ℕ) :
+  Module.finrank ℝ (ArrangementAux k n) = Module.finrank ℝ (Fin (arrangementDepth k n k ⋯) → ℝ)
+'ResidualSLT.arrangement_finrank' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementZeroLinearEquiv (k : ℕ) (n : Fin (k + 1) → ℕ) :
+  ArrangementAux k n ≃ₗ[ℝ] Fin (arrangementDepth k n k ⋯) → ℝ
+'ResidualSLT.arrangementZeroLinearEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_affine (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) (m : ℕ)
+  (hm : m ≤ k) : arrangementFlatten k n τ w m hm = arrangementFlatten k n τ 0 m hm + arrangementFlatten k n 0 w m hm
+'ResidualSLT.arrangementFlatten_affine' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementCoordinateEquiv (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  ArrangementAux k n ≃ᵐ (Fin (arrangementDepth k n k ⋯) → ℝ)
+'ResidualSLT.arrangementCoordinateEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementCoordinateEquiv_apply (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) :
+  (arrangementCoordinateEquiv k n τ) w = arrangementFlatten k n τ w k ⋯
+'ResidualSLT.arrangementCoordinateEquiv_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementCoordinateEquiv_preimage_ball (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (ε : ℝ) :
+  ⇑(arrangementCoordinateEquiv k n τ) ⁻¹' Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε = Metric.ball 0 ε
+'ResidualSLT.arrangementCoordinateEquiv_preimage_ball' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementCoordinateEquiv_measure_comparison (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  ∃ d,
+    0 < d ∧
+      MeasureTheory.MeasurePreserving (⇑(arrangementCoordinateEquiv k n τ)) MeasureTheory.volume
+        (d • MeasureTheory.volume)
+'ResidualSLT.arrangementCoordinateEquiv_measure_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.HasLaplaceOrder.const_mul {a : ℝ} {m : ℕ} {Z : ℝ → ℝ} (h : HasLaplaceOrder a m Z) (d : ℝ) (hd : 0 < d) :
+  HasLaplaceOrder a m fun N => d * Z N
+'ResidualSLT.HasLaplaceOrder.const_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.HasLaplaceOrder.of_const_mul {a d : ℝ} {m : ℕ} {Z : ℝ → ℝ} (h : HasLaplaceOrder a m fun N => d * Z N)
+  (hd : 0 < d) : HasLaplaceOrder a m Z
+'ResidualSLT.HasLaplaceOrder.of_const_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_raw_network_rlct_laplace_certificate (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (hk : 0 < k) (n : Fin (k + 1) → ℕ)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : (Fin (arrangementDepth k n k ⋯) → ℝ) → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε) MeasureTheory.volume →
+                  (∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn
+                          (fun w => networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯) w ^ (-s))
+                          (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε)
+                          (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                        s < (arrangementLearningPair r k n).1) ∧
+                    HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+                      ∫ (w : Fin (arrangementDepth k n k ⋯) → ℝ) in Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε,
+                        Real.exp
+                          (-N *
+                            networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯)
+                              w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.arrangement_raw_network_rlct_laplace_certificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ResidualSLT.networkTargetLoss_zero_target (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 0 < r) (w : Fin L → ℝ) :
+  networkTargetLoss μ r 0 w = networkPopulationLoss μ r w
+'ResidualSLT.networkTargetLoss_zero_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair_zero (r : ℕ) (n : Fin 1 → ℕ) :
+  arrangementLearningPair r 0 n = identityLearningPair r (n 0)
+'ResidualSLT.arrangementLearningPair_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos (μ : MeasureTheory.Measure ℝ) (r k : ℕ)
+  (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : (Fin (arrangementDepth k n k ⋯) → ℝ) → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε) MeasureTheory.volume →
+                  (∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn
+                          (fun w => networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯) w ^ (-s))
+                          (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε)
+                          (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                        s < (arrangementLearningPair r k n).1) ∧
+                    HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+                      ∫ (w : Fin (arrangementDepth k n k ⋯) → ℝ) in Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε,
+                        Real.exp
+                          (-N *
+                            networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯)
+                              w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ResidualSLT.arrangement_raw_network_boundary_divergence (μ : MeasureTheory.Measure ℝ) (r k : ℕ) (hr : 2 ≤ r)
+  (n : Fin (k + 1) → ℕ) (hL : 0 < arrangementDepth k n k ⋯)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯))) (τ : Fin k → ℝ)
+  (hτ : ∀ (j : Fin k), τ j ≠ 0) :
+  ∃ ε₀,
+    0 < ε₀ ∧
+      ε₀ ≤ 1 ∧
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ ε₀ →
+              ∀ (ρ : (Fin (arrangementDepth k n k ⋯) → ℝ) → NNReal),
+                BoundedPositivePriorOn ρ (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε) MeasureTheory.volume →
+                  ¬MeasureTheory.IntegrableOn
+                      (fun w =>
+                        networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯) w ^ (-(arrangementLearningPair r k n).1))
+                      (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε)
+                      (MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+'ResidualSLT.arrangement_raw_network_boundary_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair_odd_multiplicity (r k : ℕ) (n : Fin (k + 1) → ℕ) (hodd : Odd r) :
+  (arrangementLearningPair r k n).2 = 1 + {g | n g = r}.card
+'ResidualSLT.arrangementLearningPair_odd_multiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair_even (r k : ℕ) (n : Fin (k + 1) → ℕ) (heven : Even r) :
+  arrangementLearningPair r k n = (↑k / 2 + (∑ g, ↑(n g)) / (2 * ↑r), 1)
+'ResidualSLT.arrangementLearningPair_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair_one (r p q : ℕ) : arrangementLearningPair r 1 ![p, q] = oneActiveLearningPair r p q
+'ResidualSLT.arrangementLearningPair_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos : ∀ (μ : MeasureTheory.Measure ℝ)
+  (r k : ℕ),
+  2 ≤ r →
+    ∀ (n : Fin (k + 1) → ℕ),
+      0 < arrangementDepth k n k ⋯ →
+        FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k ⋯)) →
+          ∀ (τ : Fin k → ℝ),
+            (∀ (j : Fin k), τ j ≠ 0) →
+              ∃ ε₀,
+                0 < ε₀ ∧
+                  ε₀ ≤ 1 ∧
+                    ∀ (ε : ℝ),
+                      0 < ε →
+                        ε ≤ ε₀ →
+                          ∀ (ρ : (Fin (arrangementDepth k n k ⋯) → ℝ) → NNReal),
+                            BoundedPositivePriorOn ρ (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε)
+                                MeasureTheory.volume →
+                              (∀ (s : ℝ),
+                                  MeasureTheory.IntegrableOn
+                                      (fun w => networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯) w ^ (-s))
+                                      (Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε)
+                                      (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                                    s < (arrangementLearningPair r k n).1) ∧
+                                HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2
+                                  fun N =>
+                                  ∫ (w : Fin (arrangementDepth k n k ⋯) → ℝ) in
+                                    Metric.ball (arrangementFlatten k n τ 0 k ⋯) ε,
+                                    Real.exp
+                                      (-N *
+                                        networkTargetLoss μ r (arrangementFlatten k n τ 0 k ⋯)
+                                          w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w) :=
+fun μ r k hr n hL hμ τ hτ =>
+  if hk : 0 < k then arrangement_raw_network_rlct_laplace_certificate μ r k hr hk n hμ τ hτ
+  else
+    have hk0 :=
+      Decidable.byContradiction fun a =>
+        ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos._proof_1_1✝ r k n hk a;
+    Eq.ndrec (motive := fun k =>
+      ∀ (n : Fin (k + 1) → ℕ),
+        0 < arrangementDepth k n k le_rfl →
+          FinitePositiveFeatureGram μ (sparseNetworkFeatures r (arrangementDepth k n k le_rfl)) →
+            ∀ (τ : Fin k → ℝ),
+              (∀ (j : Fin k), τ j ≠ 0) →
+                ¬0 < k →
+                  ∃ ε₀,
+                    0 < ε₀ ∧
+                      ε₀ ≤ 1 ∧
+                        ∀ (ε : ℝ),
+                          0 < ε →
+                            ε ≤ ε₀ →
+                              ∀ (ρ : (Fin (arrangementDepth k n k le_rfl) → ℝ) → NNReal),
+                                BoundedPositivePriorOn ρ (Metric.ball (arrangementFlatten k n τ 0 k le_rfl) ε)
+                                    MeasureTheory.volume →
+                                  (∀ (s : ℝ),
+                                      MeasureTheory.IntegrableOn
+                                          (fun w =>
+                                            networkTargetLoss μ r (arrangementFlatten k n τ 0 k le_rfl) w ^ (-s))
+                                          (Metric.ball (arrangementFlatten k n τ 0 k le_rfl) ε)
+                                          (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                                        s < (arrangementLearningPair r k n).1) ∧
+                                    HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2
+                                      fun N =>
+                                      ∫ (w : Fin (arrangementDepth k n k le_rfl) → ℝ) in
+                                        Metric.ball (arrangementFlatten k n τ 0 k le_rfl) ε,
+                                        Real.exp
+                                          (-N *
+                                            networkTargetLoss μ r (arrangementFlatten k n τ 0 k le_rfl)
+                                              w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w))
+      (fun n hL hμ τ hτ hk =>
+        have ht := rfl;
+        Eq.mpr
+          (id
+            (congrArg Exists
+              (funext fun ε₀ =>
+                congrArg (And (0 < ε₀))
+                  (congrArg (And (ε₀ ≤ 1))
+                    (forall_congr fun ε =>
+                      implies_congr (Eq.refl (0 < ε))
+                        (implies_congr (Eq.refl (ε ≤ ε₀))
+                          (forall_congr fun ρ =>
+                            implies_congr
+                              (congrFun' (congrArg (BoundedPositivePriorOn ρ) (congrFun' (congrArg Metric.ball ht) ε))
+                                MeasureTheory.volume)
+                              (congr
+                                (congrArg And
+                                  (forall_congr fun s =>
+                                    congr
+                                      (congrArg Iff
+                                        (congrFun'
+                                          (congr
+                                            (congrArg
+                                              (@MeasureTheory.IntegrableOn (Fin (arrangementDepth 0 n 0 le_rfl) → ℝ) ℝ
+                                                MeasureTheory.MeasureSpace.pi.toMeasurableSpace
+                                                PseudoMetricSpace.toUniformSpace.toTopologicalSpace
+                                                SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm)
+                                              (funext fun w =>
+                                                congrFun'
+                                                  (congrArg HPow.hPow
+                                                    (Eq.trans (congrFun' (congrArg (networkTargetLoss μ r) ht) w)
+                                                      ((fun x_0 w =>
+                                                          (fun x_0 =>
+                                                              networkTargetLoss_zero_target μ r x_0
+                                                                (Decidable.byContradiction fun a =>
+                                                                  ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos._proof_1_2✝
+                                                                    r hr n a))
+                                                            x_0 w)
+                                                        (arrangementDepth 0 n 0 le_rfl) w)))
+                                                  (-s)))
+                                            (congrFun' (congrArg Metric.ball ht) ε))
+                                          (MeasureTheory.volume.withDensity fun w => ↑(ρ w))))
+                                      (congrArg (LT.lt s) (congrArg Prod.fst (arrangementLearningPair_zero r n)))))
+                                (congr
+                                  (congr
+                                    (congrArg HasLaplaceOrder (congrArg Prod.fst (arrangementLearningPair_zero r n)))
+                                    (congrArg Prod.snd (arrangementLearningPair_zero r n)))
+                                  (funext fun N =>
+                                    congr
+                                      (congrArg MeasureTheory.integral
+                                        (congrArg (MeasureTheory.volume.withDensity fun w => ↑(ρ w)).restrict
+                                          (congrFun' (congrArg Metric.ball ht) ε)))
+                                      (funext fun w =>
+                                        congrArg Real.exp
+                                          (congrArg (HMul.hMul (-N))
+                                            (Eq.trans (congrFun' (congrArg (networkTargetLoss μ r) ht) w)
+                                              ((fun x_0 w =>
+                                                  (fun x_0 =>
+                                                      networkTargetLoss_zero_target μ r x_0
+                                                        (Decidable.byContradiction fun a =>
+                                                          ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos._proof_1_2✝
+                                                            r hr n a))
+                                                    x_0 w)
+                                                (arrangementDepth 0 n 0 le_rfl) w))))))))))))))
+          (Exists.intro 1
+            ⟨zero_lt_one,
+              ⟨le_rfl, fun ε hε hε1 ρ hρ =>
+                sparse_identity_network_rlct_laplace_certificate μ r (n 0) hr hL hμ ε hε hε1 ρ hρ⟩⟩))
+      (Eq.symm hk0) n hL hμ τ hτ hk
+structure ResidualSLT.FinitePositiveFeatureGram.{u_1} {ι : Type u_1} (μ : MeasureTheory.Measure ℝ) (φ : ι → ℝ → ℝ) :
+  Prop
+number of parameters: 3
+fields:
+  ResidualSLT.FinitePositiveFeatureGram.integrable : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ
+  ResidualSLT.FinitePositiveFeatureGram.positive : (featureGram μ φ).PosDef
+constructor:
+  ResidualSLT.FinitePositiveFeatureGram.mk.{u_1} {ι : Type u_1} {μ : MeasureTheory.Measure ℝ} {φ : ι → ℝ → ℝ}
+    (integrable : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ)
+    (positive : (featureGram μ φ).PosDef) : FinitePositiveFeatureGram μ φ
+structure ResidualSLT.BoundedPositivePriorOn.{u_1} {α : Type u_1} [MeasurableSpace α] (ρ : α → NNReal) (D : Set α)
+  (μ : MeasureTheory.Measure α) : Prop
+number of parameters: 5
+fields:
+  ResidualSLT.BoundedPositivePriorOn.measurable : Measurable ρ
+  ResidualSLT.BoundedPositivePriorOn.bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C
+constructor:
+  ResidualSLT.BoundedPositivePriorOn.mk.{u_1} {α : Type u_1} [MeasurableSpace α] {ρ : α → NNReal} {D : Set α}
+    {μ : MeasureTheory.Measure α} (measurable : Measurable ρ)
+    (bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C) : BoundedPositivePriorOn ρ D μ
+def ResidualSLT.HasLaplaceOrder : ℝ → ℕ → (ℝ → ℝ) → Prop :=
+fun ℓ m Z =>
+  0 < m ∧
+    ∃ c C N₀, 0 < c ∧ 0 < C ∧ 1 < N₀ ∧ ∀ (N : ℝ), N₀ ≤ N → c * laplaceRate ℓ m N ≤ Z N ∧ Z N ≤ C * laplaceRate ℓ m N

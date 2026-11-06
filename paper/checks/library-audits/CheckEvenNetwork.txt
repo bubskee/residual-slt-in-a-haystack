@@ -1,0 +1,9 @@
+'_private.CheckEvenNetwork.0.quadratic_depth_three_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckEvenNetwork.0.quartic_depth_two_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckEvenNetwork.0.compactThreePrior_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckEvenNetwork.0.quadratic_depth_three_prior_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckEvenNetwork.0.quadratic_depth_three_prior_boundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckEvenNetwork.0.general_loss_agrees_quadratic' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckEvenNetwork.0.cubic_model_cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]

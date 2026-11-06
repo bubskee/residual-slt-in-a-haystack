@@ -1,0 +1,9 @@
+'_private.CheckGeneralCancellation.0.ResidualSLT.Examples.linear_sextic_threshold' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckGeneralCancellation.0.ResidualSLT.Examples.cubic_depth_two_via_general_cone' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckGeneralCancellation.0.ResidualSLT.Examples.cubic_critical_via_general_cone' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

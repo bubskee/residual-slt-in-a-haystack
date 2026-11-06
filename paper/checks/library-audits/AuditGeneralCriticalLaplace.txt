@@ -1,0 +1,285 @@
+ResidualSLT.generalWeightedKernel : ℕ → ℕ → ℝ → ℝ × ℝ → ℝ
+'ResidualSLT.generalWeightedKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedBox : ℕ → ℕ → ℝ → ℝ → ℝ → ℝ
+'ResidualSLT.generalWeightedBox' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeighted_integrable : ∀ (r q : ℕ) (N ε a b : ℝ),
+  MeasureTheory.IntegrableOn (ResidualSLT.generalWeightedKernel r q N) (Set.Ioo 0 ε ×ˢ Set.Ioo a b) MeasureTheory.volume
+'ResidualSLT.generalWeighted_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.productGaussian_upper : ∀ (a b : ℝ),
+  0 < a →
+    0 < b →
+      ResidualSLT.CriticalLaplaceUpper fun N =>
+        ∫ (z : ℝ × ℝ) in Set.Ioo 0 a ×ˢ Set.Ioo 0 b, Real.exp (-N * (z.1 ^ 2 * z.2 ^ 2))
+'ResidualSLT.productGaussian_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedBox_upper : ∀ (r q : ℕ),
+  0 < r → ∀ (ε δ : ℝ), 0 < ε → 0 < δ → ResidualSLT.CriticalLaplaceUpper (ResidualSLT.generalWeightedBox r q ε δ)
+'ResidualSLT.generalWeightedBox_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedBox_strip_lower : ∀ (r q : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (ε δ N a : ℝ),
+        0 < δ →
+          0 < a →
+            a < 1 →
+              a ^ r ≤ ε →
+                0 < N →
+                  N * a ^ (2 * r * (r + q)) = 1 →
+                    Real.exp (-(δ ^ 2 + 1)) * δ * a ^ (r * (r + q)) * (↑q * -Real.log a) ≤
+                      ResidualSLT.generalWeightedBox r q ε δ N
+'ResidualSLT.generalWeightedBox_strip_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedBox_lower : ∀ (r q : ℕ),
+  0 < r → 0 < q → ∀ (ε δ : ℝ), 0 < ε → 0 < δ → ResidualSLT.CriticalLaplaceLower (ResidualSLT.generalWeightedBox r q ε δ)
+'ResidualSLT.generalWeightedBox_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedBox_has_order : ∀ (r q : ℕ),
+  0 < r →
+    0 < q → ∀ (ε δ : ℝ), 0 < ε → 0 < δ → ResidualSLT.HasCriticalLaplaceOrder (ResidualSLT.generalWeightedBox r q ε δ)
+'ResidualSLT.generalWeightedBox_has_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedSymmetric : ℕ → ℕ → ℝ → ℝ → ℝ → ℝ
+'ResidualSLT.generalWeightedSymmetric' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedSymmetric_eq : ∀ (r q : ℕ) (ε δ N : ℝ),
+  0 < δ → ResidualSLT.generalWeightedSymmetric r q ε δ N = 2 * ResidualSLT.generalWeightedBox r q ε δ N
+'ResidualSLT.generalWeightedSymmetric_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalWeightedSymmetric_has_order : ∀ (r q : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (ε δ : ℝ), 0 < ε → 0 < δ → ResidualSLT.HasCriticalLaplaceOrder (ResidualSLT.generalWeightedSymmetric r q ε δ)
+'ResidualSLT.generalWeightedSymmetric_has_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngularKernel : {n : ℕ} → ℕ → ℕ → ((Fin n → ℝ) → ℝ) → ℝ → ℝ × (Fin n → ℝ) → ℝ
+'ResidualSLT.generalAngularKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngularKernel_nonneg : ∀ {n : ℕ} (r q : ℕ) (f : (Fin n → ℝ) → ℝ) (N : ℝ) (z : ℝ × (Fin n → ℝ)),
+  0 ≤ z.1 → 0 ≤ ResidualSLT.generalAngularKernel r q f N z
+'ResidualSLT.generalAngularKernel_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngularKernel_integrable : ∀ {n : ℕ} (r q : ℕ) (f : (Fin n → ℝ) → ℝ),
+  Continuous f →
+    ∀ (N ε R : ℝ),
+      MeasureTheory.IntegrableOn (ResidualSLT.generalAngularKernel r q f N) (Set.Ioo 0 ε ×ˢ Metric.closedBall 0 R)
+        MeasureTheory.volume
+'ResidualSLT.generalAngularKernel_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngularCylinder_integrable : ∀ {n : ℕ} (r q : ℕ) (j : Fin (n + 1)) (N ε δ : ℝ)
+  (B : Set (Fin n → ℝ)),
+  MeasureTheory.volume B ≠ ⊤ →
+    MeasureTheory.volume B ≠ 0 →
+      MeasureTheory.IntegrableOn (ResidualSLT.generalAngularKernel r q (fun y => y j) N)
+        (Set.Ioo 0 ε ×ˢ ResidualSLT.angularCylinder j (Set.Ioo (-δ) δ) B) MeasureTheory.volume
+'ResidualSLT.generalAngularCylinder_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngularCylinder_integral : ∀ {n : ℕ} (r q : ℕ) (j : Fin (n + 1)) (N ε δ : ℝ) (B : Set (Fin n → ℝ)),
+  ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ ResidualSLT.angularCylinder j (Set.Ioo (-δ) δ) B,
+      ResidualSLT.generalAngularKernel r q (fun y => y j) N z =
+    (MeasureTheory.volume B).toReal * ResidualSLT.generalWeightedSymmetric r q ε δ N
+'ResidualSLT.generalAngularCylinder_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngular_patch_upper : ∀ {n : ℕ} (r q : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+        ContDiff ℝ 1 f →
+          ∀ (c : ResidualSLT.TransverseChart f) (ε : ℝ),
+            0 < ε →
+              ∀ {D : Set (Fin (n + 1) → ℝ)},
+                MeasurableSet D →
+                  D ⊆ Metric.closedBall 0 1 →
+                    D ⊆ c.chart.source →
+                      (∀ y ∈ D, f y ∈ Set.Ioo (-1) 1) →
+                        ResidualSLT.CriticalLaplaceUpper fun N =>
+                          ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ D, ResidualSLT.generalAngularKernel r q f N z
+'ResidualSLT.generalAngular_patch_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngular_lower_of_zero : ∀ {n : ℕ} (r q : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+        ContDiff ℝ 1 f →
+          ∀ (R ε : ℝ),
+            0 < ε →
+              ∀ y ∈ Metric.ball 0 R,
+                f y = 0 →
+                  (∃ j, (fderiv ℝ f y) (Pi.single j 1) ≠ 0) →
+                    ResidualSLT.CriticalLaplaceLower fun N =>
+                      ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ Metric.closedBall 0 R,
+                        ResidualSLT.generalAngularKernel r q f N z
+'ResidualSLT.generalAngular_lower_of_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.generalAngular_off_zero_upper : ∀ {n : ℕ} (r q : ℕ),
+  0 < r →
+    ∀ (f : (Fin n → ℝ) → ℝ),
+      Continuous f →
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ 1 →
+              ∀ {D : Set (Fin n → ℝ)},
+                MeasurableSet D →
+                  D ⊆ Metric.closedBall 0 1 →
+                    ∀ (c : ℝ),
+                      0 < c →
+                        (∀ y ∈ D, c ≤ |f y|) →
+                          ResidualSLT.CriticalLaplaceUpper fun N =>
+                            ∫ (z : ℝ × (Fin n → ℝ)) in Set.Ioo 0 ε ×ˢ D, ResidualSLT.generalAngularKernel r q f N z
+'ResidualSLT.generalAngular_off_zero_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.generalAngular_regular_upper : ∀ (r q n : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+        ContDiff ℝ 1 f →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                (∀ y ∈ Metric.closedBall 0 1, f y = 0 → ∃ j, (fderiv ℝ f y) (Pi.single j 1) ≠ 0) →
+                  ResidualSLT.CriticalLaplaceUpper fun N =>
+                    ∫ (z : ℝ × (Fin (n + 1) → ℝ)) in Set.Ioo 0 ε ×ˢ Metric.closedBall 0 1,
+                      ResidualSLT.generalAngularKernel r q f N z
+'ResidualSLT.generalAngular_regular_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.projectiveConePatch_integral : ∀ {n : ℕ} (j : Fin (n + 1)) {R : Set ℝ},
+  MeasurableSet R →
+    (∀ t ∈ R, 0 < t) →
+      ∀ {D : Set (Fin n → ℝ)},
+        MeasurableSet D →
+          ∀ (g : (Fin (n + 1) → ℝ) → ℝ),
+            ∫ (w : Fin (n + 1) → ℝ) in ResidualSLT.projectiveConePatch j R D, g w =
+              ∫ (z : ℝ × (Fin n → ℝ)) in R ×ˢ D, z.1 ^ n * g (z.1 • j.insertNth 1 z.2)
+'ResidualSLT.projectiveConePatch_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.homogeneous_critical_projective_bounds : ∀ {n : ℕ} (r q : ℕ),
+  n + 1 = r →
+    ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+      ContDiff ℝ 1 f →
+        (∀ (t : ℝ) (w : Fin (n + 1) → ℝ), f (t • w) = t ^ r * f w) →
+          ∀ (j : Fin (n + 1)) (B : ℝ),
+            1 ≤ B →
+              ∀ (ε N : ℝ),
+                0 ≤ N →
+                  ∫ (z : ℝ × (Fin n → ℝ)) in Set.Ioo 0 ε ×ˢ Metric.closedBall 0 B,
+                        ResidualSLT.generalAngularKernel r q (ResidualSLT.projectiveAngular f j) (B ^ (2 * (r + q)) * N)
+                          z ≤
+                      ∫ (w : Fin (n + 1) → ℝ) in
+                        ResidualSLT.projectiveConePatch j (Set.Ioo 0 ε) (Metric.closedBall 0 B),
+                        Real.exp (-N * ResidualSLT.homogeneousConeLoss f (r + q) w) ∧
+                    ∫ (w : Fin (n + 1) → ℝ) in ResidualSLT.projectiveConePatch j (Set.Ioo 0 ε) (Metric.closedBall 0 B),
+                        Real.exp (-N * ResidualSLT.homogeneousConeLoss f (r + q) w) ≤
+                      ∫ (z : ℝ × (Fin n → ℝ)) in Set.Ioo 0 ε ×ˢ Metric.closedBall 0 B,
+                        ResidualSLT.generalAngularKernel r q (ResidualSLT.projectiveAngular f j) N z
+'ResidualSLT.homogeneous_critical_projective_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.laplace_upper_of_projective_cones : ∀ {n : ℕ} (K : (Fin (n + 1) → ℝ) → ℝ),
+  Continuous K →
+    (∀ (w : Fin (n + 1) → ℝ), K (-w) = K w) →
+      ∀ (ε : ℝ),
+        (∀ (j : Fin (n + 1)),
+            ResidualSLT.CriticalLaplaceUpper fun N =>
+              ∫ (w : Fin (n + 1) → ℝ) in ResidualSLT.projectiveConePatch j (Set.Ioo 0 ε) (Metric.closedBall 0 1),
+                Real.exp (-N * K w)) →
+          ResidualSLT.CriticalLaplaceUpper fun N => ∫ (w : Fin (n + 1) → ℝ) in Metric.ball 0 ε, Real.exp (-N * K w)
+'ResidualSLT.laplace_upper_of_projective_cones' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.homogeneous_critical_laplace_order : ∀ (n q : ℕ),
+  0 < q →
+    ∀ (f : (Fin (n + 2) → ℝ) → ℝ),
+      ContDiff ℝ 1 f →
+        (∀ (t : ℝ) (w : Fin (n + 2) → ℝ), f (t • w) = t ^ (n + 2) * f w) →
+          (∀ (w : Fin (n + 2) → ℝ), w ≠ 0 → f w = 0 → fderiv ℝ f w ≠ 0) →
+            (∃ w, w ≠ 0 ∧ f w = 0) →
+              ∀ (ε : ℝ),
+                0 < ε →
+                  ε ≤ 1 →
+                    ResidualSLT.HasCriticalLaplaceOrder fun N =>
+                      ∫ (w : Fin (n + 2) → ℝ) in Metric.ball 0 ε,
+                        Real.exp (-N * ResidualSLT.homogeneousConeLoss f (n + 2 + q) w)
+'ResidualSLT.homogeneous_critical_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.homogeneous_regular_spherical_zero_dimension : ∀ (N r : ℕ) (f : (Fin N → ℝ) → ℝ),
+  ContDiff ℝ 1 f →
+    (∀ (t : ℝ) (w : Fin N → ℝ), f (t • w) = t ^ r * f w) →
+      (∀ (u : Fin N → ℝ), ‖u‖ = 1 → f u = 0 → fderiv ℝ f u ≠ 0) → (∃ u, ‖u‖ = 1 ∧ f u = 0) → 2 ≤ N
+'ResidualSLT.homogeneous_regular_spherical_zero_dimension' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.homogeneous_critical_spherical_laplace_order : ∀ (d k : ℕ),
+  d < k →
+    ∀ (f : (Fin d → ℝ) → ℝ),
+      ContDiff ℝ 1 f →
+        (∀ (t : ℝ) (w : Fin d → ℝ), f (t • w) = t ^ d * f w) →
+          (∀ (u : Fin d → ℝ), ‖u‖ = 1 → f u = 0 → fderiv ℝ f u ≠ 0) →
+            (∃ u, ‖u‖ = 1 ∧ f u = 0) →
+              ∀ (ε : ℝ),
+                0 < ε →
+                  ε ≤ 1 →
+                    ResidualSLT.HasCriticalLaplaceOrder fun N =>
+                      ∫ (w : Fin d → ℝ) in Metric.ball 0 ε, Real.exp (-N * ResidualSLT.homogeneousConeLoss f k w)
+'ResidualSLT.homogeneous_critical_spherical_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.integrable_laplace_of_comparable : ∀ {α : Type u_1} [inst : MeasurableSpace α]
+  (μ : MeasureTheory.Measure α) (D : Set α) (K J : α → ℝ),
+  (∀ (N : ℝ), MeasureTheory.IntegrableOn (fun x => Real.exp (-N * K x)) D μ) →
+    (∀ᵐ (x : α) ∂μ.restrict D, 0 ≤ K x) →
+      AEMeasurable J (μ.restrict D) →
+        ∀ (c C : ℝ),
+          0 < c →
+            (∀ᵐ (x : α) ∂μ.restrict D, c * K x ≤ J x ∧ J x ≤ C * K x) →
+              ∀ (N : ℝ), MeasureTheory.IntegrableOn (fun x => Real.exp (-N * J x)) D μ
+'ResidualSLT.integrable_laplace_of_comparable' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.homogeneous_critical_prior_laplace_order : ∀ (d k : ℕ),
+  d < k →
+    ∀ (f : (Fin d → ℝ) → ℝ),
+      ContDiff ℝ 1 f →
+        (∀ (t : ℝ) (w : Fin d → ℝ), f (t • w) = t ^ d * f w) →
+          (∀ (u : Fin d → ℝ), ‖u‖ = 1 → f u = 0 → fderiv ℝ f u ≠ 0) →
+            (∃ u, ‖u‖ = 1 ∧ f u = 0) →
+              ∀ (ε : ℝ),
+                0 < ε →
+                  ε ≤ 1 →
+                    ∀ (J : (Fin d → ℝ) → ℝ),
+                      AEMeasurable J (MeasureTheory.volume.restrict (Metric.ball 0 ε)) →
+                        ∀ (c C : ℝ),
+                          0 < c →
+                            0 < C →
+                              (∀ᵐ (w : Fin d → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                  c * ResidualSLT.homogeneousConeLoss f k w ≤ J w) →
+                                (∀ᵐ (w : Fin d → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                    J w ≤ C * ResidualSLT.homogeneousConeLoss f k w) →
+                                  ∀ (p : (Fin d → ℝ) → NNReal),
+                                    ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume →
+                                      ResidualSLT.HasCriticalLaplaceOrder fun N =>
+                                        ∫ (w : Fin d → ℝ) in Metric.ball 0 ε,
+                                          Real.exp (-N * J w) ∂MeasureTheory.volume.withDensity fun w => ↑(p w)
+'ResidualSLT.homogeneous_critical_prior_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.homogeneous_critical_prior_laplace_bounds : ∀ (d k : ℕ),
+  d < k →
+    ∀ (f : (Fin d → ℝ) → ℝ),
+      ContDiff ℝ 1 f →
+        (∀ (t : ℝ) (w : Fin d → ℝ), f (t • w) = t ^ d * f w) →
+          (∀ (u : Fin d → ℝ), ‖u‖ = 1 → f u = 0 → fderiv ℝ f u ≠ 0) →
+            (∃ u, ‖u‖ = 1 ∧ f u = 0) →
+              ∀ (ε : ℝ),
+                0 < ε →
+                  ε ≤ 1 →
+                    ∀ (J : (Fin d → ℝ) → ℝ),
+                      AEMeasurable J (MeasureTheory.volume.restrict (Metric.ball 0 ε)) →
+                        ∀ (c C : ℝ),
+                          0 < c →
+                            0 < C →
+                              (∀ᵐ (w : Fin d → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                  c * ResidualSLT.homogeneousConeLoss f k w ≤ J w) →
+                                (∀ᵐ (w : Fin d → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                    J w ≤ C * ResidualSLT.homogeneousConeLoss f k w) →
+                                  ∀ (p : (Fin d → ℝ) → NNReal),
+                                    ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume →
+                                      ∃ a A N₀,
+                                        0 < a ∧
+                                          0 < A ∧
+                                            1 < N₀ ∧
+                                              ∀ (N : ℝ),
+                                                N₀ ≤ N →
+                                                  (a * (N ^ (-(1 / 2)) * Real.log N) ≤
+                                                      ∫ (w : Fin d → ℝ) in Metric.ball 0 ε,
+                                                        Real.exp
+                                                          (-N *
+                                                            J w) ∂MeasureTheory.volume.withDensity fun w => ↑(p w)) ∧
+                                                    (∫ (w : Fin d → ℝ) in Metric.ball 0 ε,
+                                                        Real.exp
+                                                          (-N *
+                                                            J w) ∂MeasureTheory.volume.withDensity fun w => ↑(p w)) ≤
+                                                      A * (N ^ (-(1 / 2)) * Real.log N)
+'ResidualSLT.homogeneous_critical_prior_laplace_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+def ResidualSLT.homogeneousConeLoss : {n : ℕ} → ((Fin n → ℝ) → ℝ) → ℕ → (Fin n → ℝ) → ℝ :=
+fun {n} f k w => f w ^ 2 + ‖w‖ ^ (2 * k)
+def ResidualSLT.HasCriticalLaplaceOrder : (ℝ → ℝ) → Prop :=
+fun F => ResidualSLT.CriticalLaplaceLower F ∧ ResidualSLT.CriticalLaplaceUpper F
+structure ResidualSLT.BoundedPositivePriorOn.{u_1} {α : Type u_1} [MeasurableSpace α] (ρ : α → NNReal) (D : Set α)
+  (μ : MeasureTheory.Measure α) : Prop
+number of parameters: 5
+fields:
+  ResidualSLT.BoundedPositivePriorOn.measurable : Measurable ρ
+  ResidualSLT.BoundedPositivePriorOn.bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C
+constructor:
+  ResidualSLT.BoundedPositivePriorOn.mk.{u_1} {α : Type u_1} [MeasurableSpace α] {ρ : α → NNReal} {D : Set α}
+    {μ : MeasureTheory.Measure α} (measurable : Measurable ρ)
+    (bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C) : ResidualSLT.BoundedPositivePriorOn ρ D μ

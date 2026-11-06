@@ -1,0 +1,61 @@
+ResidualSLT.activeWord_congr_prefix (L : ℕ) (u v : ℕ → ℝ) (h : ∀ i < L, u i = v i) :
+  ResidualSLT.activeWord u L = ResidualSLT.activeWord v L
+'ResidualSLT.activeWord_congr_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeWord_nil_iff (u : ℕ → ℝ) (L : ℕ) : ResidualSLT.activeWord u L = [] ↔ ∀ i < L, u i = 0
+'ResidualSLT.activeWord_nil_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeWord_snoc (f : ℝ → ℝ) (L : ℕ) (w : Fin L → ℝ) (a : ℝ) :
+  ResidualSLT.activeWord (fun i => f (ResidualSLT.zeroExtend (Fin.snoc w a) i)) (L + 1) =
+    if f a = 0 then ResidualSLT.activeWord (fun i => f (ResidualSLT.zeroExtend w i)) L
+    else f a :: ResidualSLT.activeWord (fun i => f (ResidualSLT.zeroExtend w i)) L
+'ResidualSLT.activeWord_snoc' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordFiber (f : ℝ → ℝ) (L : ℕ) (l : List ℝ) : Set (Fin L → ℝ)
+'ResidualSLT.wordFiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordFiber_nil (f : ℝ → ℝ) (hf : ∀ (x : ℝ), f x = 0 ↔ x = 0) (L : ℕ) : ResidualSLT.wordFiber f L [] = {0}
+'ResidualSLT.wordFiber_nil' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordFiber_zero_cons (f : ℝ → ℝ) (c : ℝ) (l : List ℝ) : ResidualSLT.wordFiber f 0 (c :: l) = ∅
+'ResidualSLT.wordFiber_zero_cons' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.snoc_pair_injective (L : ℕ) : Function.Injective fun p => Fin.snoc p.2 p.1
+'ResidualSLT.snoc_pair_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordFiber_succ_cons (f : ℝ → ℝ) (hf : ∀ (x : ℝ), f x = 0 ↔ x = 0) (L : ℕ) (c : ℝ) (hc : c ≠ 0)
+  (l : List ℝ) :
+  ResidualSLT.wordFiber f (L + 1) (c :: l) =
+    (fun p => Fin.snoc p.2 p.1) ''
+      ({0} ×ˢ ResidualSLT.wordFiber f L (c :: l) ∪ {x | f x = c} ×ˢ ResidualSLT.wordFiber f L l)
+'ResidualSLT.wordFiber_succ_cons' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordFiber_finite_ncard (f : ℝ → ℝ) (hf : ∀ (x : ℝ), f x = 0 ↔ x = 0) (q L : ℕ) (l : List ℝ)
+  (hl : ∀ c ∈ l, c ≠ 0) (hroot : ∀ c ∈ l, {x | f x = c}.Finite ∧ {x | f x = c}.ncard = q) :
+  (ResidualSLT.wordFiber f L l).Finite ∧ (ResidualSLT.wordFiber f L l).ncard = q ^ l.length * L.choose l.length
+'ResidualSLT.wordFiber_finite_ncard' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.rawNetworkFiber (r L M : ℕ) (t : Fin M → ℝ) : Set (Fin L → ℝ)
+'ResidualSLT.rawNetworkFiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.rawNetworkFiber_eq_wordFiber (r L M : ℕ) (hr : 2 ≤ r) (t : Fin M → ℝ) :
+  ResidualSLT.rawNetworkFiber r L M t =
+    ResidualSLT.wordFiber (fun x => x ^ r) L (ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend t i ^ r) M)
+'ResidualSLT.rawNetworkFiber_eq_wordFiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.rawNetworkFiber_finite (r L M : ℕ) (hr : 2 ≤ r) (t : Fin M → ℝ) :
+  (ResidualSLT.rawNetworkFiber r L M t).Finite
+'ResidualSLT.rawNetworkFiber_finite' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.odd_power_fiber_ncard (r : ℕ) (ho : Odd r) (a : ℝ) : {x | x ^ r = a ^ r}.ncard = 1
+'ResidualSLT.odd_power_fiber_ncard' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.even_power_fiber_ncard (r : ℕ) (hr : r ≠ 0) (he : Even r) (a : ℝ) (ha : a ≠ 0) :
+  {x | x ^ r = a ^ r}.ncard = 2
+'ResidualSLT.even_power_fiber_ncard' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.raw_network_fiber_ncard_odd (r L M k : ℕ) (hr : 2 ≤ r) (ho : Odd r) (t : Fin M → ℝ)
+  (hk : ResidualSLT.activeCount (ResidualSLT.zeroExtend t) M = k) :
+  (ResidualSLT.rawNetworkFiber r L M t).ncard = L.choose k
+'ResidualSLT.raw_network_fiber_ncard_odd' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.raw_network_fiber_ncard_even (r L M k : ℕ) (hr : 2 ≤ r) (he : Even r) (t : Fin M → ℝ)
+  (hk : ResidualSLT.activeCount (ResidualSLT.zeroExtend t) M = k) :
+  (ResidualSLT.rawNetworkFiber r L M t).ncard = 2 ^ k * L.choose k
+'ResidualSLT.raw_network_fiber_ncard_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.raw_network_fiber_cardinality (r L M k : ℕ) (hr : 2 ≤ r) (t : Fin M → ℝ)
+  (hk : ResidualSLT.activeCount (ResidualSLT.zeroExtend t) M = k) :
+  (ResidualSLT.rawNetworkFiber r L M t).Finite ∧
+    (ResidualSLT.rawNetworkFiber r L M t).ncard = (if Even r then 2 ^ k else 1) * L.choose k
+'ResidualSLT.raw_network_fiber_cardinality' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_fiber_cardinality (μ : MeasureTheory.Measure ℝ) (r L k : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.sparseNetworkFeatures r L)) (t : Fin L → ℝ)
+  (hk : ResidualSLT.activeCount (ResidualSLT.zeroExtend t) L = k) :
+  {w | ResidualSLT.networkTargetLoss μ r t w = 0}.Finite ∧
+    {w | ResidualSLT.networkTargetLoss μ r t w = 0}.ncard = (if Even r then 2 ^ k else 1) * L.choose k
+'ResidualSLT.networkTargetLoss_fiber_cardinality' depends on axioms: [propext, Classical.choice, Quot.sound]

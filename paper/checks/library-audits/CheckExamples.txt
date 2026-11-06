@@ -1,0 +1,9 @@
+'_private.CheckExamples.0.dirac_one_moment' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckExamples.0.quadratic_oneBlock_dirac_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckExamples.0.zero_input_excluded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckExamples.0.quadratic_positiveFactor_example' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckExamples.0.compactStepPrior_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckExamples.0.quadratic_compactPrior_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'_private.CheckExamples.0.quadratic_compactPrior_weighted_boundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -1,0 +1,18 @@
+'_private.CheckEvenNetworkLaplace.0.ResidualSLT.Examples.quadratic_depth_one_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckEvenNetworkLaplace.0.ResidualSLT.Examples.quadratic_depth_two_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckEvenNetworkLaplace.0.ResidualSLT.Examples.quadratic_depth_five_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckEvenNetworkLaplace.0.ResidualSLT.Examples.quartic_depth_four_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckEvenNetworkLaplace.0.ResidualSLT.Examples.quadratic_depth_five_laplace_boundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckEvenNetworkLaplace.0.ResidualSLT.Examples.radial_density_five_quartic_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

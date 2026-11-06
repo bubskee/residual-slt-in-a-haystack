@@ -1,0 +1,103 @@
+ResidualSLT.geometric_factor_natDegree (H G : Polynomial ℝ) (hH : H ≠ 0) (hG : G ≠ 0) (hd : G.natDegree = H.natDegree)
+  (hc : G.leadingCoeff = H.leadingCoeff) (r : ℕ) (hr : 0 < r) :
+  (∑ i ∈ Finset.range r, H ^ i * G ^ (r - 1 - i)).natDegree = (r - 1) * H.natDegree
+'ResidualSLT.geometric_factor_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.normalized_residual_append_injective (r : ℕ) (hr : 2 ≤ r) (H G : Polynomial ℝ) (hH0 : H.coeff 0 = 0)
+  (hG0 : G.coeff 0 = 0) (hH1 : H.coeff 1 = 1) (hG1 : G.coeff 1 = 1) (c d : ℝ) (hc : c ≠ 0) (hd : d ≠ 0)
+  (he : H + Polynomial.C c * H ^ r = G + Polynomial.C d * G ^ r) : H = G ∧ c = d
+'ResidualSLT.normalized_residual_append_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeWord (u : ℕ → ℝ) : ℕ → List ℝ
+'ResidualSLT.activeWord' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordPolynomial (r : ℕ) : List ℝ → Polynomial ℝ
+'ResidualSLT.wordPolynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.power_coeff_one_zero (H : Polynomial ℝ) (h0 : H.coeff 0 = 0) (r : ℕ) (hr : 2 ≤ r) : (H ^ r).coeff 1 = 0
+'ResidualSLT.power_coeff_one_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordPolynomial_normalized (r : ℕ) (hr : 2 ≤ r) (l : List ℝ) :
+  (ResidualSLT.wordPolynomial r l).coeff 0 = 0 ∧ (ResidualSLT.wordPolynomial r l).coeff 1 = 1
+'ResidualSLT.wordPolynomial_normalized' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordPolynomial_natDegree (r : ℕ) (hr : 2 ≤ r) (l : List ℝ) (hl : ∀ c ∈ l, c ≠ 0) :
+  (ResidualSLT.wordPolynomial r l).natDegree = r ^ l.length
+'ResidualSLT.wordPolynomial_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.wordPolynomial_injective (r : ℕ) (hr : 2 ≤ r) (l m : List ℝ) (hl : ∀ c ∈ l, c ≠ 0) (hm : ∀ c ∈ m, c ≠ 0)
+  (he : ResidualSLT.wordPolynomial r l = ResidualSLT.wordPolynomial r m) : l = m
+'ResidualSLT.wordPolynomial_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeWord_nonzero (u : ℕ → ℝ) (L : ℕ) (c : ℝ) : c ∈ ResidualSLT.activeWord u L → c ≠ 0
+'ResidualSLT.activeWord_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeWord_length (u : ℕ → ℝ) (L : ℕ) : (ResidualSLT.activeWord u L).length = ResidualSLT.activeCount u L
+'ResidualSLT.activeWord_length' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_eq_wordPolynomial (r L : ℕ) (u : ℕ → ℝ) :
+  ResidualSLT.network r u L = ResidualSLT.wordPolynomial r (ResidualSLT.activeWord u L)
+'ResidualSLT.network_eq_wordPolynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_full_effective_fiber (r L M : ℕ) (hr : 2 ≤ r) (u v : ℕ → ℝ) :
+  ResidualSLT.network r u L = ResidualSLT.network r v M ↔ ResidualSLT.activeWord u L = ResidualSLT.activeWord v M
+'ResidualSLT.network_full_effective_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_full_raw_fiber (r L M : ℕ) (hr : 2 ≤ r) (w : Fin L → ℝ) (t : Fin M → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+      ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) M ↔
+    ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+      ResidualSLT.activeWord (fun i => ResidualSLT.zeroExtend t i ^ r) M
+'ResidualSLT.network_full_raw_fiber' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.mem_activeWord (u : ℕ → ℝ) (L : ℕ) (c : ℝ) : c ∈ ResidualSLT.activeWord u L ↔ c ≠ 0 ∧ ∃ i < L, u i = c
+'ResidualSLT.mem_activeWord' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_full_raw_fiber_finite (r L M : ℕ) (hr : 2 ≤ r) (t : Fin M → ℝ) :
+  {w |
+      ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+        ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) M}.Finite
+'ResidualSLT.network_full_raw_fiber_finite' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeWord_pow (u : ℕ → ℝ) (L r : ℕ) (hr : r ≠ 0) :
+  ResidualSLT.activeWord (fun i => u i ^ r) L = List.map (fun c => c ^ r) (ResidualSLT.activeWord u L)
+'ResidualSLT.activeWord_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_full_raw_fiber_odd (r L M : ℕ) (hr : 2 ≤ r) (ho : Odd r) (w : Fin L → ℝ) (t : Fin M → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+      ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) M ↔
+    ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L = ResidualSLT.activeWord (ResidualSLT.zeroExtend t) M
+'ResidualSLT.network_full_raw_fiber_odd' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_full_raw_fiber_even (r L M : ℕ) (hr : 2 ≤ r) (he : Even r) (w : Fin L → ℝ) (t : Fin M → ℝ) :
+  ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L =
+      ResidualSLT.network r (fun i => ResidualSLT.zeroExtend t i ^ r) M ↔
+    List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend w) L) =
+      List.map abs (ResidualSLT.activeWord (ResidualSLT.zeroExtend t) M)
+'ResidualSLT.network_full_raw_fiber_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_nonzero_prefix_injective (r k : ℕ) (hr : 2 ≤ r) (u v : ℕ → ℝ) (hu : ∀ i < k, u i ≠ 0)
+  (hv : ∀ i < k, v i ≠ 0) (he : ResidualSLT.network r u k = ResidualSLT.network r v k) (i : ℕ) : i < k → u i = v i
+'ResidualSLT.network_nonzero_prefix_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeBoundary (L k : ℕ) (p : Fin k → Fin L) (j : ℕ) : ℕ
+'ResidualSLT.activeBoundary' does not depend on any axioms
+ResidualSLT.activeGaps (L k : ℕ) (p : Fin k → Fin L) (g : Fin (k + 1)) : ℕ
+'ResidualSLT.activeGaps' does not depend on any axioms
+ResidualSLT.activeBoundary_end (L k : ℕ) (p : Fin k → Fin L) : ResidualSLT.activeBoundary L k p k = L
+'ResidualSLT.activeBoundary_end' depends on axioms: [propext]
+ResidualSLT.activeBoundary_mono (L k : ℕ) (p : Fin k → Fin L) (hp : StrictMono p) (i j : ℕ) (hij : i < j) (hj : j ≤ k) :
+  ResidualSLT.activeBoundary L k p i < ResidualSLT.activeBoundary L k p j
+'ResidualSLT.activeBoundary_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeGaps_depth (L k : ℕ) (p : Fin k → Fin L) (hp : StrictMono p) (m : ℕ) (hm : m ≤ k) :
+  ResidualSLT.arrangementDepth k (ResidualSLT.activeGaps L k p) m hm = ResidualSLT.activeBoundary L k p m
+'ResidualSLT.activeGaps_depth' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeGaps_flatten (L k : ℕ) (w : Fin L → ℝ) (p : Fin k → Fin L) (hp : StrictMono p)
+  (hz : ∀ (i : Fin L), w i ≠ 0 → ∃ j, p j = i) (m : ℕ) (hm : m ≤ k)
+  (i : Fin (ResidualSLT.arrangementDepth k (ResidualSLT.activeGaps L k p) m hm)) :
+  ResidualSLT.arrangementFlatten k (ResidualSLT.activeGaps L k p) (fun j => w (p j)) 0 m hm i =
+    ResidualSLT.zeroExtend w ↑i
+'ResidualSLT.activeGaps_flatten' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.raw_vector_arrangement (L : ℕ) (w : Fin L → ℝ) :
+  ∃ k n τ,
+    (∀ (j : Fin k), τ j ≠ 0) ∧
+      ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+        ∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+          w (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i
+'ResidualSLT.raw_vector_arrangement' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.activeCount_nonzero_prefix (u : ℕ → ℝ) (k : ℕ) (hu : ∀ i < k, u i ≠ 0) : ResidualSLT.activeCount u k = k
+'ResidualSLT.activeCount_nonzero_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_eq_activeCount (r L M : ℕ) (hr : 2 ≤ r) (u v : ℕ → ℝ)
+  (he : ResidualSLT.network r u L = ResidualSLT.network r v M) :
+  ResidualSLT.activeCount u L = ResidualSLT.activeCount v M
+'ResidualSLT.network_eq_activeCount' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.raw_vector_arrangement_of_activeCount (r L k : ℕ) (hr : 2 ≤ r) (w : Fin L → ℝ)
+  (hk : ResidualSLT.activeCount (fun i => ResidualSLT.zeroExtend w i ^ r) L = k) :
+  ∃ n τ,
+    (∀ (j : Fin k), τ j ≠ 0) ∧
+      ∑ g, n g = L - k ∧
+        ∃ (hd : ResidualSLT.arrangementDepth k n k ⋯ = L),
+          ∀ (i : Fin (ResidualSLT.arrangementDepth k n k ⋯)),
+            w (Fin.cast hd i) = ResidualSLT.arrangementFlatten k n τ 0 k ⋯ i
+'ResidualSLT.raw_vector_arrangement_of_activeCount' depends on axioms: [propext, Classical.choice, Quot.sound]

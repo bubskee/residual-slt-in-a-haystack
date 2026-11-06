@@ -1,0 +1,153 @@
+ResidualSLT.weighted_radial_interval_laplace_order : ∀ (a r : ℕ),
+  0 < a →
+    0 < r →
+      ∀ (ε : ℝ),
+        0 < ε →
+          ResidualSLT.HasPowerLaplaceOrder (↑a / (2 * ↑r)) fun N =>
+            ∫ (x : ℝ) in Set.Ioo 0 ε, x ^ (a - 1) * Real.exp (-N * x ^ (2 * r))
+'ResidualSLT.weighted_radial_interval_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.integral_norm_on_ball : ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [Nontrivial E] [inst_4 : MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
+  [μ.IsAddHaarMeasure] (f : ℝ → ℝ) (ε : ℝ),
+  ∫ (w : E) in Metric.ball 0 ε, f ‖w‖ ∂μ =
+    ↑(Module.finrank ℝ E) * μ.real (Metric.ball 0 1) * ∫ (x : ℝ) in Set.Ioo 0 ε, x ^ (Module.finrank ℝ E - 1) * f x
+'ResidualSLT.integral_norm_on_ball' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.normPower_laplace_order : ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [Nontrivial E] [inst_4 : MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E)
+  [μ.IsAddHaarMeasure] (r : ℕ),
+  0 < r →
+    ∀ (ε : ℝ),
+      0 < ε →
+        ResidualSLT.HasPowerLaplaceOrder (↑(Module.finrank ℝ E) / (2 * ↑r)) fun N =>
+          ∫ (w : E) in Metric.ball 0 ε, Real.exp (-N * ‖w‖ ^ (2 * r)) ∂μ
+'ResidualSLT.normPower_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+@ResidualSLT.positive_homogeneous_laplace_order : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [Nontrivial E] [inst_4 : MeasurableSpace E] [BorelSpace E]
+  (μ : MeasureTheory.Measure E) [μ.IsAddHaarMeasure] {Q : E → ℝ} (r : ℕ),
+  0 < r →
+    Continuous Q →
+      (∀ (w : E), w ≠ 0 → 0 < Q w) →
+        (∀ (a : ℝ), 0 ≤ a → ∀ (w : E), Q (a • w) = a ^ (2 * r) * Q w) →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ResidualSLT.HasPowerLaplaceOrder (↑(Module.finrank ℝ E) / (2 * ↑r)) fun N =>
+                ∫ (w : E) in Metric.ball 0 ε, Real.exp (-N * Q w) ∂μ
+'ResidualSLT.positive_homogeneous_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.evenNetworkModel_laplace_order : ∀ (r L : ℕ),
+  0 < r →
+    Even r →
+      0 < L →
+        ∀ (ε : ℝ),
+          0 < ε →
+            ResidualSLT.HasPowerLaplaceOrder (↑L / (2 * ↑r)) fun N =>
+              ∫ (w : Fin L → ℝ) in Metric.ball 0 ε, Real.exp (-N * ResidualSLT.evenNetworkModel r w)
+'ResidualSLT.evenNetworkModel_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.even_network_volume_laplace_order : ∀ (μ : MeasureTheory.Measure ℝ) (r L : ℕ),
+  2 ≤ r →
+    Even r →
+      0 < L →
+        ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L) →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                ResidualSLT.HasPowerLaplaceOrder (↑L / (2 * ↑r)) fun N =>
+                  ∫ (w : Fin L → ℝ) in Metric.ball 0 ε, Real.exp (-N * ResidualSLT.networkPopulationLoss μ r w)
+'ResidualSLT.even_network_volume_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.even_network_laplace_order : ∀ (μ : MeasureTheory.Measure ℝ) (r L : ℕ),
+  2 ≤ r →
+    Even r →
+      0 < L →
+        ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L) →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                ∀ (ρ : (Fin L → ℝ) → NNReal),
+                  ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume →
+                    ResidualSLT.HasPowerLaplaceOrder (↑L / (2 * ↑r)) fun N =>
+                      ∫ (w : Fin L → ℝ) in Metric.ball 0 ε,
+                        Real.exp
+                          (-N *
+                            ResidualSLT.networkPopulationLoss μ r w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)
+'ResidualSLT.even_network_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.even_network_laplace_bounds : ∀ (μ : MeasureTheory.Measure ℝ) (r L : ℕ),
+  2 ≤ r →
+    Even r →
+      0 < L →
+        ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L) →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                ∀ (ρ : (Fin L → ℝ) → NNReal),
+                  ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume →
+                    ∃ c C N₀,
+                      0 < c ∧
+                        0 < C ∧
+                          1 < N₀ ∧
+                            ∀ (N : ℝ),
+                              N₀ ≤ N →
+                                (c * N ^ (-(↑L / (2 * ↑r))) ≤
+                                    ∫ (w : Fin L → ℝ) in Metric.ball 0 ε,
+                                      Real.exp
+                                        (-N *
+                                          ResidualSLT.networkPopulationLoss μ r
+                                            w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ∧
+                                  (∫ (w : Fin L → ℝ) in Metric.ball 0 ε,
+                                      Real.exp
+                                        (-N *
+                                          ResidualSLT.networkPopulationLoss μ r
+                                            w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ≤
+                                    C * N ^ (-(↑L / (2 * ↑r)))
+'ResidualSLT.even_network_laplace_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.even_network_laplace_certificate : ∀ (μ : MeasureTheory.Measure ℝ) (r L : ℕ),
+  2 ≤ r →
+    Even r →
+      0 < L →
+        ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L) →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                ∀ (ρ : (Fin L → ℝ) → NNReal),
+                  ResidualSLT.BoundedPositivePriorOn ρ (Metric.ball 0 ε) MeasureTheory.volume →
+                    (ResidualSLT.HasPowerLaplaceOrder (↑L / (2 * ↑r)) fun N =>
+                        ∫ (w : Fin L → ℝ) in Metric.ball 0 ε,
+                          Real.exp
+                            (-N *
+                              ResidualSLT.networkPopulationLoss μ r
+                                w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ∧
+                      ∀ (s : ℝ),
+                        MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s))
+                            (Metric.ball 0 ε) (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                          s < ↑L / (2 * ↑r)
+'ResidualSLT.even_network_laplace_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+def ResidualSLT.networkPopulationLoss : MeasureTheory.Measure ℝ → ℕ → {L : ℕ} → (Fin L → ℝ) → ℝ :=
+fun μ r {L} w => ∫ (x : ℝ), ResidualSLT.networkSquaredError r w x ∂μ
+def ResidualSLT.networkSquaredError : ℕ → {L : ℕ} → (Fin L → ℝ) → ℝ → ℝ :=
+fun r {L} w x => (Polynomial.eval x (ResidualSLT.network r (fun i => ResidualSLT.zeroExtend w i ^ r) L) - x) ^ 2
+def ResidualSLT.networkFeatures : (r L : ℕ) → Fin (ResidualSLT.networkFeatureCount r L) → ℝ → ℝ :=
+fun r L j x => x ^ (r + ↑j)
+structure ResidualSLT.FinitePositiveFeatureGram.{u_1} {ι : Type u_1} (μ : MeasureTheory.Measure ℝ) (φ : ι → ℝ → ℝ) :
+  Prop
+number of parameters: 3
+fields:
+  ResidualSLT.FinitePositiveFeatureGram.integrable : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ
+  ResidualSLT.FinitePositiveFeatureGram.positive : (ResidualSLT.featureGram μ φ).PosDef
+constructor:
+  ResidualSLT.FinitePositiveFeatureGram.mk.{u_1} {ι : Type u_1} {μ : MeasureTheory.Measure ℝ} {φ : ι → ℝ → ℝ}
+    (integrable : ∀ (i j : ι), MeasureTheory.Integrable (fun x => φ i x * φ j x) μ)
+    (positive : (ResidualSLT.featureGram μ φ).PosDef) : ResidualSLT.FinitePositiveFeatureGram μ φ
+structure ResidualSLT.BoundedPositivePriorOn.{u_1} {α : Type u_1} [MeasurableSpace α] (ρ : α → NNReal) (D : Set α)
+  (μ : MeasureTheory.Measure α) : Prop
+number of parameters: 5
+fields:
+  ResidualSLT.BoundedPositivePriorOn.measurable : Measurable ρ
+  ResidualSLT.BoundedPositivePriorOn.bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C
+constructor:
+  ResidualSLT.BoundedPositivePriorOn.mk.{u_1} {α : Type u_1} [MeasurableSpace α] {ρ : α → NNReal} {D : Set α}
+    {μ : MeasureTheory.Measure α} (measurable : Measurable ρ)
+    (bounds : ∃ c C, 0 < c ∧ ∀ᵐ (x : α) ∂μ.restrict D, c ≤ ρ x ∧ ρ x ≤ C) : ResidualSLT.BoundedPositivePriorOn ρ D μ
+def ResidualSLT.HasPowerLaplaceOrder : ℝ → (ℝ → ℝ) → Prop :=
+fun ℓ F => ResidualSLT.PowerLaplaceLower ℓ F ∧ ResidualSLT.PowerLaplaceUpper ℓ F
+def ResidualSLT.PowerLaplaceLower : ℝ → (ℝ → ℝ) → Prop :=
+fun ℓ F => ∃ c, 0 < c ∧ ∀ᶠ (N : ℝ) in Filter.atTop, c * N ^ (-ℓ) ≤ F N
+def ResidualSLT.PowerLaplaceUpper : ℝ → (ℝ → ℝ) → Prop :=
+fun ℓ F => ∃ C, 0 < C ∧ ∀ᶠ (N : ℝ) in Filter.atTop, F N ≤ C * N ^ (-ℓ)

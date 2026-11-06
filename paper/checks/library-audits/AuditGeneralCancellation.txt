@@ -1,0 +1,322 @@
+@ResidualSLT.weightedAngular_chart_iff_general : ∀ {n : ℕ} {f : (Fin n → ℝ) → ℝ},
+  ContDiff ℝ 1 f →
+    ∀ (c : ResidualSLT.TransverseChart f) {R : Set ℝ},
+      MeasurableSet R →
+        ∀ {D : Set (Fin n → ℝ)},
+          MeasurableSet D →
+            D ⊆ c.chart.source →
+              ∀ (a : ℝ) (r q : ℕ) (s : ℝ),
+                MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r q s (z.1, f z.2)) (R ×ˢ D)
+                    MeasureTheory.volume ↔
+                  MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r q s (z.1, z.2 c.index))
+                    (R ×ˢ (↑c.chart '' D)) MeasureTheory.volume
+@ResidualSLT.weightedAngular_integrable_off_zero_general : ∀ {α : Type u_1} [inst : MeasurableSpace α]
+  (μ : MeasureTheory.Measure α) [MeasureTheory.SFinite μ] {K : Set α},
+  MeasurableSet K →
+    μ K ≠ ⊤ →
+      ∀ {f : α → ℝ},
+        Measurable f →
+          ∀ {c : ℝ},
+            0 < c →
+              (∀ y ∈ K, c ≤ |f y|) →
+                ∀ (a : ℝ) (r q : ℕ) (s : ℝ),
+                  0 ≤ s →
+                    2 * ↑r * s < a →
+                      ∀ (ε : ℝ),
+                        0 < ε →
+                          MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r q s (z.1, f z.2))
+                            (Set.Ioo 0 ε ×ˢ K) (MeasureTheory.volume.prod μ)
+ResidualSLT.weightedAngular_integrable_regular : ∀ (r q n : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+        ContDiff ℝ 1 f →
+          ∀ (R : ℝ),
+            0 < R →
+              (∀ y ∈ Metric.closedBall 0 R, f y = 0 → ∃ j, (fderiv ℝ f y) (Pi.single j 1) ≠ 0) →
+                ∀ (a : ℝ),
+                  0 < a →
+                    ∀ (s : ℝ),
+                      0 ≤ s →
+                        s < min (a / (2 * ↑r)) ((a + ↑q) / (2 * (↑r + ↑q))) →
+                          MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r q s (z.1, f z.2))
+                            (Set.Ioo 0 1 ×ˢ Metric.closedBall 0 R) MeasureTheory.volume
+ResidualSLT.weightedAngular_regular_necessary : ∀ (r q n : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+        ContDiff ℝ 1 f →
+          ∀ (R a : ℝ),
+            0 < a →
+              ∀ (ε : ℝ),
+                0 < ε →
+                  ε ≤ 1 →
+                    ∀ (s : ℝ),
+                      ∀ y ∈ Metric.ball 0 R,
+                        f y = 0 →
+                          (∃ j, (fderiv ℝ f y) (Pi.single j 1) ≠ 0) →
+                            MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r q s (z.1, f z.2))
+                                (Set.Ioo 0 ε ×ˢ Metric.closedBall 0 R) MeasureTheory.volume →
+                              s < min (a / (2 * ↑r)) ((a + ↑q) / (2 * (↑r + ↑q)))
+@ResidualSLT.weightedAngular_integrable_nonpos_general : ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ),
+  Continuous f →
+    ∀ (R a : ℝ),
+      0 < a →
+        ∀ (r q : ℕ),
+          ∀ s ≤ 0,
+            MeasureTheory.IntegrableOn (fun z => ResidualSLT.weightedCancellation a r q s (z.1, f z.2))
+              (Set.Ioo 0 1 ×ˢ Metric.closedBall 0 R) MeasureTheory.volume
+ResidualSLT.weightedAngular_regular_integrableOn_iff : ∀ (r q n : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (f : (Fin (n + 1) → ℝ) → ℝ),
+        ContDiff ℝ 1 f →
+          ∀ (R : ℝ),
+            0 < R →
+              (∀ y ∈ Metric.closedBall 0 R, f y = 0 → ∃ j, (fderiv ℝ f y) (Pi.single j 1) ≠ 0) →
+                (∃ y ∈ Metric.ball 0 R, f y = 0) →
+                  ∀ (a : ℝ),
+                    0 < a →
+                      ∀ (ε : ℝ),
+                        0 < ε →
+                          ε ≤ 1 →
+                            ∀ (s : ℝ),
+                              MeasureTheory.IntegrableOn
+                                  (fun z => ResidualSLT.weightedCancellation a r q s (z.1, f z.2))
+                                  (Set.Ioo 0 ε ×ˢ Metric.closedBall 0 R) MeasureTheory.volume ↔
+                                s < min (a / (2 * ↑r)) ((a + ↑q) / (2 * (↑r + ↑q)))
+@ResidualSLT.homogeneousConeLoss : {n : ℕ} → ((Fin n → ℝ) → ℝ) → ℕ → (Fin n → ℝ) → ℝ
+@ResidualSLT.projectiveAngular : {n : ℕ} → ((Fin (n + 1) → ℝ) → ℝ) → Fin (n + 1) → (Fin n → ℝ) → ℝ
+@ResidualSLT.homogeneousConeLoss_radial_bounds : ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ) (r q : ℕ),
+  (∀ (t : ℝ) (w : Fin n → ℝ), f (t • w) = t ^ r * f w) →
+    ∀ (j : Fin n) (z : Fin n → ℝ),
+      0 < z j →
+        ∀ (B : ℝ),
+          1 ≤ B →
+            (∀ (i : Fin n), i ≠ j → |z i| ≤ B) →
+              z j ^ (2 * r) * (f (Function.update z j 1) ^ 2 + z j ^ (2 * q)) ≤
+                  ResidualSLT.homogeneousConeLoss f (r + q) (ResidualSLT.radialBlowup j z) ∧
+                ResidualSLT.homogeneousConeLoss f (r + q) (ResidualSLT.radialBlowup j z) ≤
+                  B ^ (2 * (r + q)) * (z j ^ (2 * r) * (f (Function.update z j 1) ^ 2 + z j ^ (2 * q)))
+@ResidualSLT.homogeneousConeLoss_on_radial_patch_iff : ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ),
+  Continuous f →
+    ∀ (r q : ℕ),
+      (∀ (t : ℝ) (w : Fin n → ℝ), f (t • w) = t ^ r * f w) →
+        ∀ (j : Fin n) {D : Set (Fin n → ℝ)},
+          MeasurableSet D →
+            (∀ z ∈ D, 0 < z j) →
+              ∀ (B : ℝ),
+                1 ≤ B →
+                  (∀ z ∈ D, ∀ (i : Fin n), i ≠ j → |z i| ≤ B) →
+                    ∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn (fun w => ResidualSLT.homogeneousConeLoss f (r + q) w ^ (-s))
+                          (ResidualSLT.radialBlowup j '' D) MeasureTheory.volume ↔
+                        MeasureTheory.IntegrableOn
+                          (fun z => (z j ^ (2 * r) * (f (Function.update z j 1) ^ 2 + z j ^ (2 * q))) ^ (-s)) D
+                          (MeasureTheory.volume.withDensity fun z => ENNReal.ofReal (z j ^ (n - 1)))
+@ResidualSLT.homogeneousConeLoss_projective_iff : ∀ {n : ℕ} (f : (Fin (n + 1) → ℝ) → ℝ),
+  Continuous f →
+    ∀ (r q : ℕ),
+      (∀ (t : ℝ) (w : Fin (n + 1) → ℝ), f (t • w) = t ^ r * f w) →
+        ∀ (j : Fin (n + 1)) (B : ℝ),
+          1 ≤ B →
+            ∀ {R : Set ℝ},
+              MeasurableSet R →
+                (∀ ρ ∈ R, 0 < ρ) →
+                  ∀ {D : Set (Fin n → ℝ)},
+                    MeasurableSet D →
+                      (∀ y ∈ D, ∀ (i : Fin n), |y i| ≤ B) →
+                        ∀ (s : ℝ),
+                          MeasureTheory.IntegrableOn (fun w => ResidualSLT.homogeneousConeLoss f (r + q) w ^ (-s))
+                              (ResidualSLT.projectiveConePatch j R D) MeasureTheory.volume ↔
+                            MeasureTheory.IntegrableOn
+                              (fun z =>
+                                ResidualSLT.weightedCancellation (↑n + 1) r q s
+                                  (z.1, ResidualSLT.projectiveAngular f j z.2))
+                              (R ×ˢ D) MeasureTheory.volume
+@ResidualSLT.projectiveInsertLinear : {n : ℕ} → Fin (n + 1) → (Fin n → ℝ) →L[ℝ] Fin (n + 1) → ℝ
+@ResidualSLT.projectiveInsertLinear_apply : ∀ {n : ℕ} (j : Fin (n + 1)) (v : Fin n → ℝ),
+  (ResidualSLT.projectiveInsertLinear j) v = j.insertNth 0 v
+@ResidualSLT.projectiveInsert_hasFDerivAt : ∀ {n : ℕ} (j : Fin (n + 1)) (y : Fin n → ℝ),
+  HasFDerivAt (fun v => j.insertNth 1 v) (ResidualSLT.projectiveInsertLinear j) y
+@ResidualSLT.projectiveAngular_contDiff : ∀ {n : ℕ} (f : (Fin (n + 1) → ℝ) → ℝ),
+  ContDiff ℝ 1 f → ∀ (j : Fin (n + 1)), ContDiff ℝ 1 (ResidualSLT.projectiveAngular f j)
+@ResidualSLT.projectiveAngular_zero_regular : ∀ {n : ℕ} (f : (Fin (n + 1) → ℝ) → ℝ),
+  ContDiff ℝ 1 f →
+    ∀ (r : ℕ),
+      (∀ (t : ℝ) (w : Fin (n + 1) → ℝ), f (t • w) = t ^ r * f w) →
+        ∀ (j : Fin (n + 1)) (y : Fin n → ℝ),
+          ResidualSLT.projectiveAngular f j y = 0 →
+            (∃ i, (fderiv ℝ f (j.insertNth 1 y)) (Pi.single i 1) ≠ 0) →
+              ∃ i, (fderiv ℝ (ResidualSLT.projectiveAngular f j) y) (Pi.single i 1) ≠ 0
+@ResidualSLT.exists_nonzero_coordinate_partial : ∀ {n : ℕ} (A : (Fin n → ℝ) →L[ℝ] ℝ), A ≠ 0 → ∃ i, A (Pi.single i 1) ≠ 0
+@ResidualSLT.homogeneous_projective_zero : ∀ {n : ℕ} (f : (Fin (n + 1) → ℝ) → ℝ) (r : ℕ),
+  (∀ (t : ℝ) (w : Fin (n + 1) → ℝ), f (t • w) = t ^ r * f w) →
+    (∃ w, w ≠ 0 ∧ f w = 0) → ∃ j, ∃ y ∈ Metric.closedBall 0 1, ResidualSLT.projectiveAngular f j y = 0
+@ResidualSLT.projectiveConePatch_subset_scaled_ball : ∀ {n : ℕ} (j : Fin (n + 1)) (B : ℝ),
+  1 ≤ B →
+    ∀ (ε : ℝ) {D : Set (Fin n → ℝ)},
+      (∀ y ∈ D, ∀ (i : Fin n), |y i| ≤ B) → ResidualSLT.projectiveConePatch j (Set.Ioo 0 (ε / B)) D ⊆ Metric.ball 0 ε
+@ResidualSLT.homogeneousConeLoss_neg : ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ) (r k : ℕ),
+  (∀ (t : ℝ) (w : Fin n → ℝ), f (t • w) = t ^ r * f w) →
+    ∀ (w : Fin n → ℝ), ResidualSLT.homogeneousConeLoss f k (-w) = ResidualSLT.homogeneousConeLoss f k w
+ResidualSLT.homogeneousConeLoss_integrable_of_angular : ∀ (r q n : ℕ) (f : (Fin (n + 1) → ℝ) → ℝ),
+  Continuous f →
+    (∀ (t : ℝ) (w : Fin (n + 1) → ℝ), f (t • w) = t ^ r * f w) →
+      ∀ (ε s : ℝ),
+        (∀ (j : Fin (n + 1)),
+            MeasureTheory.IntegrableOn
+              (fun z => ResidualSLT.weightedCancellation (↑n + 1) r q s (z.1, ResidualSLT.projectiveAngular f j z.2))
+              (Set.Ioo 0 ε ×ˢ Metric.closedBall 0 1) MeasureTheory.volume) →
+          MeasureTheory.IntegrableOn (fun w => ResidualSLT.homogeneousConeLoss f (r + q) w ^ (-s)) (Metric.ball 0 ε)
+            MeasureTheory.volume
+ResidualSLT.homogeneousConeLoss_integrableOn_iff : ∀ (n r q : ℕ),
+  0 < r →
+    0 < q →
+      ∀ (f : (Fin (n + 2) → ℝ) → ℝ),
+        ContDiff ℝ 1 f →
+          (∀ (t : ℝ) (w : Fin (n + 2) → ℝ), f (t • w) = t ^ r * f w) →
+            (∀ (w : Fin (n + 2) → ℝ), w ≠ 0 → f w = 0 → fderiv ℝ f w ≠ 0) →
+              (∃ w, w ≠ 0 ∧ f w = 0) →
+                ∀ (ε : ℝ),
+                  0 < ε →
+                    ε ≤ 1 →
+                      ∀ (s : ℝ),
+                        MeasureTheory.IntegrableOn (fun w => ResidualSLT.homogeneousConeLoss f (r + q) w ^ (-s))
+                            (Metric.ball 0 ε) MeasureTheory.volume ↔
+                          s < min ((↑n + 2) / (2 * ↑r)) ((↑n + 2 + ↑q) / (2 * (↑r + ↑q)))
+@ResidualSLT.homogeneous_fderiv_zero_smul : ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ),
+  ContDiff ℝ 1 f →
+    ∀ (r : ℕ),
+      (∀ (t : ℝ) (w : Fin n → ℝ), f (t • w) = t ^ r * f w) →
+        ∀ (t : ℝ), t ≠ 0 → ∀ (w : Fin n → ℝ), fderiv ℝ f w = 0 → fderiv ℝ f (t • w) = 0
+@ResidualSLT.homogeneous_regular_of_unit_sphere : ∀ {n : ℕ} (f : (Fin n → ℝ) → ℝ),
+  ContDiff ℝ 1 f →
+    ∀ (r : ℕ),
+      (∀ (t : ℝ) (w : Fin n → ℝ), f (t • w) = t ^ r * f w) →
+        (∀ (u : Fin n → ℝ), ‖u‖ = 1 → f u = 0 → fderiv ℝ f u ≠ 0) →
+          ∀ (w : Fin n → ℝ), w ≠ 0 → f w = 0 → fderiv ℝ f w ≠ 0
+ResidualSLT.homogeneous_cancellation_prior_integrableOn_iff : ∀ (N d k : ℕ),
+  2 ≤ N →
+    0 < d →
+      d < k →
+        ∀ (f : (Fin N → ℝ) → ℝ),
+          ContDiff ℝ 1 f →
+            (∀ (t : ℝ) (w : Fin N → ℝ), f (t • w) = t ^ d * f w) →
+              (∀ (u : Fin N → ℝ), ‖u‖ = 1 → f u = 0 → fderiv ℝ f u ≠ 0) →
+                (∃ w, w ≠ 0 ∧ f w = 0) →
+                  ∀ (ε : ℝ),
+                    0 < ε →
+                      ε ≤ 1 →
+                        ∀ (J : (Fin N → ℝ) → ℝ),
+                          AEMeasurable J (MeasureTheory.volume.restrict (Metric.ball 0 ε)) →
+                            ∀ (c C : ℝ),
+                              0 < c →
+                                0 < C →
+                                  (∀ᵐ (w : Fin N → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                      c * ResidualSLT.homogeneousConeLoss f k w ≤ J w) →
+                                    (∀ᵐ (w : Fin N → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                        J w ≤ C * ResidualSLT.homogeneousConeLoss f k w) →
+                                      ∀ (p : (Fin N → ℝ) → NNReal),
+                                        ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume →
+                                          ∀ (s : ℝ),
+                                            MeasureTheory.IntegrableOn (fun w => J w ^ (-s)) (Metric.ball 0 ε)
+                                                (MeasureTheory.volume.withDensity fun w => ↑(p w)) ↔
+                                              s < min (↑N / (2 * ↑d)) ((↑N + ↑k - ↑d) / (2 * ↑k))
+ResidualSLT.homogeneous_cancellation_prior_not_integrable : ∀ (N d k : ℕ),
+  2 ≤ N →
+    0 < d →
+      d < k →
+        ∀ (f : (Fin N → ℝ) → ℝ),
+          ContDiff ℝ 1 f →
+            (∀ (t : ℝ) (w : Fin N → ℝ), f (t • w) = t ^ d * f w) →
+              (∀ (u : Fin N → ℝ), ‖u‖ = 1 → f u = 0 → fderiv ℝ f u ≠ 0) →
+                (∃ w, w ≠ 0 ∧ f w = 0) →
+                  ∀ (ε : ℝ),
+                    0 < ε →
+                      ε ≤ 1 →
+                        ∀ (J : (Fin N → ℝ) → ℝ),
+                          AEMeasurable J (MeasureTheory.volume.restrict (Metric.ball 0 ε)) →
+                            ∀ (c C : ℝ),
+                              0 < c →
+                                0 < C →
+                                  (∀ᵐ (w : Fin N → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                      c * ResidualSLT.homogeneousConeLoss f k w ≤ J w) →
+                                    (∀ᵐ (w : Fin N → ℝ) ∂MeasureTheory.volume.restrict (Metric.ball 0 ε),
+                                        J w ≤ C * ResidualSLT.homogeneousConeLoss f k w) →
+                                      ∀ (p : (Fin N → ℝ) → NNReal),
+                                        ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume →
+                                          ∀ (s : ℝ),
+                                            min (↑N / (2 * ↑d)) ((↑N + ↑k - ↑d) / (2 * ↑k)) ≤ s →
+                                              ¬MeasureTheory.IntegrableOn (fun w => J w ^ (-s)) (Metric.ball 0 ε)
+                                                  (MeasureTheory.volume.withDensity fun w => ↑(p w))
+ResidualSLT.odd_fermat_integrableOn_iff_via_homogeneous : ∀ (r L : ℕ),
+  0 < r →
+    Odd r →
+      2 ≤ L →
+        ∀ (ε : ℝ),
+          0 < ε →
+            ε ≤ 1 →
+              ∀ (s : ℝ),
+                MeasureTheory.IntegrableOn (fun w => (ResidualSLT.weightPowerSum r w ^ 2 + ‖w‖ ^ (4 * r)) ^ (-s))
+                    (Metric.ball 0 ε) MeasureTheory.volume ↔
+                  s < min (↑L / (2 * ↑r)) ((↑L + ↑r) / (4 * ↑r))
+ResidualSLT.odd_network_prior_integrableOn_iff_via_homogeneous : ∀ (μ : MeasureTheory.Measure ℝ) (r L : ℕ),
+  3 ≤ r →
+    Odd r →
+      2 ≤ L →
+        ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L) →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                ∀ (p : (Fin L → ℝ) → NNReal),
+                  ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume →
+                    ∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s))
+                          (Metric.ball 0 ε) (MeasureTheory.volume.withDensity fun w => ↑(p w)) ↔
+                        s < min (↑L / (2 * ↑r)) ((↑L + ↑r) / (4 * ↑r))
+ResidualSLT.odd_network_prior_all_depths_via_homogeneous : ∀ (μ : MeasureTheory.Measure ℝ) (r L : ℕ),
+  3 ≤ r →
+    Odd r →
+      0 < L →
+        ResidualSLT.FinitePositiveFeatureGram μ (ResidualSLT.networkFeatures r L) →
+          ∀ (ε : ℝ),
+            0 < ε →
+              ε ≤ 1 →
+                ∀ (p : (Fin L → ℝ) → NNReal),
+                  ResidualSLT.BoundedPositivePriorOn p (Metric.ball 0 ε) MeasureTheory.volume →
+                    ∀ (s : ℝ),
+                      MeasureTheory.IntegrableOn (fun w => ResidualSLT.networkPopulationLoss μ r w ^ (-s))
+                          (Metric.ball 0 ε) (MeasureTheory.volume.withDensity fun w => ↑(p w)) ↔
+                        s < min (↑L / (2 * ↑r)) ((↑L + ↑r) / (4 * ↑r))
+'ResidualSLT.weightedAngular_chart_iff_general' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_integrable_off_zero_general' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_integrable_regular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_regular_necessary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_integrable_nonpos_general' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.weightedAngular_regular_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneousConeLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveAngular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneousConeLoss_radial_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneousConeLoss_on_radial_patch_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneousConeLoss_projective_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveInsertLinear' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveInsertLinear_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveInsert_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveAngular_contDiff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveAngular_zero_regular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.exists_nonzero_coordinate_partial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneous_projective_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.projectiveConePatch_subset_scaled_ball' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneousConeLoss_neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneousConeLoss_integrable_of_angular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneousConeLoss_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneous_fderiv_zero_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneous_regular_of_unit_sphere' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneous_cancellation_prior_integrableOn_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.homogeneous_cancellation_prior_not_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_fermat_integrableOn_iff_via_homogeneous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.odd_network_prior_integrableOn_iff_via_homogeneous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ResidualSLT.odd_network_prior_all_depths_via_homogeneous' depends on axioms: [propext, Classical.choice, Quot.sound]

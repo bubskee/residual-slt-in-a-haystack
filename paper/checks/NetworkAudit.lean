@@ -1,0 +1,17 @@
+import ResidualSLT
+
+#print ResidualSLT.HasLaplaceOrder
+#print ResidualSLT.LocalNetworkCertificate
+#print ResidualSLT.UnifiedNetworkCertificate
+
+#check ResidualSLT.unified_residual_network_certificate
+#check ResidualSLT.sparse_identity_network_rlct_laplace_certificate
+#check ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos
+#check ResidualSLT.network_full_raw_fiber
+#check ResidualSLT.raw_network_fiber_cardinality
+
+#print axioms ResidualSLT.unified_residual_network_certificate
+#print axioms ResidualSLT.sparse_identity_network_rlct_laplace_certificate
+#print axioms ResidualSLT.arrangement_raw_network_rlct_laplace_certificate_of_depth_pos
+#print axioms ResidualSLT.network_full_raw_fiber
+#print axioms ResidualSLT.raw_network_fiber_cardinality

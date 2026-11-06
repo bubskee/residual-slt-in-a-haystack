@@ -1,57 +1,51 @@
 # Formal verification coverage
 
-Proof source: [dfd9f7ee8c4338256a7cb7426ceaae7a038fbf00](https://github.com/bubskee/residual-slt-in-a-haystack/tree/dfd9f7ee8c4338256a7cb7426ceaae7a038fbf00).
+Proof source: [3aa873960d83313e44d966ebc124655e87aa0982](https://github.com/bubskee/residual-slt-in-a-haystack/tree/3aa873960d83313e44d966ebc124655e87aa0982).
 Lean `v4.35.0`; mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
-The release preserves the audited Lean source byte for byte. No Lean theorem was added or changed by the manuscript polish. Integrability thresholds and boundary divergence for the identity target are formalized; the manuscript's multiplicities, Laplace asymptotics, arrangements, coercivity, and global selection have paper proofs only.
+Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions.
 
-## Exact formal assumptions
+The current certificate covers complete raw fibers, exact cardinalities, local arrangement pairs, and global learning pairs for every degree `r ≥ 2`, positive depth, and active count. It supersedes the identity-only coverage of earlier manuscript releases. This release imports the completed Lean results without changing their proofs.
 
-The relevant namespace is `ResidualSLT`. `networkPopulationLoss μ r w` is the actual integral of the squared identity-target error of the raw-weight residual recursion, not a postulated comparison model. `network_raw_step` identifies the recursion; `network_squaredError_integrable` proves input integrability before `network_loss_eq_gram` identifies its coefficient quadratic form.
+## Shared hypotheses
 
-- Degree `r : ℕ`, with `2 ≤ r` and `Even r` for the even theorem, or `3 ≤ r` and `Odd r` for the odd theorem.
-- Depth `L : ℕ`, `0 < L`. Depth one is included.
-- Input `μ : Measure ℝ`. No probability normalization is required by Lean.
-- `FinitePositiveFeatureGram μ (networkFeatures r L)`: every pairwise product of the features is integrable, and their integral Gram matrix is positive definite.
-- **The formal features are the contiguous basis** `x^r, x^(r+1), …, x^(r^L)`, indexed by `Fin (r^L + 1 - r)`. The paper assumes only the sparse basis `x^(1+j(r-1))`. For `r>2` this is a genuine hypothesis difference, not an equality of statements. The paper's sufficient condition (probability law with infinite support and finite absolute moment of order `2r^L`) implies both assumptions by an ordinary argument; this sufficient-condition implication is not being claimed as a new Lean certificate.
-- Radius `ε : ℝ`, `0 < ε`, `ε ≤ 1`.
-- Raw parameter domain `Metric.ball (0 : Fin L → ℝ) ε` with the standard maximum norm. `parameter_ball_eq_cube` proves that this is exactly `(-ε,ε)^L`.
-- Prior `p : (Fin L → ℝ) → NNReal`, globally measurable and finite-valued, with finite upper and strictly positive lower bounds almost everywhere on the ball. This is `BoundedPositivePriorOn p (ball 0 ε) volume`. Outside the ball there are no density bounds. Smoothness, normalization, and a product density are not assumed.
-- Parameter measure is `volume.withDensity (fun w => (p w : ENNReal))`. The prior is outside the negative loss power.
+`ResidualSLT.unified_residual_network_certificate` constructs `UnifiedNetworkCertificate μ r L k t ρ` from:
 
-For every real `s`, the principal odd theorem concludes
+- Natural degree `r ≥ 2` and positive depth `L`.
+- An input measure `μ : Measure ℝ` with `FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)`: every retained feature product is integrable and the Gram is positive definite. The features are `x^(r+j*(r-1))`, for `0 ≤ j < (r^L-1)/(r-1)`, exactly the paper's sparse basis after reindexing. Probability normalization is unnecessary.
+- A raw target vector `t : Fin L → ℝ` with `k` nonzero entries. The theorem derives `k ≤ L`; it includes the identity and all-active cases, repetitions, and every realizable sign pattern.
+- A measurable density `ρ : (Fin L → ℝ) → NNReal` with finite total mass, continuous and strictly positive at every point where `networkTargetLoss μ r t` is zero. No global density bound, product structure, normalization, or tail moment is assumed.
+
+The loss is the actual squared-error population integral of the raw-weight network. The parameter measure is `volume.withDensity ρ`; the prior lies outside the negative loss power. Fiber classification and local analytic certificates are conclusions, not hypotheses.
+
+## Correspondence with the paper
+
+| Paper result | Principal declaration or unified field | Certified content |
+|---|---|---|
+| Theorem 1: identity pair | `sparse_identity_network_rlct_laplace_certificate` | All degree/depth regimes, inverse-power iff and two-sided power/logarithmic Laplace bounds |
+| Theorem 2: local arrangement | `arrangement_raw_network_rlct_laplace_certificate_of_depth_pos`; `local_certificates`, `local_at_arrangement` | Actual raw arrangements at every fiber point, exact local pair, inverse-power iff, endpoint divergence and Laplace order |
+| Theorem 3: complete fibers | `network_full_raw_fiber`; `ordered_fiber`, `odd_fiber`, `even_fiber` | Equality of retained ordered effective words; raw words for odd degree, absolute-value words for even degree |
+| Theorem 3: exact count | `raw_network_fiber_cardinality`; `fiber_cardinality` | `(if Even r then 2^k else 1) * L.choose k` |
+| Theorem 3: global pair | `global_dominance`, `global_attained`, `global_integrability`, `global_boundary`, `global_laplace` | Full-space selection, an actual attaining realization, integrability iff for positive exponents, endpoint divergence and Laplace order |
+| Depth-five cubic figure | `CheckUnifiedNetworkCertificate.lean` | The three displayed local pairs for the same target and prior |
+
+The algebraic fiber/count results also allow different source and target depths, including zero depth, and require no Gram or prior. Lean stores active words in reverse chronological order; equality is the same ordered-chain condition used in the paper.
+
+## Analytic scope
+
+`HasLaplaceOrder λ m Z` states `m > 0` and positive constants `c,C,N₀`, with `N₀ > 1`, such that
 
 ```text
-IntegrableOn (fun w => networkPopulationLoss μ r w ^ (-s))
-  (ball 0 ε) (volume.withDensity (fun w => (p w : ENNReal)))
-  ↔ s < if L < r then L/(2*r)
-        else if L = r then 1/2
-        else (L+r)/(4*r).
+c * N^(-λ) * (log N)^(m-1) ≤ Z(N) ≤ C * N^(-λ) * (log N)^(m-1)
 ```
 
-The even theorem has right side `s < L/(2*r)`. The corresponding non-integrability declarations include equality and every larger `s`.
+for every real `N ≥ N₀`. The logarithmic power is proved independently of the inverse-power threshold. No leading constant, full asymptotic expansion, or complex meromorphic continuation is certified. The paper's zeta-pole interpretation under smooth local densities uses the cited resolution theory.
 
-`HasIntegrabilityThresholdOn` separately includes almost-everywhere strict positivity of the loss and the iff criterion for every nonnegative real exponent. This excludes an artifact from Lean's totalized real powers at zero. The iff declarations above cover all real exponents and are stronger on that point.
+`LocalNetworkCertificate` gives the inverse-power iff for every real exponent, endpoint divergence, and Laplace order on every sufficiently small ball around the realization. Standalone identity/arrangement certificates require only `BoundedPositivePriorOn`: measurability and almost-everywhere positive lower and finite upper density bounds on the ball. Balls use the finite-product maximum norm. Inner and outer neighborhoods transfer their order to the paper's smooth local cutoffs.
 
-## Correspondence
+The global inverse-power iff is stated for `s > 0`. At `s = 0`, finite prior mass suffices; negative exponents would require additional positive loss moments. The global Laplace integral is over all raw parameter space.
 
-| Manuscript assertion | Existing declarations | Scope |
-|---|---|---|
-| Theorem 1: actual squared-error reduction | `signed_network_certificate`, `signed_network_loss_comparison`; `network_squaredError_integrable`, `network_loss_eq_gram` | Kernel-checked under the contiguous Gram assumption; comparison on the radius-one max-norm ball |
-| Theorem 1: even identity threshold | `even_network_prior_integrableOn_iff`, `even_network_certificate` | Kernel-checked for all positive depths and even `r ≥ 2` |
-| Theorem 1: odd identity threshold | `odd_network_prior_phase_transition`, `odd_network_prior_integrableOn_iff`, `odd_network_certificate` | Kernel-checked for all positive depths and odd `r ≥ 3` |
-| Identity boundary divergence | `even_network_prior_not_integrable`, `odd_network_prior_not_integrable` | Kernel-checked, including all exponents above the boundary |
-| Prior-weighted Lebesgue form | `even_network_prior_weighted_integrableOn_iff`, `odd_network_prior_weighted_integrableOn_iff` | Kernel-checked, density outside the loss power |
-| Whole-neighborhood odd assembly | `cancellationModel_integrable_of_angular`, `cancellationModel_angular_of_integrable`, `odd_cancellationModel_all_depths_integrableOn_iff` | Kernel-checked; signed pivot cones, finite union, origin, and low depths handled |
-| Actual chart-image containments and unused coordinates | `TransverseChart.image_subset_cylinder`, `TransverseChart.exists_inner_cylinder`, `angularCylinder_integrable_iff` | Kernel-checked in `AngularIntegration.lean`; no global sphere chart or rectangle equality is assumed |
-| Actual-loss divergence witness | `signed_network_prior_necessary_of_interior_zero`, using `signed_network_prior_transverse_cone_iff` | Kernel-checked; for depths at least three an interior angular zero is constructed. Depths one and two use a radial necessity argument |
-| Theorem 1: multiplicity, Laplace rate, coercivity/global integral | No end-to-end certificate of these claims | Paper proof only |
-| Theorem 2: arbitrary-active-count local arrangement | No certificate | Paper proof only; `active_factor_relation`, `active_family_independent`, and `two_direction_degree_gaps` cover limited algebraic ingredients, not the full theorem |
-| Table 1 and Theorem 3: nonidentity local/global pairs | No certificate of the stated analytic results | Paper proof and exact arithmetic checks only |
-
-The partial algebraic declarations do not certify the full family of active/group directions, its differential identification, the uniform remainder bound, the nonidentity loss comparison, or its integration. The `active_family_independent` declaration is an extension lemma, not a certificate of the manuscript's complete inductively indexed family.
-
-## Build and focused audit
+## Reproduce
 
 From the repository root:
 
@@ -59,9 +53,18 @@ From the repository root:
 cd lean
 lake exe cache get
 lake build
-lake env lean -DwarningAsError=true -DautoImplicit=false ../paper/checks/IdentityAudit.lean
+lake env lean -DwarningAsError=true -DautoImplicit=false ../paper/checks/NetworkAudit.lean
+lake env lean -DwarningAsError=true -DautoImplicit=false CheckUnifiedNetworkCertificate.lean
 ```
 
-The release verification reran the build from an isolated copy of the pinned proof source, using the pinned mathlib checkout and existing dependency build cache. The build completed successfully (3583 jobs); the strict focused audit passed. See `checks/lean-build.txt` and `checks/IdentityAudit.txt`.
+To rerun all library audit/check files:
 
-`checks/IdentityAudit.lean` prints the types and axiom dependencies of exactly nine declarations: the five principal declarations and four supporting declarations enumerated in Appendix E. Each axiom set is exactly `propext`, `Classical.choice`, and `Quot.sound`; none contains `sorryAx`. This is a focused nine-declaration audit, not a fresh audit of every declaration in the library.
+```sh
+for f in Audit*.lean Check*.lean; do
+  lake env lean -DwarningAsError=true -DautoImplicit=false "$f" || exit 1
+done
+```
+
+The release build, focused audit, and all 48 library audit/check files pass. The five focused declarations listed in Appendix E each depend on exactly `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`. The focused audit also prints the definitions of `HasLaplaceOrder`, `LocalNetworkCertificate`, and `UnifiedNetworkCertificate`.
+
+Evidence: `checks/lean-build.txt`, `checks/NetworkAudit.txt`, `checks/library-audits/`, and `checks/proof-source-sha256.json`. The release source is byte-identical to the completed research checkpoint `91b60f5850947f26ba4687d4f458f1ff2c3af6a1` under `lean/`; the public hash differs because the release repository has its own history. Dependencies were reused at their pinned revisions for this build.

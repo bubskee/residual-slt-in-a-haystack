@@ -1,0 +1,175 @@
+fun p d => p.coeff d : MvPolynomial ℕ ℝ → (ℕ →₀ ℕ) → ℝ
+MvPolynomial.coeff_mul.{u, u_1} {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (p q : MvPolynomial σ R)
+  (n : σ →₀ ℕ) : (p * q).coeff n = ∑ x ∈ Finset.antidiagonal n, p.coeff x.1 * q.coeff x.2
+MvPolynomial.aeval.{u, v, u_1} {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁]
+  [Algebra R S₁] (f : σ → S₁) : MvPolynomial σ R →ₐ[R] S₁
+MvPolynomial.totalDegree.{u, u_1} {R : Type u} {σ : Type u_1} [CommSemiring R] (p : MvPolynomial σ R) : ℕ
+MvPolynomial.esymm.{u_5, u_6} (σ : Type u_5) (R : Type u_6) [CommSemiring R] [Fintype σ] (n : ℕ) : MvPolynomial σ R
+Polynomial.comp.{u} {R : Type u} [Semiring R] (p q : Polynomial R) : Polynomial R
+Polynomial.mul_coeff_one.{u} {R : Type u} [Semiring R] (p q : Polynomial R) :
+  (p * q).coeff 1 = p.coeff 0 * q.coeff 1 + p.coeff 1 * q.coeff 0
+Polynomial.coeff_expand_mul.{u} {R : Type u} [CommSemiring R] {p : ℕ} (hp : 0 < p) (f : Polynomial R) (n : ℕ) :
+  ((Polynomial.expand R p) f).coeff (n * p) = f.coeff n
+Polynomial.natDegree_comp.{u} {R : Type u} [Semiring R] {p q : Polynomial R} [NoZeroDivisors R] :
+  (p.comp q).natDegree = p.natDegree * q.natDegree
+Polynomial.natDegree_C_mul.{u} {R : Type u} [Semiring R] {p : Polynomial R} {a : R} [NoZeroDivisors R] (a0 : a ≠ 0) :
+  (Polynomial.C a * p).natDegree = p.natDegree
+Finset.sum_sq_eq_zero_iff.{u_1, u_2} {ι : Type u_1} {R : Type u_2} [Semiring R] [LinearOrder R] [IsStrictOrderedRing R]
+  [ExistsAddOfLE R] (s : Finset ι) (f : ι → R) : ∑ i ∈ s, f i ^ 2 = 0 ↔ ∀ i ∈ s, f i = 0
+IsCoprime.dvd_of_dvd_mul_right.{u} {R : Type u} [CommSemiring R] {x y z : R} (H1 : IsCoprime x z) (H2 : x ∣ y * z) :
+  x ∣ y
+IsCoprime.pow_right.{u} {R : Type u} [CommSemiring R] {x y : R} {n : ℕ} (H : IsCoprime x y) : IsCoprime x (y ^ n)
+Ideal.span.{u} {α : Type u} [Semiring α] (s : Set α) : Ideal α
+Ideal.mem_span_singleton'.{u} {α : Type u} [Semiring α] {x y : α} : x ∈ Ideal.span {y} ↔ ∃ a, a * y = x
+IsLocalization.{u_4, u_5} {R : Type u_4} [CommSemiring R] (M : Submonoid R) (S : Type u_5) [CommSemiring S]
+  [Algebra R S] : Prop
+IsLocalization.map_units.{u_1, u_2} {R : Type u_1} [CommSemiring R] {M : Submonoid R} (S : Type u_2) [CommSemiring S]
+  [Algebra R S] [IsLocalization M S] (y : ↥M) : IsUnit ((algebraMap R S) ↑y)
+IsLocalization.surj.{u_1, u_2} {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S]
+  [Algebra R S] [IsLocalization M S] (z : S) : ∃ x, z * (algebraMap R S) ↑x.2 = (algebraMap R S) x.1
+Asymptotics.IsTheta.{u_1, u_2, u_3} {α : Type u_1} {E : Type u_2} {F : Type u_3} [Norm E] [Norm F] (l : Filter α)
+  (f : α → E) (g : α → F) : Prop
+HasStrictFDerivAt.to_localInverse.{u_1, u_2, u_3} {𝕜 : Type u_1} [NontriviallyNormedField 𝕜] {E : Type u_2}
+  [NormedAddCommGroup E] [NormedSpace 𝕜 E] {F : Type u_3} [NormedAddCommGroup F] [NormedSpace 𝕜 F] {f : E → F}
+  {f' : E ≃L[𝕜] F} {a : E} [CompleteSpace E] (hf : HasStrictFDerivAt f (↑f') a) :
+  HasStrictFDerivAt (HasStrictFDerivAt.localInverse f f' a hf) (↑f'.symm) (f a)
+MeasureTheory.integral_image_eq_integral_abs_det_fderiv_smul.{u_1, u_2} {E : Type u_1} {F : Type u_2}
+  [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {s : Set E}
+  {f : E → E} {f' : E → E →L[ℝ] E} [MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E) [μ.IsAddHaarMeasure]
+  (hs : MeasurableSet s) (hf' : ∀ x ∈ s, HasFDerivWithinAt f (f' x) s x) (hf : Set.InjOn f s) (g : E → F) :
+  ∫ (x : E) in f '' s, g x ∂μ = ∫ (x : E) in s, |(f' x).det| • g (f x) ∂μ
+MeasureTheory.integral_prod_mul.{u_1, u_2, u_5} {α : Type u_1} {β : Type u_2} [MeasurableSpace α] [MeasurableSpace β]
+  {μ : MeasureTheory.Measure α} {ν : MeasureTheory.Measure β} [MeasureTheory.SFinite ν] [MeasureTheory.SFinite μ]
+  {L : Type u_5} [RCLike L] (f : α → L) (g : β → L) :
+  ∫ (z : α × β), f z.1 * g z.2 ∂μ.prod ν = (∫ (x : α), f x ∂μ) * ∫ (y : β), g y ∂ν
+intervalIntegral.integrableOn_Ioo_rpow_iff {s t : ℝ} (ht : 0 < t) :
+  MeasureTheory.IntegrableOn (fun x => x ^ s) (Set.Ioo 0 t) MeasureTheory.volume ↔ -1 < s
+integral_rpow {a b r : ℝ} (h : -1 < r ∨ r ≠ -1 ∧ 0 ∉ Set.uIcc a b) :
+  ∫ (x : ℝ) in a..b, x ^ r = (b ^ (r + 1) - a ^ (r + 1)) / (r + 1)
+intervalIntegral.integrableOn_Ioo_cpow_iff {s : ℂ} {t : ℝ} (ht : 0 < t) :
+  MeasureTheory.IntegrableOn (fun x => ↑x ^ s) (Set.Ioo 0 t) MeasureTheory.volume ↔ -1 < s.re
+MeasureTheory.Integrable.const_mul.{u_1, u_7} {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {𝕜 : Type u_7} [NormedRing 𝕜] {f : α → 𝕜} (h : MeasureTheory.Integrable f μ) (c : 𝕜) :
+  MeasureTheory.Integrable (fun x => c * f x) μ
+MeasureTheory.integral_const_mul.{u_1, u_6} {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {L : Type u_6} [RCLike L] (r : L) (f : α → L) : ∫ (a : α), r * f a ∂μ = r * ∫ (a : α), f a ∂μ
+MeasureTheory.integral_pos_iff_support_of_nonneg.{u_1} {α : Type u_1} {m : MeasurableSpace α}
+  {μ : MeasureTheory.Measure α} {f : α → ℝ} (hf : 0 ≤ f) (hfi : MeasureTheory.Integrable f μ) :
+  0 < ∫ (x : α), f x ∂μ ↔ 0 < μ (Function.support f)
+MeasureTheory.integrable_const_mul_iff.{u_1, u_7} {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {𝕜 : Type u_7} [NormedRing 𝕜] {c : 𝕜} (hc : IsUnit c) (f : α → 𝕜) :
+  MeasureTheory.Integrable (fun x => c * f x) μ ↔ MeasureTheory.Integrable f μ
+MeasureTheory.Integrable.mono_nonneg.{u_1, u_2} {α : Type u_1} {β : Type u_2} {m : MeasurableSpace α}
+  {μ : MeasureTheory.Measure α} [NormedAddCommGroup β] [Lattice β] [HasSolidNorm β] [AddLeftMono β] {f g : α → β}
+  (hg : MeasureTheory.Integrable g μ) (hf : MeasureTheory.AEStronglyMeasurable f μ) (hnonneg : ∀ᵐ (a : α) ∂μ, 0 ≤ f a)
+  (h : ∀ᵐ (a : α) ∂μ, f a ≤ g a) : MeasureTheory.Integrable f μ
+Real.mul_rpow {x y z : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) : (x * y) ^ z = x ^ z * y ^ z
+Real.rpow_le_rpow_of_nonpos {x y z : ℝ} (hx : 0 < x) (hxy : x ≤ y) (hz : z ≤ 0) : y ^ z ≤ x ^ z
+Real.hasMeasurablePow : MeasurablePow ℝ ℝ
+AEMeasurable.pow_const.{u_2, u_3, u_4} {β : Type u_2} {γ : Type u_3} {α : Type u_4} [MeasurableSpace β]
+  [MeasurableSpace γ] [Pow β γ] [MeasurablePow β γ] {m : MeasurableSpace α} {μ : MeasureTheory.Measure α} {f : α → β}
+  (hf : AEMeasurable f μ) (c : γ) : AEMeasurable (fun x => f x ^ c) μ
+MeasureTheory.restrict_withDensity.{u_1} {α : Type u_1} {m0 : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {s : Set α} (hs : MeasurableSet s) (f : α → ENNReal) : (μ.withDensity f).restrict s = (μ.restrict s).withDensity f
+MeasureTheory.withDensity_mono.{u_1} {α : Type u_1} {m0 : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {f g : α → ENNReal} (hfg : f ≤ᵐ[μ] g) : μ.withDensity f ≤ μ.withDensity g
+MeasureTheory.withDensity_const.{u_1} {α : Type u_1} {m0 : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  (c : ENNReal) : (μ.withDensity fun x => c) = c • μ
+MeasureTheory.withDensity_absolutelyContinuous.{u_1} {α : Type u_1} {m : MeasurableSpace α}
+  (μ : MeasureTheory.Measure α) (f : α → ENNReal) : (μ.withDensity f).AbsolutelyContinuous μ
+MeasureTheory.Measure.AbsolutelyContinuous.ae_le.{u_1} {α : Type u_1} {mα : MeasurableSpace α}
+  {μ ν : MeasureTheory.Measure α} : μ.AbsolutelyContinuous ν → MeasureTheory.ae μ ≤ MeasureTheory.ae ν
+MeasureTheory.Integrable.mono_measure.{u_1, u_5} {α : Type u_1} {ε : Type u_5} {m : MeasurableSpace α}
+  {μ ν : MeasureTheory.Measure α} [TopologicalSpace ε] [ContinuousENorm ε] {f : α → ε}
+  (h : MeasureTheory.Integrable f ν) (hμ : μ ≤ ν) : MeasureTheory.Integrable f μ
+MeasureTheory.Integrable.smul_measure.{u_1, u_7} {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {ε : Type u_7} [TopologicalSpace ε] [ESeminormedAddMonoid ε] {f : α → ε} (h : MeasureTheory.Integrable f μ)
+  {c : ENNReal} (hc : c ≠ ⊤) : MeasureTheory.Integrable f (c • μ)
+MeasureTheory.integrable_smul_measure.{u_1, u_7} {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {ε : Type u_7} [TopologicalSpace ε] [ESeminormedAddMonoid ε] {f : α → ε} {c : ENNReal} (h₁ : c ≠ 0) (h₂ : c ≠ ⊤) :
+  MeasureTheory.Integrable f (c • μ) ↔ MeasureTheory.Integrable f μ
+MeasureTheory.integrable_withDensity_iff_integrable_coe_smul.{u_1, u_7} {α : Type u_1} {m : MeasurableSpace α}
+  {μ : MeasureTheory.Measure α} {E : Type u_7} [NormedAddCommGroup E] [NormedSpace ℝ E] {f : α → NNReal}
+  (hf : Measurable f) {g : α → E} :
+  MeasureTheory.Integrable g (μ.withDensity fun x => ↑(f x)) ↔ MeasureTheory.Integrable (fun x => ↑(f x) • g x) μ
+MeasureTheory.integrableOn_fun_norm_addHaar.{u_1, u_2} {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [MeasurableSpace E] {F : Type u_2} [NormedAddCommGroup F] [NormedSpace ℝ F] [Nontrivial E]
+  (μ : MeasureTheory.Measure E) [FiniteDimensional ℝ E] [BorelSpace E] [μ.IsAddHaarMeasure] {f : ℝ → F} {r : ℝ} :
+  MeasureTheory.IntegrableOn (fun x => f ‖x‖) (Metric.ball 0 r) μ ↔
+    MeasureTheory.IntegrableOn (fun y => y ^ (Module.finrank ℝ E - 1) • f y) (Set.Ioo 0 r) MeasureTheory.volume
+IsCompact.exists_isMinOn.{u_2, u_3} {α : Type u_2} {β : Type u_3} [LinearOrder α] [TopologicalSpace α]
+  [TopologicalSpace β] [ClosedIicTopology α] {s : Set β} (hs : IsCompact s) (ne_s : s.Nonempty) {f : β → α}
+  (hf : ContinuousOn f s) : ∃ x ∈ s, IsMinOn f s x
+IsCompact.exists_isMaxOn.{u_2, u_3} {α : Type u_2} {β : Type u_3} [LinearOrder α] [TopologicalSpace α]
+  [TopologicalSpace β] [ClosedIciTopology α] {s : Set β} (hs : IsCompact s) (ne_s : s.Nonempty) {f : β → α}
+  (hf : ContinuousOn f s) : ∃ x ∈ s, IsMaxOn f s x
+Matrix.PosDef.dotProduct_mulVec_pos.{u_2, u_3} {n : Type u_2} {R : Type u_3} [Ring R] [PartialOrder R] [StarRing R]
+  [Fintype n] {M : Matrix n n R} (hM : M.PosDef) {x : n → R} (hx : x ≠ 0) : 0 < star x ⬝ᵥ M.mulVec x
+MeasureTheory.integrable_finsetSum.{u_1, u_7, u_8} {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}
+  {ε' : Type u_7} [TopologicalSpace ε'] [ESeminormedAddCommMonoid ε'] [ContinuousAdd ε'] {ι : Type u_8} (s : Finset ι)
+  {f : ι → α → ε'} (hf : ∀ i ∈ s, MeasureTheory.Integrable (f i) μ) :
+  MeasureTheory.Integrable (fun a => ∑ i ∈ s, f i a) μ
+MeasureTheory.integral_finsetSum.{u_1, u_5, u_6} {α : Type u_1} {G : Type u_5} [NormedAddCommGroup G] [NormedSpace ℝ G]
+  {m : MeasurableSpace α} {μ : MeasureTheory.Measure α} {ι : Type u_6} (s : Finset ι) {f : ι → α → G}
+  (hf : ∀ i ∈ s, MeasureTheory.Integrable (f i) μ) : ∫ (a : α), ∑ i ∈ s, f i a ∂μ = ∑ i ∈ s, ∫ (a : α), f i a ∂μ
+MeasureTheory.Integrable.prod_left_ae.{u_1, u_2, u_3} {α : Type u_1} {β : Type u_2} {E : Type u_3} [MeasurableSpace α]
+  [MeasurableSpace β] {μ : MeasureTheory.Measure α} {ν : MeasureTheory.Measure β} [NormedAddCommGroup E]
+  [MeasureTheory.SFinite ν] [MeasureTheory.SFinite μ] ⦃f : α × β → E⦄ (hf : MeasureTheory.Integrable f (μ.prod ν)) :
+  ∀ᵐ (y : β) ∂ν, MeasureTheory.Integrable (fun x => f (x, y)) μ
+MeasureTheory.Integrable.prod_right_ae.{u_1, u_2, u_3} {α : Type u_1} {β : Type u_2} {E : Type u_3} [MeasurableSpace α]
+  [MeasurableSpace β] {μ : MeasureTheory.Measure α} {ν : MeasureTheory.Measure β} [NormedAddCommGroup E]
+  [MeasureTheory.SFinite ν] [MeasureTheory.SFinite μ] ⦃f : α × β → E⦄ (hf : MeasureTheory.Integrable f (μ.prod ν)) :
+  ∀ᵐ (x : α) ∂μ, MeasureTheory.Integrable (fun y => f (x, y)) ν
+MeasureTheory.Integrable.mul_prod.{u_1, u_2, u_4} {α : Type u_1} {β : Type u_2} [MeasurableSpace α] [MeasurableSpace β]
+  {μ : MeasureTheory.Measure α} {ν : MeasureTheory.Measure β} {L : Type u_4} [NormedRing L] {f : α → L} {g : β → L}
+  (hf : MeasureTheory.Integrable f μ) (hg : MeasureTheory.Integrable g ν) :
+  MeasureTheory.Integrable (fun z => f z.1 * g z.2) (μ.prod ν)
+MeasureTheory.setIntegral_prod_mul.{u_1, u_2, u_5} {α : Type u_1} {β : Type u_2} [MeasurableSpace α] [MeasurableSpace β]
+  {μ : MeasureTheory.Measure α} {ν : MeasureTheory.Measure β} [MeasureTheory.SFinite ν] [MeasureTheory.SFinite μ]
+  {L : Type u_5} [RCLike L] (f : α → L) (g : β → L) (s : Set α) (t : Set β) :
+  ∫ (z : α × β) in s ×ˢ t, f z.1 * g z.2 ∂μ.prod ν = (∫ (x : α) in s, f x ∂μ) * ∫ (y : β) in t, g y ∂ν
+MeasureTheory.Measure.prod_restrict.{u_1, u_2} {α : Type u_1} {β : Type u_2} [MeasurableSpace α] [MeasurableSpace β]
+  {μ : MeasureTheory.Measure α} {ν : MeasureTheory.Measure β} [hν : MeasureTheory.SFinite ν] [MeasureTheory.SFinite μ]
+  (s : Set α) (t : Set β) : (μ.restrict s).prod (ν.restrict t) = (μ.prod ν).restrict (s ×ˢ t)
+MeasureTheory.Measure.volume_eq_prod.{u_4, u_5} (α : Type u_4) (β : Type u_5) [MeasureTheory.MeasureSpace α]
+  [MeasureTheory.MeasureSpace β] : MeasureTheory.volume = MeasureTheory.volume.prod MeasureTheory.volume
+integral_inv_of_pos {a b : ℝ} (ha : 0 < a) (hb : 0 < b) : ∫ (x : ℝ) in a..b, x⁻¹ = Real.log (b / a)
+LinearIndependent.option.{u', u, u_3} {ι : Type u'} {K : Type u_3} {V : Type u} [DivisionRing K] [AddCommGroup V]
+  [Module K V] {v : ι → V} {x : V} (hv : LinearIndependent K v) (hx : x ∉ Submodule.span K (Set.range v)) :
+  LinearIndependent K fun o => o.casesOn' x v
+LinearIndependent.map'.{u', u_2, u_4, u_5} {ι : Type u'} {R : Type u_2} {M : Type u_4} {M' : Type u_5} {v : ι → M}
+  [Ring R] [AddCommGroup M] [AddCommGroup M'] [Module R M] [Module R M'] (hv : LinearIndependent R v) (f : M →ₗ[R] M')
+  (hf_inj : f.ker = ⊥) : LinearIndependent R (⇑f ∘ v)
+LinearMap.mulLeft.{u_14, u_15} (R : Type u_14) {A : Type u_15} [Semiring R] [NonUnitalNonAssocSemiring A] [Module R A]
+  [SMulCommClass R A A] (a : A) : A →ₗ[R] A
+Real.rpow_le_rpow {x y z : ℝ} (h : 0 ≤ x) (h₁ : x ≤ y) (h₂ : 0 ≤ z) : x ^ z ≤ y ^ z
+Real.rpow_natCast_mul {x : ℝ} (hx : 0 ≤ x) (n : ℕ) (z : ℝ) : x ^ (↑n * z) = (x ^ n) ^ z
+Polynomial.X_pow_dvd_iff.{u} {R : Type u} [Semiring R] {f : Polynomial R} {n : ℕ} :
+  Polynomial.X ^ n ∣ f ↔ ∀ d < n, f.coeff d = 0
+Polynomial.eval_eq_sum_range'.{u} {R : Type u} [Semiring R] {p : Polynomial R} {n : ℕ} (hn : p.natDegree < n) (x : R) :
+  Polynomial.eval x p = ∑ i ∈ Finset.range n, p.coeff i * x ^ i
+Polynomial.coeff_mul.{u} {R : Type u} [Semiring R] (p q : Polynomial R) (n : ℕ) :
+  (p * q).coeff n = ∑ x ∈ Finset.antidiagonal n, p.coeff x.1 * q.coeff x.2
+pow_dvd_pow_of_dvd.{u_1} {α : Type u_1} [CommMonoid α] {a b : α} (h : a ∣ b) (n : ℕ) : a ^ n ∣ b ^ n
+pi_norm_lt_iff.{u_1, u_5} {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedAddGroup (G i)]
+  {x : (i : ι) → G i} {r : ℝ} (hr : 0 < r) : ‖x‖ < r ↔ ∀ (i : ι), ‖x i‖ < r
+Matrix.eq_zero_of_forall_index_sum_mul_pow_eq_zero.{u_1} {R : Type u_1} [CommRing R] {n : ℕ} [IsDomain R]
+  {f v : Fin n → R} (hf : Function.Injective f) (hfv : ∀ (j : Fin n), ∑ i, v i * f j ^ ↑i = 0) : v = 0
+MeasureTheory.integrable_finsetSum_measure.{u_1, u_5, u_7} {α : Type u_1} {ε : Type u_5} [TopologicalSpace ε]
+  [ContinuousENorm ε] [TopologicalSpace.PseudoMetrizableSpace ε] {ι : Type u_7} {m : MeasurableSpace α} {f : α → ε}
+  {μ : ι → MeasureTheory.Measure α} {s : Finset ι} :
+  MeasureTheory.Integrable f (∑ i ∈ s, μ i) ↔ ∀ i ∈ s, MeasureTheory.Integrable f (μ i)
+MeasureTheory.integral_finsetSum_measure.{u_1, u_5, u_6} {α : Type u_1} {G : Type u_5} [NormedAddCommGroup G]
+  [NormedSpace ℝ G] {ι : Type u_6} {m : MeasurableSpace α} {f : α → G} {μ : ι → MeasureTheory.Measure α} {s : Finset ι}
+  (hf : ∀ i ∈ s, MeasureTheory.Integrable f (μ i)) : ∫ (a : α), f a ∂∑ i ∈ s, μ i = ∑ i ∈ s, ∫ (a : α), f a ∂μ i
+abs_pow_sub_pow_le.{u_1} {α : Type u_1} [CommRing α] [LinearOrder α] (a b : α) (n : ℕ) [IsOrderedRing α] :
+  |a ^ n - b ^ n| ≤ |a - b| * ↑n * max |a| |b| ^ (n - 1)
+Finset.abs_sum_le_sum_abs.{u_1, u_8} {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G]
+  [IsOrderedAddMonoid G] (f : ι → G) (s : Finset ι) : |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|
+Finset.sum_mul_sq_le_sq_mul_sq.{u_1, u_2} {ι : Type u_1} {R : Type u_2} [CommSemiring R] [LinearOrder R]
+  [IsStrictOrderedRing R] [ExistsAddOfLE R] (s : Finset ι) (f g : ι → R) :
+  (∑ i ∈ s, f i * g i) ^ 2 ≤ (∑ i ∈ s, f i ^ 2) * ∑ i ∈ s, g i ^ 2
+Polynomial.coeff_eq_zero_of_natDegree_lt.{u} {R : Type u} [Semiring R] {p : Polynomial R} {n : ℕ}
+  (h : p.natDegree < n) : p.coeff n = 0
+MeasureTheory.Measure.ae_ne.{u_1} {α : Type u_1} {m0 : MeasurableSpace α} (μ : MeasureTheory.Measure α)
+  [MeasureTheory.NullSingletonClass μ] (a : α) : ∀ᵐ (x : α) ∂μ, x ≠ a

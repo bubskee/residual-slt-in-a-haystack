@@ -1,0 +1,248 @@
+ResidualSLT.high_degree_column_separation (Q H : Polynomial ℝ) (a : ℝ) (hdeg : Q.natDegree < H.natDegree)
+  (hz : Q + Polynomial.C a * H = 0) : Q = 0 ∧ a = 0
+'ResidualSLT.high_degree_column_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.append_active_natDegree (r : ℕ) (hr : 2 ≤ r) (H : Polynomial ℝ) (hH : 0 < H.natDegree) (e : ℝ)
+  (he : e ≠ 0) : (H + Polynomial.C e * H ^ r).natDegree = r * H.natDegree
+'ResidualSLT.append_active_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.append_factor_natDegree (r : ℕ) (hr : 2 ≤ r) (H : Polynomial ℝ) (e : ℝ) (he : e ≠ 0) :
+  (1 + Polynomial.C (↑r * e) * H ^ (r - 1)).natDegree = (r - 1) * H.natDegree
+'ResidualSLT.append_factor_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.signed_arrangement_extension_separation (r : ℕ) (hr : 3 ≤ r) (H Q : Polynomial ℝ) (hH : 0 < H.natDegree)
+  (e a s b : ℝ) (he : e ≠ 0) (hQ : Q.natDegree ≤ (2 * r - 1) * H.natDegree)
+  (hz :
+    (1 + Polynomial.C (↑r * e) * H ^ (r - 1)) * Q + Polynomial.C a * H ^ r +
+          Polynomial.C s * (H + Polynomial.C e * H ^ r) ^ r +
+        Polynomial.C b * (H + Polynomial.C e * H ^ r) ^ (2 * r - 1) =
+      0) :
+  Q = 0 ∧ a = 0 ∧ s = 0 ∧ b = 0
+'ResidualSLT.signed_arrangement_extension_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.even_arrangement_extension_separation (r : ℕ) (hr : 2 ≤ r) (H Q : Polynomial ℝ) (hH : 0 < H.natDegree)
+  (e a s : ℝ) (he : e ≠ 0) (hQ : Q.natDegree ≤ r * H.natDegree)
+  (hz :
+    (1 + Polynomial.C (↑r * e) * H ^ (r - 1)) * Q + Polynomial.C a * H ^ r +
+        Polynomial.C s * (H + Polynomial.C e * H ^ r) ^ r =
+      0) :
+  Q = 0 ∧ a = 0 ∧ s = 0
+'ResidualSLT.even_arrangement_extension_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedJet (r : ℕ) (c a s b : ℕ → ℝ) : ℕ → Polynomial ℝ
+'ResidualSLT.arrangementSignedJet' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenJet (r : ℕ) (c a s : ℕ → ℝ) : ℕ → Polynomial ℝ
+'ResidualSLT.arrangementEvenJet' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.network_natDegree_pos (r : ℕ) (hr : 2 ≤ r) (c : ℕ → ℝ) (k : ℕ) : 0 < (network r c k).natDegree
+'ResidualSLT.network_natDegree_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedJet_degree (r : ℕ) (hr : 3 ≤ r) (c a s b : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0) :
+  (arrangementSignedJet r c a s b k).natDegree ≤ (2 * r - 1) * (network r c k).natDegree
+'ResidualSLT.arrangementSignedJet_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenJet_degree (r : ℕ) (hr : 2 ≤ r) (c a s : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0) :
+  (arrangementEvenJet r c a s k).natDegree ≤ r * (network r c k).natDegree
+'ResidualSLT.arrangementEvenJet_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedJet_kernel (r : ℕ) (hr : 3 ≤ r) (c a s b : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0)
+  (hz : arrangementSignedJet r c a s b k = 0) : (∀ i < k, a i = 0) ∧ (∀ i ≤ k, s i = 0) ∧ ∀ i ≤ k, b i = 0
+'ResidualSLT.arrangementSignedJet_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenJet_kernel (r : ℕ) (hr : 2 ≤ r) (c a s : ℕ → ℝ) (k : ℕ) (hc : ∀ i < k, c i ≠ 0)
+  (hz : arrangementEvenJet r c a s k = 0) : (∀ i < k, a i = 0) ∧ ∀ i ≤ k, s i = 0
+'ResidualSLT.arrangementEvenJet_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.ArrangementAux (k : ℕ) (d : Fin (k + 1) → ℕ) : Type
+'ResidualSLT.ArrangementAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL (k : ℕ) (d : Fin (k + 1) → ℕ) (j : ℕ) : ArrangementAux k d →L[ℝ] ℝ
+'ResidualSLT.arrangementActiveL' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL (r k : ℕ) (d : Fin (k + 1) → ℕ) (g : ℕ) (x : ℝ) : ArrangementAux k d →L[ℝ] ℝ
+'ResidualSLT.arrangementGroupL' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxEval (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) : ℕ → ArrangementAux k d → ℝ
+'ResidualSLT.arrangementAuxEval' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxDeriv (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) : ℕ → ArrangementAux k d →L[ℝ] ℝ
+'ResidualSLT.arrangementAuxDeriv' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxEval_zero (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) (n : ℕ) :
+  arrangementAuxEval r k d c x n 0 = Polynomial.eval x (network r c n)
+'ResidualSLT.arrangementAuxEval_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroup_hasFDerivAt (r k : ℕ) (d : Fin (k + 1) → ℕ) (g : ℕ) (Y : ArrangementAux k d → ℝ)
+  (D : ArrangementAux k d →L[ℝ] ℝ) (hY : HasFDerivAt Y D 0) :
+  HasFDerivAt (fun v => (arrangementGroupL r k d g (Y v)) v) (arrangementGroupL r k d g (Y 0)) 0
+'ResidualSLT.arrangementGroup_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxEval_hasFDerivAt (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (x : ℝ) (n : ℕ) :
+  HasFDerivAt (arrangementAuxEval r k d c x n) (arrangementAuxDeriv r k d c x n) 0
+'ResidualSLT.arrangementAuxEval_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.ArrangementSignedRetained (k : ℕ) : Type
+'ResidualSLT.ArrangementSignedRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.ArrangementEvenRetained (k : ℕ) : Type
+'ResidualSLT.ArrangementEvenRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) :
+  ArrangementSignedRetained k →L[ℝ] ArrangementAux k fun g => d g + 2
+'ResidualSLT.arrangementSignedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) :
+  ArrangementEvenRetained k →L[ℝ] ArrangementAux k fun g => d g + 2
+'ResidualSLT.arrangementEvenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL_signedInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (j : ℕ)
+  (z : ArrangementSignedRetained k) :
+  (arrangementActiveL k (fun g => d g + 2) j) ((arrangementSignedInsert k d κ) z) = zeroExtend (fun i => κ i * z.1 i) j
+'ResidualSLT.arrangementActiveL_signedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL_signedInsert (r k : ℕ) (hr : 2 ≤ r) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (g : ℕ) (x : ℝ)
+  (z : ArrangementSignedRetained k) :
+  (arrangementGroupL r k (fun g => d g + 2) g x) ((arrangementSignedInsert k d κ) z) =
+    zeroExtend z.2.1 g * x ^ r + zeroExtend z.2.2 g * x ^ (2 * r - 1)
+'ResidualSLT.arrangementGroupL_signedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL_evenInsert (k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (j : ℕ)
+  (z : ArrangementEvenRetained k) :
+  (arrangementActiveL k (fun g => d g + 2) j) ((arrangementEvenInsert k d κ) z) = zeroExtend (fun i => κ i * z.1 i) j
+'ResidualSLT.arrangementActiveL_evenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL_evenInsert (r k : ℕ) (d : Fin (k + 1) → ℕ) (κ : Fin k → ℝ) (g : ℕ) (x : ℝ)
+  (z : ArrangementEvenRetained k) :
+  (arrangementGroupL r k (fun g => d g + 2) g x) ((arrangementEvenInsert k d κ) z) = zeroExtend z.2 g * x ^ r
+'ResidualSLT.arrangementGroupL_evenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxDeriv_signedInsert (r k : ℕ) (hr : 2 ≤ r) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (κ : Fin k → ℝ)
+  (x : ℝ) (n : ℕ) (z : ArrangementSignedRetained k) :
+  (arrangementAuxDeriv r k (fun g => d g + 2) c x n) ((arrangementSignedInsert k d κ) z) =
+    Polynomial.eval x
+      (arrangementSignedJet r c (zeroExtend fun i => κ i * z.1 i) (zeroExtend z.2.1) (zeroExtend z.2.2) n)
+'ResidualSLT.arrangementAuxDeriv_signedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementAuxDeriv_evenInsert (r k : ℕ) (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (κ : Fin k → ℝ) (x : ℝ) (n : ℕ)
+  (z : ArrangementEvenRetained k) :
+  (arrangementAuxDeriv r k (fun g => d g + 2) c x n) ((arrangementEvenInsert k d κ) z) =
+    Polynomial.eval x (arrangementEvenJet r c (zeroExtend fun i => κ i * z.1 i) (zeroExtend z.2) n)
+'ResidualSLT.arrangementAuxDeriv_evenInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedInsert_deriv_injective.{u_1} {ι : Type u_1} [Fintype ι] (r k : ℕ) (hr : 3 ≤ r)
+  (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (hc : ∀ j < k, c j ≠ 0) (κ : Fin k → ℝ) (hκ : ∀ (j : Fin k), κ j ≠ 0) (x : ι → ℝ)
+  (hx : Function.Injective x) (hM : (2 * r - 1) * r ^ k < Fintype.card ι) :
+  Function.Injective
+    ⇑((ContinuousLinearMap.pi fun i => arrangementAuxDeriv r k (fun g => d g + 2) c (x i) k) ∘SL
+        arrangementSignedInsert k d κ)
+'ResidualSLT.arrangementSignedInsert_deriv_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenInsert_deriv_injective.{u_1} {ι : Type u_1} [Fintype ι] (r k : ℕ) (hr : 2 ≤ r)
+  (d : Fin (k + 1) → ℕ) (c : ℕ → ℝ) (hc : ∀ j < k, c j ≠ 0) (κ : Fin k → ℝ) (hκ : ∀ (j : Fin k), κ j ≠ 0) (x : ι → ℝ)
+  (hx : Function.Injective x) (hM : r * r ^ k < Fintype.card ι) :
+  Function.Injective
+    ⇑((ContinuousLinearMap.pi fun i => arrangementAuxDeriv r k (fun g => d g + 2) c (x i) k) ∘SL
+        arrangementEvenInsert k d κ)
+'ResidualSLT.arrangementEvenInsert_deriv_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) :
+  ArrangementAux k fun g => r ^ n g + 2
+'ResidualSLT.arrangementRawAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedRetained (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) :
+  ArrangementSignedRetained k
+'ResidualSLT.arrangementSignedRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenRetained (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) : ArrangementEvenRetained k
+'ResidualSLT.arrangementEvenRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedRemainder (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) :
+  ArrangementAux k fun g => r ^ n g + 2
+'ResidualSLT.arrangementSignedRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenRemainder (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) :
+  ArrangementAux k fun g => r ^ n g + 2
+'ResidualSLT.arrangementEvenRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_signed_decomposition (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) :
+  arrangementRawAux r k n τ w =
+    (arrangementSignedInsert k (fun g => r ^ n g) fun j => ↑r * τ j ^ (r - 1)) (arrangementSignedRetained r k n w) +
+      arrangementSignedRemainder r k n τ w
+'ResidualSLT.arrangementRawAux_signed_decomposition' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_even_decomposition (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) :
+  arrangementRawAux r k n τ w =
+    (arrangementEvenInsert k (fun g => r ^ n g) fun j => ↑r * τ j ^ (r - 1)) (arrangementEvenRetained r k n w) +
+      arrangementEvenRemainder r k n τ w
+'ResidualSLT.arrangementRawAux_even_decomposition' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_tendsto (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  Filter.Tendsto (arrangementRawAux r k n τ) (nhds 0) (nhds 0)
+'ResidualSLT.arrangementRawAux_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.active_power_remainder_isLittleO.{u_1, u_2} {α : Type u_1} {V : Type u_2} [NormedAddCommGroup V]
+  {l : Filter α} (r : ℕ) (τ : ℝ) (h : α → ℝ) (z : α → V) (hh : Filter.Tendsto h l (nhds 0))
+  (hz : ∀ (x : α), ‖h x‖ ≤ ‖z x‖) : (fun x => (τ + h x) ^ r - τ ^ r - ↑r * τ ^ (r - 1) * h x) =o[l] z
+'ResidualSLT.active_power_remainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementSignedRemainder_isLittleO (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  arrangementSignedRemainder r k n τ =o[nhds 0] arrangementSignedRetained r k n
+'ResidualSLT.arrangementSignedRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementEvenRemainder_isLittleO (r k : ℕ) (hr : 2 ≤ r) (heven : Even r) (n : Fin (k + 1) → ℕ)
+  (τ : Fin k → ℝ) : arrangementEvenRemainder r k n τ =o[nhds 0] arrangementEvenRetained r k n
+'ResidualSLT.arrangementEvenRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementDepth (k : ℕ) (n : Fin (k + 1) → ℕ) (m : ℕ) : m ≤ k → ℕ
+'ResidualSLT.arrangementDepth' depends on axioms: [propext, Quot.sound]
+ResidualSLT.arrangementFlatten (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n) (m : ℕ)
+  (hm : m ≤ k) : Fin (arrangementDepth k n m hm) → ℝ
+'ResidualSLT.arrangementFlatten' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementDepth_ge (k : ℕ) (n : Fin (k + 1) → ℕ) (m : ℕ) (hm : m ≤ k) : m ≤ arrangementDepth k n m hm
+'ResidualSLT.arrangementDepth_ge' depends on axioms: [propext, Quot.sound]
+ResidualSLT.arrangementFlatten_continuous (k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (m : ℕ) (hm : m ≤ k) :
+  Continuous fun w => arrangementFlatten k n τ w m hm
+'ResidualSLT.arrangementFlatten_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementActiveL_rawAux (r k : ℕ) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) (w : ArrangementAux k n)
+  (j : Fin k) :
+  (arrangementActiveL k (fun g => r ^ n g + 2) ↑j) (arrangementRawAux r k n τ w) = (τ j + w.1 j) ^ r - τ j ^ r
+'ResidualSLT.arrangementActiveL_rawAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementGroupL_rawAux (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) (g : Fin (k + 1)) (x : ℝ) :
+  x + (arrangementGroupL r k (fun g => r ^ n g + 2) (↑g) x) (arrangementRawAux r k n τ w) =
+    Polynomial.eval x (network r (fun i => zeroExtend (w.2 g) i ^ r) (n g))
+'ResidualSLT.arrangementGroupL_rawAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_eval_network (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ)
+  (w : ArrangementAux k n) (x : ℝ) (m : ℕ) (hm : m ≤ k) :
+  arrangementAuxEval r k (fun g => r ^ n g + 2) (zeroExtend fun j => τ j ^ r) x m (arrangementRawAux r k n τ w) =
+    Polynomial.eval x
+      (network r (fun i => zeroExtend (arrangementFlatten k n τ w m hm) i ^ r) (arrangementDepth k n m hm))
+'ResidualSLT.arrangementRawAux_eval_network' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementRawAux_zero (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  arrangementRawAux r k n τ 0 = 0
+'ResidualSLT.arrangementRawAux_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementFlatten_target (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (τ : Fin k → ℝ) :
+  network r (fun i => zeroExtend (arrangementFlatten k n τ 0 k ⋯) i ^ r) (arrangementDepth k n k ⋯) =
+    network r (zeroExtend fun j => τ j ^ r) k
+'ResidualSLT.arrangementFlatten_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.HasLaplaceOrder.finset_prod.{u_1} {ι : Type u_1} (s : Finset ι) (a : ι → ℝ) (m : ι → ℕ) (Z : ι → ℝ → ℝ)
+  (h : ∀ i ∈ s, HasLaplaceOrder (a i) (m i) (Z i)) :
+  HasLaplaceOrder (∑ i ∈ s, a i) (1 + ∑ i ∈ s, (m i - 1)) fun N => ∏ i ∈ s, Z i N
+'ResidualSLT.HasLaplaceOrder.finset_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.laplace_integral_sum_pi.{u_1, u_2} {ι : Type u_1} [Fintype ι] {E : ι → Type u_2}
+  [(i : ι) → MeasurableSpace (E i)] (μ : (i : ι) → MeasureTheory.Measure (E i))
+  [∀ (i : ι), MeasureTheory.SigmaFinite (μ i)] (K : (i : ι) → E i → ℝ) (D : (i : ι) → Set (E i)) (N : ℝ) :
+  ∫ (w : (i : ι) → E i) in Set.univ.pi D, Real.exp (-N * ∑ i, K i (w i)) ∂MeasureTheory.Measure.pi μ =
+    ∏ i, ∫ (x : E i) in D i, Real.exp (-N * K i x) ∂μ i
+'ResidualSLT.laplace_integral_sum_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.laplace_order_sum_pi.{u_1, u_2} {ι : Type u_1} [Fintype ι] {E : ι → Type u_2}
+  [(i : ι) → MeasurableSpace (E i)] (μ : (i : ι) → MeasureTheory.Measure (E i))
+  [∀ (i : ι), MeasureTheory.SigmaFinite (μ i)] (K : (i : ι) → E i → ℝ) (D : (i : ι) → Set (E i)) (a : ι → ℝ) (m : ι → ℕ)
+  (h : ∀ (i : ι), HasLaplaceOrder (a i) (m i) fun N => ∫ (x : E i) in D i, Real.exp (-N * K i x) ∂μ i) :
+  HasLaplaceOrder (∑ i, a i) (1 + ∑ i, (m i - 1)) fun N =>
+    ∫ (w : (i : ι) → E i) in Set.univ.pi D, Real.exp (-N * ∑ i, K i (w i)) ∂MeasureTheory.Measure.pi μ
+'ResidualSLT.laplace_order_sum_pi' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementLearningPair (r k : ℕ) (n : Fin (k + 1) → ℕ) : ℝ × ℕ
+'ResidualSLT.arrangementLearningPair' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementComparisonLoss (r k : ℕ) (n : Fin (k + 1) → ℕ) (w : ArrangementAux k n) : ℝ
+'ResidualSLT.arrangementComparisonLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.arrangementComparisonLoss_laplace_order (r k : ℕ) (hr : 2 ≤ r) (n : Fin (k + 1) → ℕ) (ε : ℝ) (hε : 0 < ε)
+  (hε1 : ε ≤ 1) :
+  HasLaplaceOrder (arrangementLearningPair r k n).1 (arrangementLearningPair r k n).2 fun N =>
+    ∫ (w : ArrangementAux k n) in Metric.ball 0 ε, Real.exp (-N * arrangementComparisonLoss r k n w)
+'ResidualSLT.arrangementComparisonLoss_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss (μ : MeasureTheory.Measure ℝ) (r : ℕ) {L : ℕ} (t w : Fin L → ℝ) : ℝ
+'ResidualSLT.networkTargetLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetCoefficients (r : ℕ) {L : ℕ} (t w : Fin L → ℝ) : Fin (sparseNetworkFeatureCount r L) → ℝ
+'ResidualSLT.networkTargetCoefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTarget_feature_expansion (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L) (t w : Fin L → ℝ) (x : ℝ) :
+  Polynomial.eval x (network r (fun i => zeroExtend w i ^ r) L) -
+      Polynomial.eval x (network r (fun i => zeroExtend t i ^ r) L) =
+    ∑ j, networkTargetCoefficients r t w j * sparseNetworkFeatures r L j x
+'ResidualSLT.networkTarget_feature_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_eq_gram (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)) (t w : Fin L → ℝ) :
+  networkTargetLoss μ r t w = gramValue (featureGram μ (sparseNetworkFeatures r L)) (networkTargetCoefficients r t w)
+'ResidualSLT.networkTargetLoss_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_continuous (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)) (t : Fin L → ℝ) : Continuous (networkTargetLoss μ r t)
+'ResidualSLT.networkTargetLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_coefficient_bounds (μ : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L)) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ (t w : Fin L → ℝ),
+          a * ‖networkTargetCoefficients r t w‖ ^ 2 ≤ networkTargetLoss μ r t w ∧
+            networkTargetLoss μ r t w ≤ A * ‖networkTargetCoefficients r t w‖ ^ 2
+'ResidualSLT.networkTargetLoss_coefficient_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidualSLT.networkTargetLoss_comparable (μ ν : MeasureTheory.Measure ℝ) (r L : ℕ) (hr : 2 ≤ r) (hL : 0 < L)
+  (hμ : FinitePositiveFeatureGram μ (sparseNetworkFeatures r L))
+  (hν : FinitePositiveFeatureGram ν (sparseNetworkFeatures r L)) :
+  ∃ a A,
+    0 < a ∧
+      0 < A ∧
+        ∀ (t w : Fin L → ℝ),
+          a * networkTargetLoss ν r t w ≤ networkTargetLoss μ r t w ∧
+            networkTargetLoss μ r t w ≤ A * networkTargetLoss ν r t w
+'ResidualSLT.networkTargetLoss_comparable' depends on axioms: [propext, Classical.choice, Quot.sound]

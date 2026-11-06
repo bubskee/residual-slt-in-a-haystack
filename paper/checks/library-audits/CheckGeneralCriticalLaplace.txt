@@ -1,0 +1,12 @@
+'_private.CheckGeneralCriticalLaplace.0.ResidualSLT.Examples.quadratic_saddle_sextic_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckGeneralCriticalLaplace.0.ResidualSLT.Examples.cubic_large_correction_laplace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckGeneralCriticalLaplace.0.ResidualSLT.Examples.original_weighted_model_via_general' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckGeneralCriticalLaplace.0.ResidualSLT.Examples.odd_critical_fermat_via_general' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

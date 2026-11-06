@@ -1,0 +1,24 @@
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_unified_quadratic_equal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_unified_quadratic_deep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_unified_quintic_depth_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_unified_cubic_shallow' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_unified_cubic_critical' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_unified_cubic_deep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_unified_identity_boundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckSparseIdentityCertificate.0.ResidualSLT.Examples.sparse_four_atom_cubic_certificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

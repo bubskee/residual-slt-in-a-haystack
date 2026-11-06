@@ -1,0 +1,24 @@
+'_private.CheckOddModels.0.ResidualSLT.Examples.cubic_two_model' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOddModels.0.ResidualSLT.Examples.cubic_three_local_model' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOddModels.0.ResidualSLT.Examples.cubic_four_model' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOddModels.0.ResidualSLT.Examples.cubic_transition_endpoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOddModels.0.ResidualSLT.Examples.unequal_radial_order_model' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOddModels.0.ResidualSLT.Examples.cubic_four_half_integrable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOddModels.0.ResidualSLT.Examples.odd_sphere_regular_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'_private.CheckOddModels.0.ResidualSLT.Examples.cubic_network_radial_reduction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

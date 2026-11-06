@@ -1,0 +1,809 @@
+def ResidualSLT.oneActivePopulationLoss : MeasureTheory.Measure ℝ → ℕ → ℝ → {L : ℕ} → (Fin L → ℝ) → ℝ :=
+fun μ r c {L} w => ∫ (x : ℝ), oneActiveSquaredError r c w x ∂μ
+def ResidualSLT.oneActiveLearningPair : ℕ → ℕ → ℕ → ℝ × ℕ :=
+fun r p q =>
+  (1 / 2 + (identityLearningPair r p).1 + (identityLearningPair r q).1,
+    (identityLearningPair r p).2 + (identityLearningPair r q).2 - 1)
+theorem ResidualSLT.oneActive_network_local_comparison : ∀ (μ : MeasureTheory.Measure ℝ) (r p q : ℕ),
+  2 ≤ r →
+    FinitePositiveFeatureGram μ (sparseNetworkFeatures r (p + 1 + q)) →
+      ∀ (τ : ℝ),
+        τ ≠ 0 →
+          ∃ c C,
+            0 < c ∧
+              0 < C ∧
+                ∀ᶠ (w : OneActiveAux p q) in nhds 0,
+                  c * oneActiveComparisonLoss r p q w ≤
+                      oneActivePopulationLoss μ r (τ ^ r) (oneActiveAssemble p q τ w) ∧
+                    oneActivePopulationLoss μ r (τ ^ r) (oneActiveAssemble p q τ w) ≤
+                      C * oneActiveComparisonLoss r p q w :=
+fun μ r p q hr hμ τ hτ =>
+  Exists.casesOn (oneActive_network_retained_comparison μ r p q hr hμ τ hτ) fun a h =>
+    Exists.casesOn h fun A h =>
+      And.casesOn h fun ha right =>
+        And.casesOn right fun hA hactual =>
+          Exists.casesOn (oneActive_model_retained_comparison r p q hr) fun b h =>
+            Exists.casesOn h fun B h =>
+              And.casesOn h fun hb right =>
+                And.casesOn right fun hB hmodel =>
+                  Exists.intro (a / B)
+                    (Exists.intro (A / b)
+                      ⟨div_pos ha hB,
+                        ⟨div_pos hA hb,
+                          Filter.mp_mem hmodel
+                            (Filter.mp_mem hactual
+                              (Filter.univ_mem'
+                                (id fun w hw hv =>
+                                  ⟨Trans.trans
+                                      (Trans.trans (mul_le_mul_of_nonneg_left hv.right (LT.lt.le (div_pos ha hB)))
+                                        (of_eq_true
+                                          (Eq.trans
+                                            (Mathlib.Tactic.FieldSimp.eq_eq_cancel_eq
+                                              (Mathlib.Tactic.FieldSimp.eq_mul_of_eq_eq_eq_mul
+                                                (Eq.trans
+                                                  (congr_arg₂ HMul.hMul (Eq.trans (congr_arg₂ HDiv.hDiv rfl rfl) rfl)
+                                                    (Eq.trans
+                                                      (congr_arg₂ HMul.hMul rfl
+                                                        (Eq.trans (congr_arg (fun x => x ^ 2) rfl) rfl))
+                                                      rfl))
+                                                  rfl)
+                                                (Eq.trans
+                                                  (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval
+                                                    (Mathlib.Tactic.FieldSimp.NF.div_eq_eval
+                                                      (Eq.trans (Eq.refl a)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval a))
+                                                      (Eq.trans (Eq.refl B)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval B))
+                                                      (Mathlib.Tactic.FieldSimp.NF.div_eq_eval₃ (1, B)
+                                                        (div_one ((1, a) ::ᵣ []).eval)))
+                                                    (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval
+                                                      (Eq.trans (Eq.refl B)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval B))
+                                                      (Mathlib.Tactic.FieldSimp.NF.pow_eq_eval
+                                                        (of_decide_eq_true (id (Eq.refl true)))
+                                                        (Eq.trans (Eq.refl ‖oneActiveRetained r p q w‖)
+                                                          (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval
+                                                            ‖oneActiveRetained r p q w‖)))
+                                                      (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₃
+                                                        (2, ‖oneActiveRetained r p q w‖)
+                                                        (mul_one ((1, B) ::ᵣ []).eval)))
+                                                    (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₃
+                                                      (2, ‖oneActiveRetained r p q w‖)
+                                                      (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₂ (-1) 1 B
+                                                        (mul_one ((1, a) ::ᵣ []).eval))))
+                                                  (Eq.symm
+                                                    (Mathlib.Tactic.FieldSimp.NF.eval_mul_eval_cons 2
+                                                      ‖oneActiveRetained r p q w‖
+                                                      (Mathlib.Tactic.FieldSimp.NF.eval_mul_eval_cons_zero
+                                                        (Mathlib.Tactic.FieldSimp.NF.eval_cons_mul_eval 1 a
+                                                          (one_mul (Mathlib.Tactic.FieldSimp.NF.eval [])))
+                                                        (Mathlib.Tactic.FieldSimp.NF.eval_cons_of_pow_eq_zero
+                                                          (of_decide_eq_true (id (Eq.refl true))) (ne_of_gt hB) [])))))
+                                                rfl
+                                                (Mathlib.Tactic.FieldSimp.eq_div_of_eq_one_of_subst
+                                                  (Mathlib.Tactic.FieldSimp.NF.cons_eq_div_of_eq_div 2
+                                                    ‖oneActiveRetained r p q w‖ (Eq.symm (div_one 1)))
+                                                  (Eq.mpr
+                                                    (id
+                                                      (congrArg (fun _a => _a = ‖oneActiveRetained r p q w‖ ^ 2)
+                                                        (Mathlib.Tactic.FieldSimp.NF.eval_cons
+                                                          (2, ‖oneActiveRetained r p q w‖) [])))
+                                                    (Eq.trans
+                                                      (one_mul
+                                                        (Mathlib.Tactic.FieldSimp.zpow'
+                                                          (2, ‖oneActiveRetained r p q w‖).2
+                                                          (2, ‖oneActiveRetained r p q w‖).1))
+                                                      (Mathlib.Tactic.FieldSimp.zpow'_ofNat ‖oneActiveRetained r p q w‖
+                                                        (of_decide_eq_true (id (Eq.refl true))))))))
+                                              (Mathlib.Tactic.FieldSimp.eq_mul_of_eq_eq_eq_mul
+                                                (Eq.trans
+                                                  (congr_arg₂ HMul.hMul rfl
+                                                    (Eq.trans (congr_arg (fun x => x ^ 2) rfl) rfl))
+                                                  rfl)
+                                                (Eq.trans
+                                                  (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval
+                                                    (Eq.trans (Eq.refl a) (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval a))
+                                                    (Mathlib.Tactic.FieldSimp.NF.pow_eq_eval
+                                                      (of_decide_eq_true (id (Eq.refl true)))
+                                                      (Eq.trans (Eq.refl ‖oneActiveRetained r p q w‖)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval
+                                                          ‖oneActiveRetained r p q w‖)))
+                                                    (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₃
+                                                      (2, ‖oneActiveRetained r p q w‖) (mul_one ((1, a) ::ᵣ []).eval)))
+                                                  (Eq.symm
+                                                    (Mathlib.Tactic.FieldSimp.NF.eval_mul_eval_cons 2
+                                                      ‖oneActiveRetained r p q w‖
+                                                      (Mathlib.Tactic.FieldSimp.NF.eval_cons_mul_eval 1 a
+                                                        (one_mul (Mathlib.Tactic.FieldSimp.NF.eval []))))))
+                                                rfl
+                                                (Mathlib.Tactic.FieldSimp.eq_div_of_eq_one_of_subst
+                                                  (Mathlib.Tactic.FieldSimp.NF.cons_eq_div_of_eq_div 2
+                                                    ‖oneActiveRetained r p q w‖ (Eq.symm (div_one 1)))
+                                                  (Eq.mpr
+                                                    (id
+                                                      (congrArg (fun _a => _a = ‖oneActiveRetained r p q w‖ ^ 2)
+                                                        (Mathlib.Tactic.FieldSimp.NF.eval_cons
+                                                          (2, ‖oneActiveRetained r p q w‖) [])))
+                                                    (Eq.trans
+                                                      (one_mul
+                                                        (Mathlib.Tactic.FieldSimp.zpow'
+                                                          (2, ‖oneActiveRetained r p q w‖).2
+                                                          (2, ‖oneActiveRetained r p q w‖).1))
+                                                      (Mathlib.Tactic.FieldSimp.zpow'_ofNat ‖oneActiveRetained r p q w‖
+                                                        (of_decide_eq_true (id (Eq.refl true))))))))
+                                              (Mathlib.Tactic.FieldSimp.NF.cons_ne_zero 1 (ne_of_gt ha) one_ne_zero))
+                                            (eq_self (‖oneActiveRetained r p q w‖ ^ 2)))))
+                                      hw.left,
+                                    Trans.trans
+                                      (Trans.trans hw.right
+                                        (of_eq_true
+                                          (Eq.trans
+                                            (Mathlib.Tactic.FieldSimp.eq_eq_cancel_eq
+                                              (Mathlib.Tactic.FieldSimp.eq_mul_of_eq_eq_eq_mul
+                                                (Eq.trans
+                                                  (congr_arg₂ HMul.hMul rfl
+                                                    (Eq.trans (congr_arg (fun x => x ^ 2) rfl) rfl))
+                                                  rfl)
+                                                (Eq.trans
+                                                  (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval
+                                                    (Eq.trans (Eq.refl A) (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval A))
+                                                    (Mathlib.Tactic.FieldSimp.NF.pow_eq_eval
+                                                      (of_decide_eq_true (id (Eq.refl true)))
+                                                      (Eq.trans (Eq.refl ‖oneActiveRetained r p q w‖)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval
+                                                          ‖oneActiveRetained r p q w‖)))
+                                                    (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₃
+                                                      (2, ‖oneActiveRetained r p q w‖) (mul_one ((1, A) ::ᵣ []).eval)))
+                                                  (Eq.symm
+                                                    (Mathlib.Tactic.FieldSimp.NF.eval_mul_eval_cons 2
+                                                      ‖oneActiveRetained r p q w‖
+                                                      (Mathlib.Tactic.FieldSimp.NF.eval_cons_mul_eval 1 A
+                                                        (one_mul (Mathlib.Tactic.FieldSimp.NF.eval []))))))
+                                                rfl
+                                                (Mathlib.Tactic.FieldSimp.eq_div_of_eq_one_of_subst
+                                                  (Mathlib.Tactic.FieldSimp.NF.cons_eq_div_of_eq_div 2
+                                                    ‖oneActiveRetained r p q w‖ (Eq.symm (div_one 1)))
+                                                  (Eq.mpr
+                                                    (id
+                                                      (congrArg (fun _a => _a = ‖oneActiveRetained r p q w‖ ^ 2)
+                                                        (Mathlib.Tactic.FieldSimp.NF.eval_cons
+                                                          (2, ‖oneActiveRetained r p q w‖) [])))
+                                                    (Eq.trans
+                                                      (one_mul
+                                                        (Mathlib.Tactic.FieldSimp.zpow'
+                                                          (2, ‖oneActiveRetained r p q w‖).2
+                                                          (2, ‖oneActiveRetained r p q w‖).1))
+                                                      (Mathlib.Tactic.FieldSimp.zpow'_ofNat ‖oneActiveRetained r p q w‖
+                                                        (of_decide_eq_true (id (Eq.refl true))))))))
+                                              (Mathlib.Tactic.FieldSimp.eq_mul_of_eq_eq_eq_mul
+                                                (Eq.trans
+                                                  (congr_arg₂ HMul.hMul (Eq.trans (congr_arg₂ HDiv.hDiv rfl rfl) rfl)
+                                                    (Eq.trans
+                                                      (congr_arg₂ HMul.hMul rfl
+                                                        (Eq.trans (congr_arg (fun x => x ^ 2) rfl) rfl))
+                                                      rfl))
+                                                  rfl)
+                                                (Eq.trans
+                                                  (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval
+                                                    (Mathlib.Tactic.FieldSimp.NF.div_eq_eval
+                                                      (Eq.trans (Eq.refl A)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval A))
+                                                      (Eq.trans (Eq.refl b)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval b))
+                                                      (Mathlib.Tactic.FieldSimp.NF.div_eq_eval₃ (1, b)
+                                                        (div_one ((1, A) ::ᵣ []).eval)))
+                                                    (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval
+                                                      (Eq.trans (Eq.refl b)
+                                                        (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval b))
+                                                      (Mathlib.Tactic.FieldSimp.NF.pow_eq_eval
+                                                        (of_decide_eq_true (id (Eq.refl true)))
+                                                        (Eq.trans (Eq.refl ‖oneActiveRetained r p q w‖)
+                                                          (Mathlib.Tactic.FieldSimp.NF.atom_eq_eval
+                                                            ‖oneActiveRetained r p q w‖)))
+                                                      (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₁ (1, b)
+                                                        (one_mul ((2, ‖oneActiveRetained r p q w‖) ::ᵣ []).eval)))
+                                                    (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₂ (-1) 1 b
+                                                      (Mathlib.Tactic.FieldSimp.NF.mul_eq_eval₃
+                                                        (2, ‖oneActiveRetained r p q w‖)
+                                                        (mul_one ((1, A) ::ᵣ []).eval))))
+                                                  (Eq.symm
+                                                    (Mathlib.Tactic.FieldSimp.NF.eval_mul_eval_cons_zero
+                                                      (Mathlib.Tactic.FieldSimp.NF.eval_mul_eval_cons 2
+                                                        ‖oneActiveRetained r p q w‖
+                                                        (Mathlib.Tactic.FieldSimp.NF.eval_cons_mul_eval 1 A
+                                                          (one_mul (Mathlib.Tactic.FieldSimp.NF.eval []))))
+                                                      (Mathlib.Tactic.FieldSimp.NF.eval_cons_of_pow_eq_zero
+                                                        (of_decide_eq_true (id (Eq.refl true))) (ne_of_gt hb)
+                                                        ((2, ‖oneActiveRetained r p q w‖) ::ᵣ [])))))
+                                                rfl
+                                                (Mathlib.Tactic.FieldSimp.eq_div_of_eq_one_of_subst
+                                                  (Mathlib.Tactic.FieldSimp.NF.cons_eq_div_of_eq_div 2
+                                                    ‖oneActiveRetained r p q w‖ (Eq.symm (div_one 1)))
+                                                  (Eq.mpr
+                                                    (id
+                                                      (congrArg (fun _a => _a = ‖oneActiveRetained r p q w‖ ^ 2)
+                                                        (Mathlib.Tactic.FieldSimp.NF.eval_cons
+                                                          (2, ‖oneActiveRetained r p q w‖) [])))
+                                                    (Eq.trans
+                                                      (one_mul
+                                                        (Mathlib.Tactic.FieldSimp.zpow'
+                                                          (2, ‖oneActiveRetained r p q w‖).2
+                                                          (2, ‖oneActiveRetained r p q w‖).1))
+                                                      (Mathlib.Tactic.FieldSimp.zpow'_ofNat ‖oneActiveRetained r p q w‖
+                                                        (of_decide_eq_true (id (Eq.refl true))))))))
+                                              (Mathlib.Tactic.FieldSimp.NF.cons_ne_zero 1 (ne_of_gt hA) one_ne_zero))
+                                            (eq_self (‖oneActiveRetained r p q w‖ ^ 2)))))
+                                      (mul_le_mul_of_nonneg_left hv.left (LT.lt.le (div_pos hA hb)))⟩)))⟩⟩)
+theorem ResidualSLT.oneActive_raw_network_rlct_laplace_certificate : ∀ (μ : MeasureTheory.Measure ℝ) (r p q : ℕ),
+  2 ≤ r →
+    FinitePositiveFeatureGram μ (sparseNetworkFeatures r (p + 1 + q)) →
+      ∀ (τ : ℝ),
+        τ ≠ 0 →
+          ∃ ε₀,
+            0 < ε₀ ∧
+              ε₀ ≤ 1 ∧
+                ∀ (ε : ℝ),
+                  0 < ε →
+                    ε ≤ ε₀ →
+                      ∀ (ρ : (Fin (p + 1 + q) → ℝ) → NNReal),
+                        BoundedPositivePriorOn ρ (Metric.ball (oneActiveAssemble p q τ 0) ε) MeasureTheory.volume →
+                          (∀ (s : ℝ),
+                              MeasureTheory.IntegrableOn (fun w => oneActivePopulationLoss μ r (τ ^ r) w ^ (-s))
+                                  (Metric.ball (oneActiveAssemble p q τ 0) ε)
+                                  (MeasureTheory.volume.withDensity fun w => ↑(ρ w)) ↔
+                                s < (oneActiveLearningPair r p q).1) ∧
+                            HasLaplaceOrder (oneActiveLearningPair r p q).1 (oneActiveLearningPair r p q).2 fun N =>
+                              ∫ (w : Fin (p + 1 + q) → ℝ) in Metric.ball (oneActiveAssemble p q τ 0) ε,
+                                Real.exp
+                                  (-N *
+                                    oneActivePopulationLoss μ r (τ ^ r)
+                                      w) ∂MeasureTheory.volume.withDensity fun w => ↑(ρ w) :=
+fun μ r p q hr hμ τ hτ =>
+  Exists.casesOn (oneActive_network_rlct_laplace_certificate μ r p q hr hμ τ hτ) fun ε₀ h =>
+    And.casesOn h fun hε₀ right =>
+      And.casesOn right fun hε₀1 hcert =>
+        Exists.intro ε₀
+          ⟨hε₀,
+            ⟨hε₀1, fun ε hε hεsmall ρ hρ =>
+              have hρone :=
+                { measurable := measurable_const,
+                  bounds :=
+                    Exists.intro 1
+                      (Exists.intro 1
+                        ⟨Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat NNReal Nat.cast_zero)
+                            (Mathlib.Meta.NormNum.isNat_ofNat NNReal Nat.cast_one) (Eq.refl false),
+                          Filter.Eventually.of_forall fun x => ⟨le_rfl, le_rfl⟩⟩) };
+              And.casesOn (hcert ε hε hεsmall (fun x => 1) hρone) fun hthreshold horder =>
+                have hvol := MeasureTheory.withDensity_one;
+                let e := oneActiveCoordinateEquiv p q τ;
+                have hmp :=
+                  have hh :=
+                    MeasureTheory.MeasurePreserving.restrict_preimage (oneActiveCoordinateEquiv_measurePreserving p q τ)
+                      measurableSet_ball;
+                  Eq.mp
+                    (congrFun'
+                      (congrArg
+                        (@MeasureTheory.MeasurePreserving (OneActiveAux p q) (Fin (p + 1 + q) → ℝ)
+                          MeasureTheory.Measure.prod.measureSpace.toMeasurableSpace
+                          MeasureTheory.MeasureSpace.pi.toMeasurableSpace ⇑(oneActiveCoordinateEquiv p q τ))
+                        (congrArg MeasureTheory.volume.restrict (oneActiveCoordinateEquiv_preimage_ball p q τ ε)))
+                      (MeasureTheory.volume.restrict (Metric.ball (oneActiveAssemble p q τ 0) ε)))
+                    hh;
+                have hK :=
+                  oneActivePopulationLoss_continuous μ r (p + 1 + q) hr
+                    (Decidable.byContradiction fun a =>
+                      ResidualSLT.oneActive_raw_network_rlct_laplace_certificate._proof_1_1✝ r p q a)
+                    hμ (τ ^ r);
+                ⟨fun s =>
+                  Eq.mpr
+                    (id
+                      (congrArg (fun _a => _a ↔ s < (oneActiveLearningPair r p q).1)
+                        (propext (integrableOn_withDensity_iff_of_boundedPositive measurableSet_ball hρ))))
+                    (have he :=
+                      MeasureTheory.MeasurePreserving.integrable_comp hmp
+                        (Measurable.aestronglyMeasurable (Measurable.pow_const (Continuous.measurable hK) (-s)));
+                    have he' :=
+                      id
+                        (Eq.mp
+                          (congrFun'
+                            (congrArg Iff
+                              (congrFun'
+                                (congrArg
+                                  (@MeasureTheory.Integrable ℝ PseudoMetricSpace.toUniformSpace.toTopologicalSpace
+                                    SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm (OneActiveAux p q)
+                                    MeasureTheory.Measure.prod.measureSpace.toMeasurableSpace)
+                                  (funext fun x =>
+                                    congrFun'
+                                      (congrArg HPow.hPow
+                                        (congrArg (oneActivePopulationLoss μ r (τ ^ r))
+                                          (oneActiveCoordinateEquiv_apply p q τ x)))
+                                      (-s)))
+                                (MeasureTheory.volume.restrict (Metric.ball 0 ε))))
+                            (MeasureTheory.Integrable (fun x => oneActivePopulationLoss μ r (τ ^ r) x ^ (-s))
+                              (MeasureTheory.volume.restrict (Metric.ball (oneActiveAssemble p q τ 0) ε))))
+                          he);
+                    Iff.trans (Iff.symm he')
+                      (Eq.mp
+                        (forall_congr fun s =>
+                          congrFun'
+                            (congrArg Iff
+                              (congrArg
+                                (@MeasureTheory.IntegrableOn (OneActiveAux p q) ℝ
+                                  MeasureTheory.Measure.prod.measureSpace.toMeasurableSpace
+                                  PseudoMetricSpace.toUniformSpace.toTopologicalSpace
+                                  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
+                                  (fun w => oneActivePopulationLoss μ r (τ ^ r) (oneActiveAssemble p q τ w) ^ (-s))
+                                  (Metric.ball 0 ε))
+                                hvol))
+                            (s < (oneActiveLearningPair r p q).1))
+                        hthreshold s)),
+                  have he := fun N =>
+                    Eq.mp
+                      (congrFun'
+                        (congrArg Eq
+                          (congrArg (MeasureTheory.integral (MeasureTheory.volume.restrict (Metric.ball 0 ε)))
+                            (funext fun x =>
+                              congrArg Real.exp
+                                (congrArg (HMul.hMul (-N))
+                                  (congrArg (oneActivePopulationLoss μ r (τ ^ r))
+                                    (oneActiveCoordinateEquiv_apply p q τ x))))))
+                        (∫ (y : Fin (p + 1 + q) → ℝ) in Metric.ball (oneActiveAssemble p q τ 0) ε,
+                          Real.exp (-N * oneActivePopulationLoss μ r (τ ^ r) y)))
+                      (MeasureTheory.MeasurePreserving.integral_comp hmp (MeasurableEquiv.measurableEmbedding e)
+                        fun w => Real.exp (-N * oneActivePopulationLoss μ r (τ ^ r) w));
+                  laplace_pair_order_withDensity MeasureTheory.volume measurableSet_ball
+                    (oneActivePopulationLoss μ r (τ ^ r))
+                    (fun N =>
+                      MeasureTheory.IntegrableOn.mono_set
+                        (ContinuousOn.integrableOn_compact (isCompact_closedBall (oneActiveAssemble p q τ 0) ε)
+                          (Continuous.continuousOn (Continuous.rexp (Continuous.comp' (continuous_const_mul (-N)) hK))))
+                        Metric.ball_subset_closedBall)
+                    ρ hρ
+                    (Eq.mp
+                      (congrArg (HasLaplaceOrder (oneActiveLearningPair r p q).1 (oneActiveLearningPair r p q).2)
+                        (funext fun N => (fun N => he N) N))
+                      (Eq.mp
+                        (congrArg (HasLaplaceOrder (oneActiveLearningPair r p q).1 (oneActiveLearningPair r p q).2)
+                          (funext fun N =>
+                            congrFun'
+                              (congrArg MeasureTheory.integral
+                                (congrFun' (congrArg MeasureTheory.Measure.restrict hvol) (Metric.ball 0 ε)))
+                              fun w => Real.exp (-N * oneActivePopulationLoss μ r (τ ^ r) (oneActiveAssemble p q τ w))))
+                        horder))⟩⟩⟩
+theorem ResidualSLT.oneActiveCoordinateEquiv_measurePreserving : ∀ (p q : ℕ) (τ : ℝ),
+  MeasureTheory.MeasurePreserving (⇑(oneActiveCoordinateEquiv p q τ)) MeasureTheory.volume MeasureTheory.volume :=
+fun p q τ =>
+  MeasureTheory.MeasurePreserving.comp
+    (MeasureTheory.measurePreserving_add_left MeasureTheory.volume (oneActiveAssemble p q τ 0))
+    (oneActiveZeroEquiv_measurePreserving p q)
+theorem ResidualSLT.oneActiveCoordinateEquiv_preimage_ball : ∀ (p q : ℕ) (τ ε : ℝ),
+  ⇑(oneActiveCoordinateEquiv p q τ) ⁻¹' Metric.ball (oneActiveAssemble p q τ 0) ε = Metric.ball 0 ε :=
+fun p q τ ε =>
+  Set.ext fun w =>
+    Eq.mpr
+      (id
+        (congr
+          (congrArg Iff
+            (Eq.trans ResidualSLT.oneActiveCoordinateEquiv_preimage_ball._simp_1_1✝
+              (Eq.trans
+                (Eq.trans
+                  (congrArg (Membership.mem (Metric.ball (oneActiveAssemble p q τ 0) ε))
+                    (oneActiveCoordinateEquiv_apply p q τ w))
+                  ResidualSLT.oneActiveCoordinateEquiv_preimage_ball._simp_1_2✝)
+                (congrFun' (congrArg LT.lt (dist_eq_norm (oneActiveAssemble p q τ w) (oneActiveAssemble p q τ 0))) ε))))
+          (Eq.trans ResidualSLT.oneActiveCoordinateEquiv_preimage_ball._simp_1_2✝
+            (congrFun' (congrArg LT.lt (dist_eq_norm w 0)) ε))))
+      (have hdiff :=
+        funext fun i =>
+          id
+            (if h : ↑i < p then
+              Eq.mpr
+                (id
+                  (congr (congrArg Eq (congr (congrArg HSub.hSub (dite_eq_left h)) (dite_eq_left h))) (dite_eq_left h)))
+                (of_eq_true
+                  (Eq.trans (congrFun' (congrArg Eq (sub_zero (w.2.1 ⟨↑i, h⟩))) (w.2.1 ⟨↑i, h⟩))
+                    (eq_self (w.2.1 ⟨↑i, h⟩))))
+            else
+              Eq.mpr
+                (id
+                  (congr (congrArg Eq (congr (congrArg HSub.hSub (dite_eq_right h)) (dite_eq_right h)))
+                    (dite_eq_right h)))
+                (if h_1 : ↑i = p then
+                  Eq.mpr
+                    (id
+                      (congr (congrArg Eq (congr (congrArg HSub.hSub (dite_eq_left h_1)) (dite_eq_left h_1)))
+                        (dite_eq_left h_1)))
+                    (of_eq_true
+                      (Eq.trans
+                        (congr
+                          (congrArg Eq
+                            (Eq.trans (congrArg (HSub.hSub (τ + w.1)) (add_zero τ)) (add_sub_cancel_left τ w.1)))
+                          (zero_add w.1))
+                        (eq_self w.1)))
+                else
+                  Eq.mpr
+                    (id
+                      (congr (congrArg Eq (congr (congrArg HSub.hSub (dite_eq_right h_1)) (dite_eq_right h_1)))
+                        (dite_eq_right h_1)))
+                    (of_eq_true
+                      (Eq.trans
+                        (congrFun'
+                          (congrArg Eq (sub_zero (w.2.2 ⟨↑i - (p + 1), oneActiveAssemble._proof_2 p q i h h_1⟩)))
+                          (w.2.2 ⟨↑i - (p + 1), oneActiveAssemble._proof_2 p q i h h_1⟩))
+                        (eq_self (w.2.2 ⟨↑i - (p + 1), oneActiveAssemble._proof_2 p q i h h_1⟩))))));
+      Eq.mpr (id (congrArg (fun _a => ‖_a‖ < ε ↔ ‖w - 0‖ < ε) hdiff))
+        (Eq.mpr (id (congrArg (fun _a => ‖oneActiveAssemble p q 0 w‖ < ε ↔ ‖_a‖ < ε) (sub_zero w)))
+          (have this :=
+            le_antisymm
+              ((pi_norm_le_iff_of_nonneg (norm_nonneg w)).mpr fun i =>
+                id
+                  (if h : ↑i < p then
+                    Eq.mpr (id (congrFun' (congrArg LE.le (congrArg norm (dite_eq_left h))) ‖w‖))
+                      (LE.le.trans (norm_le_pi_norm w.2.1 ⟨↑i, h⟩) (LE.le.trans (norm_fst_le w.2) (norm_snd_le w)))
+                  else
+                    Eq.mpr (id (congrFun' (congrArg LE.le (congrArg norm (dite_eq_right h))) ‖w‖))
+                      (if h_1 : ↑i = p then
+                        Eq.mpr (id (congrFun' (congrArg LE.le (congrArg norm (dite_eq_left h_1))) ‖w‖))
+                          (Eq.mpr (id (congrFun' (congrArg LE.le (congrArg norm (zero_add w.1))) ‖w‖)) (norm_fst_le w))
+                      else
+                        Eq.mpr (id (congrFun' (congrArg LE.le (congrArg norm (dite_eq_right h_1))) ‖w‖))
+                          (LE.le.trans (norm_le_pi_norm w.2.2 ⟨↑i - (p + 1), oneActiveAssemble._proof_2 p q i h h_1⟩)
+                            (LE.le.trans (norm_snd_le w.2) (norm_snd_le w))))))
+              (Eq.mpr (id (congrArg (fun _a => _a ≤ ‖oneActiveAssemble p q 0 w‖) (Prod.norm_def w)))
+                (Eq.mpr (id (congrArg (fun _a => max ‖w.1‖ _a ≤ ‖oneActiveAssemble p q 0 w‖) (Prod.norm_def w.2)))
+                  (max_le
+                    (have hh :=
+                      norm_le_pi_norm (oneActiveAssemble p q 0 w)
+                        ⟨p, Decidable.byContradiction fun a => ResidualSLT.oneActiveIndexEquiv._proof_3✝ p q a⟩;
+                    Eq.mpr (id ge_iff_le._simp_1)
+                      (Eq.mp
+                        (congrFun'
+                          (congrArg LE.le
+                            (congrArg norm
+                              (Eq.trans (dite_eq_right_of_eq_false (lt_self_iff_false._simp_1 p))
+                                (Eq.trans (dite_eq_left_of_eq_true (eq_self p)) (zero_add w.1)))))
+                          ‖oneActiveAssemble p q 0 w‖)
+                        hh))
+                    (max_le
+                      ((pi_norm_le_iff_of_nonneg (norm_nonneg (oneActiveAssemble p q 0 w))).mpr fun i =>
+                        have hh :=
+                          norm_le_pi_norm (oneActiveAssemble p q 0 w)
+                            ⟨↑i,
+                              have hi := i.isLt;
+                              Decidable.byContradiction fun a => ResidualSLT.oneActiveIndexEquiv._proof_5✝ p q i hi a⟩;
+                        Eq.mpr (id ge_iff_le._simp_1)
+                          (Eq.mp
+                            (congrFun' (congrArg LE.le (congrArg norm (dite_eq_left_of_eq_true (eq_true i.isLt))))
+                              ‖oneActiveAssemble p q 0 w‖)
+                            hh))
+                      ((pi_norm_le_iff_of_nonneg (norm_nonneg (oneActiveAssemble p q 0 w))).mpr fun i =>
+                        have hh :=
+                          norm_le_pi_norm (oneActiveAssemble p q 0 w)
+                            ⟨p + 1 + ↑i,
+                              have hi := i.isLt;
+                              Decidable.byContradiction fun a => ResidualSLT.oneActiveIndexEquiv._proof_7✝ p q i hi a⟩;
+                        Eq.mpr (id ge_iff_le._simp_1)
+                          (Eq.mp
+                            (congrFun'
+                              (congrArg LE.le
+                                (congrArg norm
+                                  (Eq.trans
+                                    (dite_eq_right_of_eq_false
+                                      (eq_false
+                                        (have this := fun a => ResidualSLT.oneActiveIndexEquiv._proof_11✝ p q i a;
+                                        this)))
+                                    (Eq.trans
+                                      (dite_eq_right_of_eq_false
+                                        (eq_false
+                                          (have this := fun a => ResidualSLT.oneActiveIndexEquiv._proof_12✝ p q i a;
+                                          this)))
+                                      (congrArg w.2.2
+                                        (Fin.mk.congr_simp
+                                          (↑⟨p + 1 + ↑i,
+                                                have hi := i.isLt;
+                                                Decidable.byContradiction fun a =>
+                                                  ResidualSLT.oneActiveIndexEquiv._proof_7✝ p q i hi a⟩ -
+                                            (p + 1))
+                                          (↑i) (add_tsub_cancel_left (p + 1) ↑i)
+                                          (oneActiveAssemble._proof_2 p q
+                                            ⟨p + 1 + ↑i,
+                                              have hi := i.isLt;
+                                              Decidable.byContradiction fun a =>
+                                                ResidualSLT.oneActiveIndexEquiv._proof_7✝ p q i hi a⟩
+                                            (of_eq_false
+                                              (eq_false
+                                                (have this := fun a =>
+                                                  ResidualSLT.oneActiveIndexEquiv._proof_11✝ p q i a;
+                                                this)))
+                                            (of_eq_false
+                                              (eq_false
+                                                (have this := fun a =>
+                                                  ResidualSLT.oneActiveIndexEquiv._proof_12✝ p q i a;
+                                                this))))))))))
+                              ‖oneActiveAssemble p q 0 w‖)
+                            hh))))));
+          Eq.mpr (id (congrArg (fun _a => _a < ε ↔ ‖w‖ < ε) this)) Iff.rfl)))
+theorem ResidualSLT.inversePower_integrable_iff_of_laplace_order.{u_1} : ∀ {α : Type u_1} [inst : MeasurableSpace α]
+  (μ : MeasureTheory.Measure α) [MeasureTheory.IsFiniteMeasure μ] (K : α → ℝ),
+  Measurable K →
+    (∀ᵐ (x : α) ∂μ, 0 < K x) →
+      (∀ (t : ℝ), MeasureTheory.Integrable (fun x => Real.exp (-t * K x)) μ) →
+        ∀ (a : ℝ) (m : ℕ),
+          (HasLaplaceOrder a m fun t => ∫ (x : α), Real.exp (-t * K x) ∂μ) →
+            ∀ (s : ℝ), 0 < s → (MeasureTheory.Integrable (fun x => K x ^ (-s)) μ ↔ s < a) :=
+fun {α} [MeasurableSpace α] μ [MeasureTheory.IsFiniteMeasure μ] K hK hpos hi a m horder s hs =>
+  Eq.mpr (id (congrArg (fun _a => _a ↔ s < a) (propext (inversePower_integrable_iff_mellin μ K hK hpos hi s hs))))
+    (mellin_integrable_iff_of_laplace_order (fun t => ∫ (x : α), Real.exp (-t * K x) ∂μ)
+      (have hm :=
+        Measurable.stronglyMeasurable
+          (Measurable.exp (Measurable.mul (Measurable.neg measurable_fst) (Measurable.comp hK measurable_snd)));
+      MeasureTheory.StronglyMeasurable.measurable (MeasureTheory.StronglyMeasurable.integral_prod_right' hm))
+      (μ.real Set.univ)
+      (fun t ht =>
+        ⟨MeasureTheory.integral_nonneg fun x => LT.lt.le (Real.exp_pos (-t * K x)),
+          Trans.trans
+            (MeasureTheory.integral_mono_ae (hi t) (MeasureTheory.integrable_const 1)
+              (Filter.mp_mem hpos
+                (Filter.univ_mem'
+                  (id fun x hx =>
+                    Real.exp_le_one_iff.mpr
+                      (le_of_not_gt fun a =>
+                        Mathlib.Tactic.Linarith.lt_irrefl
+                          (Eq.mp
+                            (congrArg (fun _a => _a < 0)
+                              (Mathlib.Tactic.Ring.of_eq
+                                (Mathlib.Tactic.Ring.Common.add_congr
+                                  (Mathlib.Tactic.Ring.Common.sub_congr
+                                    (Mathlib.Tactic.Ring.cast_zero (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero))
+                                    (Mathlib.Tactic.Ring.Common.mul_congr
+                                      (Mathlib.Tactic.Ring.Common.neg_congr
+                                        (Mathlib.Tactic.Ring.Common.atom_pf t rfl
+                                          (Eq.mpr
+                                            (id
+                                              (congrArg
+                                                (fun _a => t ^ Nat.rawCast 1 * Nat.rawCast 1 = t ^ Nat.rawCast 1 * _a)
+                                                (Eq.symm rfl)))
+                                            (Eq.refl (t ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                        (Mathlib.Tactic.Ring.Common.neg_add
+                                          (Mathlib.Tactic.Ring.Common.neg_mul t (Nat.rawCast 1)
+                                            (Mathlib.Meta.NormNum.IsInt.to_raw_eq
+                                              (Mathlib.Meta.NormNum.isInt_neg (Eq.refl Neg.neg)
+                                                (Mathlib.Meta.NormNum.IsNat.to_isInt
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1))
+                                                (Eq.refl (Int.negOfNat 1)))))
+                                          Mathlib.Tactic.Ring.Common.neg_zero))
+                                      (Mathlib.Tactic.Ring.Common.atom_pf (K x) rfl
+                                        (Eq.mpr
+                                          (id
+                                            (congrArg
+                                              (fun _a => K x ^ Nat.rawCast 1 * Nat.rawCast 1 = K x ^ Nat.rawCast 1 * _a)
+                                              (Eq.symm rfl)))
+                                          (Eq.refl (K x ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                      (Mathlib.Tactic.Ring.Common.add_mul
+                                        (Mathlib.Tactic.Ring.Common.mul_add
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_left t (Nat.rawCast 1)
+                                            (Mathlib.Tactic.Ring.Common.mul_pf_right (K x) (Nat.rawCast 1)
+                                              (Mathlib.Meta.NormNum.IsInt.to_raw_eq
+                                                (Mathlib.Meta.NormNum.isInt_mul (Eq.refl HMul.hMul)
+                                                  (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 1))
+                                                  (Mathlib.Meta.NormNum.IsNat.to_isInt
+                                                    (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1))
+                                                  (Eq.refl (Int.negOfNat 1))))))
+                                          (Mathlib.Tactic.Ring.Common.mul_zero
+                                            (t ^ Nat.rawCast 1 * (Int.negOfNat 1).rawCast))
+                                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                            (t ^ Nat.rawCast 1 * (K x ^ Nat.rawCast 1 * (Int.negOfNat 1).rawCast) + 0)))
+                                        (Mathlib.Tactic.Ring.Common.zero_mul (K x ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                          (t ^ Nat.rawCast 1 * (K x ^ Nat.rawCast 1 * (Int.negOfNat 1).rawCast) + 0))))
+                                    (Mathlib.Tactic.Ring.Common.sub_pf
+                                      (Mathlib.Tactic.Ring.Common.neg_add
+                                        (Mathlib.Tactic.Ring.Common.neg_mul t (Nat.rawCast 1)
+                                          (Mathlib.Tactic.Ring.Common.neg_mul (K x) (Nat.rawCast 1)
+                                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                              (Mathlib.Meta.NormNum.IsInt.to_isNat
+                                                (Mathlib.Meta.NormNum.isInt_neg (Eq.refl Neg.neg)
+                                                  (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 1))
+                                                  (Eq.refl (Int.ofNat 1)))))))
+                                        Mathlib.Tactic.Ring.Common.neg_zero)
+                                      (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                        (t ^ Nat.rawCast 1 * (K x ^ Nat.rawCast 1 * Nat.rawCast 1) + 0))))
+                                  (Mathlib.Tactic.Ring.Common.sub_congr
+                                    (Mathlib.Tactic.Ring.cast_zero (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero))
+                                    (Mathlib.Tactic.Ring.Common.mul_congr
+                                      (Mathlib.Tactic.Ring.Common.atom_pf t rfl
+                                        (Eq.mpr
+                                          (id
+                                            (congrArg
+                                              (fun _a => t ^ Nat.rawCast 1 * Nat.rawCast 1 = t ^ Nat.rawCast 1 * _a)
+                                              (Eq.symm rfl)))
+                                          (Eq.refl (t ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                      (Mathlib.Tactic.Ring.Common.atom_pf (K x) rfl
+                                        (Eq.mpr
+                                          (id
+                                            (congrArg
+                                              (fun _a => K x ^ Nat.rawCast 1 * Nat.rawCast 1 = K x ^ Nat.rawCast 1 * _a)
+                                              (Eq.symm rfl)))
+                                          (Eq.refl (K x ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                      (Mathlib.Tactic.Ring.Common.add_mul
+                                        (Mathlib.Tactic.Ring.Common.mul_add
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_left t (Nat.rawCast 1)
+                                            (Mathlib.Tactic.Ring.Common.mul_pf_right (K x) (Nat.rawCast 1)
+                                              (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1) (Eq.refl 1)))))
+                                          (Mathlib.Tactic.Ring.Common.mul_zero (t ^ Nat.rawCast 1 * Nat.rawCast 1))
+                                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                            (t ^ Nat.rawCast 1 * (K x ^ Nat.rawCast 1 * Nat.rawCast 1) + 0)))
+                                        (Mathlib.Tactic.Ring.Common.zero_mul (K x ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                          (t ^ Nat.rawCast 1 * (K x ^ Nat.rawCast 1 * Nat.rawCast 1) + 0))))
+                                    (Mathlib.Tactic.Ring.Common.sub_pf
+                                      (Mathlib.Tactic.Ring.Common.neg_add
+                                        (Mathlib.Tactic.Ring.Common.neg_mul t (Nat.rawCast 1)
+                                          (Mathlib.Tactic.Ring.Common.neg_mul (K x) (Nat.rawCast 1)
+                                            (Mathlib.Meta.NormNum.IsInt.to_raw_eq
+                                              (Mathlib.Meta.NormNum.isInt_neg (Eq.refl Neg.neg)
+                                                (Mathlib.Meta.NormNum.IsNat.to_isInt
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1))
+                                                (Eq.refl (Int.negOfNat 1))))))
+                                        Mathlib.Tactic.Ring.Common.neg_zero)
+                                      (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                        (t ^ Nat.rawCast 1 * (K x ^ Nat.rawCast 1 * (Int.negOfNat 1).rawCast) + 0))))
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_overlap_zero
+                                    (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero t (Nat.rawCast 1)
+                                      (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero (K x) (Nat.rawCast 1)
+                                        (Mathlib.Meta.NormNum.IsInt.to_isNat
+                                          (Mathlib.Meta.NormNum.isInt_add (Eq.refl HAdd.hAdd)
+                                            (Mathlib.Meta.NormNum.IsNat.to_isInt
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1))
+                                            (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 1))
+                                            (Eq.refl (Int.ofNat 0))))))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_zero_add 0)))
+                                (Mathlib.Tactic.Ring.cast_zero (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero))))
+                            (Mathlib.Tactic.Linarith.add_neg (Mathlib.Tactic.Linarith.sub_neg_of_lt a)
+                              (Mathlib.Tactic.Linarith.sub_neg_of_lt (mul_pos ht hx)))))))))
+            (of_eq_true
+              (Eq.trans
+                (congrFun' (congrArg Eq (Eq.trans (MeasureTheory.integral_const 1) (mul_one (μ.real Set.univ))))
+                  (μ.real Set.univ))
+                (eq_self (μ.real Set.univ))))⟩)
+      a m horder s hs)
+'ResidualSLT.controlled_linearization_remainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.controlled_linearization_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_zero_weights' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_natDegree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxVector' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxVector_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxVector_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxVector_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxRemainder_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxVector_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_scale' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_coeff_scale' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.zeroExtend_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_high_coeff_unit_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_omitted_coeff_cubic_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.effective_norm_sq_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.effective_sum_sq_le_retained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.graded_omitted_coeff_relative_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.effective_nonneg_higher_relative_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inversePower_integrable_iff_mellin' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.laplace_pair_order_withDensity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.laplaceRate_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.HasLaplaceOrder.mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.laplace_integral_add_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.laplace_order_add_prod' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.mellin_integrable_iff_of_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inversePower_integrable_iff_of_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAssemble' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAssemble_pre' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAssemble_active' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAssemble_post' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.zeroExtend_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAssemble_network' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRawAux_eval_network' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAuxEval_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_network_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_network_local_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_network_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveLearningPair_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.OneActiveAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gradedEvalL' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gradedEvalL_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.auxActiveL' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.auxPreL' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.auxPostL' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAuxPre' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAuxMiddle' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAuxEval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAuxDeriv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAuxEval_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAuxEval_pi_hasFDerivAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveIndexEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveZeroEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveZeroEquiv_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveZeroEquiv_measurePreserving' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveCoordinateEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveCoordinateEquiv_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveCoordinateEquiv_measurePreserving' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveCoordinateEquiv_preimage_ball' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.polynomial_family_independent_of_strictMono_degree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ResidualSLT.activeTarget' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.activeDerivativeFactor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveSignedDirections' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenDirections' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.activeTarget_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.activeDerivativeFactor_natDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveSignedDirections_degrees' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveSignedDirections_independent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenDirections_independent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_even_loss_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.even_groupSecondCoefficient_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenRetained_norm_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenRetainedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenRetainedInsert_deriv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.evenRetainedInsert_deriv_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveEvenRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveEvenRemainder_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveEvenRemainder_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveEvenRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenRawRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenRawAux_decomposition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenRawRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveEvenRaw_observation_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveLearningPair_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_active_ne_zero_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_network_rlct_laplace_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActivePopulationLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveAssemble_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.identityReferenceLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveComparisonLoss_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_laplace_of_local_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_network_laplace_order_of_three_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_losses_comparable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.finite_sum_sq_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_loss_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.groupSecondCoefficient' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.groupRetainedSquare' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.identityReferenceLoss_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_model_retained_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.identityReferenceLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveLearningPair' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveComparisonLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.identityLearningPair_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.identityReferenceLoss_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveComparisonLoss_laplace_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_congr_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_add_depth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_one_active_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveSquaredError' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActivePopulationLoss' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveSparseCoefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_feature_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_squaredError_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_loss_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_loss_coefficient_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_raw_network_rlct_laplace_certificate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRawAux' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRetained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRawRemainder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRawAux_decomposition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRawAux_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRawRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActiveRaw_observation_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signedRetainedInsert' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gradedEvalL_single' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signedRetainedInsert_deriv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.signedRetainedInsert_deriv_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.isLittleO_of_relative_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.inactiveAuxRemainder_isLittleO' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.polynomial_observation_independent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.atomic_arithmeticPower_gram_embedded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.network_sparse_gram_many_atoms' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.oneActive_raw_network_boundary_divergence' depends on axioms: [propext, Classical.choice, Quot.sound]

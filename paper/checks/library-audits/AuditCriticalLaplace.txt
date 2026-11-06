@@ -1,0 +1,69 @@
+ResidualSLT.criticalLaplaceKernel : ℝ → ℝ × ℝ → ℝ
+ResidualSLT.criticalLaplace : ℝ → ℝ
+ResidualSLT.gaussian_unit_section_le : ∀ (a : ℝ),
+  0 < a → ∫ (t : ℝ) in Set.Ioo 0 1, Real.exp (-(a * t) ^ 2) ≤ √Real.pi / a
+ResidualSLT.criticalLaplaceKernel_bounds : ∀ (q : ℝ) (z : ℝ × ℝ),
+  0 ≤ ResidualSLT.criticalLaplaceKernel q z ∧ ResidualSLT.criticalLaplaceKernel q z ≤ 1
+ResidualSLT.criticalLaplaceKernel_integrable : ∀ (q : ℝ),
+  MeasureTheory.IntegrableOn (ResidualSLT.criticalLaplaceKernel q) ResidualSLT.cancellationRectangle
+    MeasureTheory.volume
+ResidualSLT.criticalLaplaceKernel_section_integrable : ∀ (q u a b : ℝ),
+  MeasureTheory.IntegrableOn (fun t => ResidualSLT.criticalLaplaceKernel q (u, t)) (Set.Ioo a b) MeasureTheory.volume
+ResidualSLT.criticalLaplaceKernel_section_upper : ∀ (q u : ℝ),
+  0 < q → 0 < u → ∫ (t : ℝ) in Set.Ioo 0 1, ResidualSLT.criticalLaplaceKernel q (u, t) ≤ √Real.pi * q ^ 2 / u
+ResidualSLT.criticalLaplaceKernel_strip_lower : ∀ (q u t : ℝ),
+  0 < q → q ^ 2 ≤ u → u ≤ q → 0 < t → t ≤ q ^ 2 / u → Real.exp (-2) ≤ ResidualSLT.criticalLaplaceKernel q (u, t)
+@ResidualSLT.integral_Ioo_split : ∀ {g : ℝ → ℝ} {a b c : ℝ},
+  a ≤ b →
+    b ≤ c →
+      MeasureTheory.IntegrableOn g (Set.Ioo a c) MeasureTheory.volume →
+        ∫ (x : ℝ) in Set.Ioo a c, g x = (∫ (x : ℝ) in Set.Ioo a b, g x) + ∫ (x : ℝ) in Set.Ioo b c, g x
+ResidualSLT.criticalLaplaceKernel_sections_integrable : ∀ (q : ℝ),
+  MeasureTheory.IntegrableOn (fun u => ∫ (t : ℝ) in Set.Ioo 0 1, ResidualSLT.criticalLaplaceKernel q (u, t))
+    (Set.Ioo 0 1) MeasureTheory.volume
+ResidualSLT.criticalLaplaceKernel_fubini : ∀ (q : ℝ),
+  ∫ (z : ℝ × ℝ) in ResidualSLT.cancellationRectangle, ResidualSLT.criticalLaplaceKernel q z =
+    ∫ (u : ℝ) (t : ℝ) in Set.Ioo 0 1, ResidualSLT.criticalLaplaceKernel q (u, t)
+ResidualSLT.integral_Ioo_inv_positive : ∀ (a b : ℝ),
+  0 < a → 0 < b → a ≤ b → ∫ (u : ℝ) in Set.Ioo a b, u⁻¹ = Real.log b - Real.log a
+ResidualSLT.integrableOn_Ioo_inv_positive : ∀ (a b : ℝ),
+  0 < a → MeasureTheory.IntegrableOn (fun u => u⁻¹) (Set.Ioo a b) MeasureTheory.volume
+ResidualSLT.criticalLaplaceKernel_lower : ∀ (q : ℝ),
+  0 < q →
+    q < 1 →
+      Real.exp (-2) * q ^ 2 * -Real.log q ≤
+        ∫ (z : ℝ × ℝ) in ResidualSLT.cancellationRectangle, ResidualSLT.criticalLaplaceKernel q z
+ResidualSLT.criticalLaplaceKernel_upper : ∀ (q : ℝ),
+  0 < q →
+    q < 1 →
+      ∫ (z : ℝ × ℝ) in ResidualSLT.cancellationRectangle, ResidualSLT.criticalLaplaceKernel q z ≤
+        q ^ 2 * (1 - 2 * √Real.pi * Real.log q)
+ResidualSLT.criticalLaplace_bounds : ∀ (N : ℝ),
+  Real.exp 4 ≤ N →
+    Real.exp (-2) / 4 * (N ^ (-(1 / 2)) * Real.log N) ≤ ResidualSLT.criticalLaplace N ∧
+      ResidualSLT.criticalLaplace N ≤ (1 + √Real.pi) * (N ^ (-(1 / 2)) * Real.log N)
+ResidualSLT.criticalLaplace_two_sided : ∃ c C N₀,
+  0 < c ∧
+    0 < C ∧
+      1 < N₀ ∧
+        ∀ (N : ℝ),
+          N₀ ≤ N →
+            c * (N ^ (-(1 / 2)) * Real.log N) ≤ ResidualSLT.criticalLaplace N ∧
+              ResidualSLT.criticalLaplace N ≤ C * (N ^ (-(1 / 2)) * Real.log N)
+'ResidualSLT.criticalLaplaceKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.gaussian_unit_section_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_section_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_section_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_strip_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integral_Ioo_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_sections_integrable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_fubini' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integral_Ioo_inv_positive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.integrableOn_Ioo_inv_positive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplaceKernel_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplace_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidualSLT.criticalLaplace_two_sided' depends on axioms: [propext, Classical.choice, Quot.sound]
