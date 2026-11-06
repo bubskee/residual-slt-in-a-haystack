@@ -187,7 +187,7 @@ The identity loss is coercive, and the $L^2(\mu)$ triangle inequality gives
 \[
  \sqrt{K_f(w)}\ge\sqrt{K_0(w)}-\norm{f-x}_{L^2(\mu)}.
 \]
-Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, making the complementary integral exponentially small. Among local contributions, minimize $\lambda$, then maximize $m$ among ties. For $n=L-k$, the inequality $\sum_g\pos{n_g-r}\le\pos{n-r}$ gives \eqref{eq:globalpair} (Appendix~\ref{app:global}). The cubic examples have global pairs $(1,2)$ and $(13/12,1)$; a prior supported near another realization instead retains its local pair.
+Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, making the complementary integral exponentially small. Among local contributions, minimize $\lambda$, then maximize $m$ among ties. For $n=L-k$, the inequality $\sum_g\pos{n_g-r}\le\pos{n-r}$ gives \eqref{eq:globalpair} (Appendix~\ref{app:global}). The cubic examples have global pairs $(1,2)$ and $(13/12,1)$; a prior positive near another realization and supported in a sufficiently small neighborhood of it instead retains its local pair.
 
 \paragraph{Scope.}
 The results cover every active count in scalar, bias-free polynomial residual networks and concern deterministic population-loss integrals. Priors are in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. Higher-dimensional, biased, and more general architectures are outside the proved scope.
@@ -195,7 +195,7 @@ The results cover every active count in scalar, bias-free polynomial residual ne
 \section{Formal verification}\label{sec:formal}
 Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions (Appendix~\ref{app:repro}).
 
-The unified certificate covers all $r\ge2$, positive depths, and active counts: complete raw fibers and their exact sizes, local arrangement pairs, and the globally selected pair. It uses the sparse Gram assumption \eqref{eq:gram} and the global prior conditions of Section~\ref{sec:model}; standalone local certificates allow measurable priors bounded above and away from zero. The analytic conclusions include inverse-power integrability thresholds, boundary divergence, and two-sided Laplace bounds with the stated logarithmic powers. The zeta-pole interpretation uses the cited resolution theory; meromorphic continuation and leading asymptotic constants are not part of the Lean certificate.
+The unified certificate covers all $r\ge2$, positive depths, and active counts: complete raw fibers and exact counts, local arrangement pairs, and the global pair. It uses \eqref{eq:gram} and Section~\ref{sec:model}'s global prior conditions; standalone local certificates allow measurable priors bounded above and away from zero. Inverse-power criteria cover all real exponents locally and positive exponents globally. Lean also certifies endpoint divergence and two-sided Laplace bounds with the stated logarithmic powers. The zeta-pole interpretation uses the cited resolution theory; meromorphic continuation and leading asymptotic constants are not part of the Lean certificate.
 
 \label{main-end}
 
@@ -375,8 +375,8 @@ If $n<r$, all placements have the same exponent and $m=1$. If $n=r$, all exponen
 
 \clearpage
 \section{Lean source and audit record}\label{app:repro}
-The proof source is available at \url{https://github.com/bubskee/residual-slt-in-a-haystack}. The audited proof-source commit is
-\begin{center}\small\ttfamily 3aa873960d83313e44d966ebc124655e87aa0982\end{center}
+The proof source is available at \url{https://github.com/bubskee/residual-slt-in-a-haystack}. The reproducibility snapshot, containing the proof source and audit, is
+\begin{center}\small\ttfamily 2865e70a9ca7f559dabfce6aa32e13cf4fc88259\end{center}
 It uses Lean \texttt{v4.35.0} and mathlib commit
 \begin{center}\small\ttfamily 56a005855ea17e0b0958f73ec801ae140b0a1679\end{center}
 The principal declarations, all in namespace \texttt{ResidualSLT}, are
@@ -392,6 +392,7 @@ The principal declarations, all in namespace \texttt{ResidualSLT}, are
 Exact hypotheses are recorded in \path{paper/formalization_status.md}. From the repository root, run:
 \begingroup\small
 \begin{verbatim}
+git checkout 2865e70a9ca7f559dabfce6aa32e13cf4fc88259
 cd lean
 lake exe cache get
 lake build

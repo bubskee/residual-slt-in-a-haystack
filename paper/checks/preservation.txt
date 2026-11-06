@@ -11,3 +11,10 @@ Focused audit: five declarations, exactly propext/Classical.choice/Quot.sound in
 Full library build and all 48 strict library audit/check files pass
 All 176 released Lean source/configuration files match research checkpoint 91b60f5850947f26ba4687d4f458f1ff2c3af6a1; mathlib pin verified
 All 13 pages visually reviewed; unchanged pages in the last layout pass verified pixel-identical
+
+Hostile-review follow-up, 6 November 2026:
+All theorem statements, numbered equations, lemma, figure/table, and Appendices A-D unchanged.
+Added local-prior positivity and the local/global exponent distinction; ongoing-work note retained.
+Reproducibility snapshot 2865e70 contains both the identical Lean source and focused audit.
+PDF remains 13 pages; pages 6 and 12 visually checked, all other pages pixel-identical to the reviewed version.
+Clean LaTeX compilation; Lean source and audit unchanged, so the existing build and audit records still apply.

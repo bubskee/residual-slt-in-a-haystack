@@ -1,6 +1,7 @@
 # Formal verification coverage
 
-Proof source: [3aa873960d83313e44d966ebc124655e87aa0982](https://github.com/bubskee/residual-slt-in-a-haystack/tree/3aa873960d83313e44d966ebc124655e87aa0982).
+Reproducibility snapshot (proof source and audit): [2865e70a9ca7f559dabfce6aa32e13cf4fc88259](https://github.com/bubskee/residual-slt-in-a-haystack/tree/2865e70a9ca7f559dabfce6aa32e13cf4fc88259).
+The Lean source is unchanged from proof-source commit `3aa873960d83313e44d966ebc124655e87aa0982`.
 Lean `v4.35.0`; mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
 Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions.
@@ -50,6 +51,7 @@ The global inverse-power iff is stated for `s > 0`. At `s = 0`, finite prior mas
 From the repository root:
 
 ```sh
+git checkout 2865e70a9ca7f559dabfce6aa32e13cf4fc88259
 cd lean
 lake exe cache get
 lake build
