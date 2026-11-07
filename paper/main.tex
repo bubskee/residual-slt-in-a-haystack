@@ -20,7 +20,7 @@
 \usepackage{hyperref}
 \definecolor{linkink}{rgb}{0.12,0.22,0.48}
 \hypersetup{colorlinks,linkcolor=linkink,citecolor=linkink,urlcolor=linkink,
- pdftitle={Learning Coefficients and Active-Block Arrangements in Scalar Residual Networks},
+ pdftitle={SLT and ResNets: Title TBD},
  pdfauthor={Bobby Faber}, pdfsubject={Local learning coefficients of scalar polynomial residual networks},
  pdfkeywords={singular learning theory, residual networks, real log canonical threshold, Lean}}
 \clubpenalty=10000
@@ -44,7 +44,8 @@
 
 % Marginal Lean tag linking to the certifying declaration at the pinned snapshot.
 \newcommand{\leantag}[2]{\marginpar{\raggedright\footnotesize\textsc{lean}~\href{https://github.com/bubskee/residual-slt-in-a-haystack/blob/2865e70a9ca7f559dabfce6aa32e13cf4fc88259/lean/ResidualSLT/#1.lean\#L#2}{\checkmark}\\[-1pt]{\fontsize{6.5}{8}\selectfont\itshape\hspace{0pt}#1}}}
-\title[Learning Coefficients and Active-Block Arrangements]{Learning Coefficients and Active-Block Arrangements\\in Scalar Residual Networks}
+% TODO(title): placeholder while Bobby picks a title.
+\title[SLT and ResNets]{SLT and ResNets: Title TBD}
 \author{Bobby Faber}
 \address{Independent researcher}
 \date{7 November 2026}
@@ -52,18 +53,18 @@
 \keywords{singular learning theory, residual networks, real log canonical threshold, Newton polyhedra, Lean}
 \begin{document}
 \begin{abstract}
-We study squared-error population losses of scalar polynomial residual networks in their raw weights. At the identity target, odd activation degree permits cancellation and produces a depth-dependent transition, including a logarithmic factor at the critical depth. At an arbitrary realization, nonzero active blocks separate consecutive inactive groups: the local learning coefficient is the sum of a regular active contribution and the identity contributions of those groups. This gives realizations of the same function with different local exponents or multiplicities. An ordered-chain classification gives exact fiber sizes and a global formula for every realizable target. The fiber classification, counts, and local and global power/logarithmic Laplace orders are certified in Lean under the stated sparse Gram and prior assumptions.
+A residual network can represent one function at many points of its parameter space, and singular learning theory assigns each point its own local learning coefficient $\lambda$ and multiplicity $m$. We compute both exactly for the simplest nontrivial case: the scalar network obtained by composing $L$ maps $x\mapsto x+w^rx^r$, with squared-error loss in the raw weights $w$. A depth-five cubic network represents $f(x)=x+x^3$ with its single nonzero weight in any of five positions, yet the local pair is $(13/12,1)$, $(7/6,2)$ or $(7/6,1)$ depending on the position. In general, the nonzero (active) blocks split the remaining weights into consecutive inactive groups. For odd $r$ the weights within a group can cancel. In every case $\lambda$ is a regular active contribution plus one identity-target contribution per group, and for odd $r$ a logarithm appears when a group has length exactly $r$. We also classify every target fiber, count its points exactly, and determine the global pair. All three theorems are certified in Lean under the stated Gram and prior assumptions.
 \end{abstract}
 \maketitle
 
 \section{Introduction}
 A depth-five cubic residual network represents $f(x)=x+x^3$ with its sole nonzero weight at any of its five positions, yet these realizations have different local loss geometry. We describe this geometry by a pair $(\lambda,m)$: the local learning coefficient $\lambda$ and multiplicity $m$ give the order $N^{-\lambda}(\log N)^{m-1}$ of the local integral of $e^{-N K_f}$, where $K_f$ is the squared-error population loss and $N\to\infty$ is a positive concentration parameter. At positions $1$ or $5$, the pair is $(13/12,1)$; at positions $2$ or $4$, it is $(7/6,2)$; at the center, it is $(7/6,1)$. Thus the same function has local integral orders $N^{-13/12}$, $N^{-7/6}\log N$, and $N^{-7/6}$. Figure~\ref{fig:arrangements} and Table~\ref{tab:examples} display the three cases.
 
-Learning coefficients capture singular geometry beyond parameter counting or Jacobian rank \citep{wei2023,lau2025}. Here every realization has five parameters and raw coefficient-Jacobian rank one, but the local pairs differ. A local analysis near one realization therefore need not describe the geometry near another realization of the same function. Equivalently, the local low-loss volume has order $\epsilon^\lambda(\log(1/\epsilon))^{m-1}$ as the tolerance $\epsilon\downarrow0$: smaller $\lambda$ gives more volume, and $m$ distinguishes logarithmic scales when the exponents agree.
+Learning coefficients capture singular geometry beyond parameter counting or Jacobian rank \citep{wei2023,lau2025}. Here every realization has five parameters and raw coefficient-Jacobian rank one, but the local pairs differ. The learning coefficient is therefore a property of the point, not of the function: a local analysis near one realization need not describe the geometry near another realization of the same function, and which realization a training process approaches changes what a local estimate measures. Equivalently, the local low-loss volume has order $\epsilon^\lambda(\log(1/\epsilon))^{m-1}$ as the tolerance $\epsilon\downarrow0$: smaller $\lambda$ gives more volume, and $m$ distinguishes logarithmic scales when the exponents agree.
 
-An inactive residual block is the identity, so moving the sole active block preserves the output. Perturbing inactive weights, however, introduces terms at different stages of composition. The active block separates the resulting cancellation opportunities.
+The mechanism is cancellation. A block with zero weight is the identity map, so moving the single active block along the chain does not change the output. Perturbing the inactive weights does change it, and for odd $r$ the leading terms are signed $r$th powers that can cancel against each other. Cancellation happens only among consecutive inactive blocks. An active block between two groups composes their contributions with a nonlinear map, which places them in independent leading loss directions (Appendix~\ref{app:arrangement}). The positions of the active blocks therefore decide which weights can cancel together. A group's contribution changes regime as its length passes $r$; at length exactly $r$ the two regimes balance and a logarithm appears. Theorem~\ref{thm:arrangement} adds these group contributions to the regular contribution of the active weights. Theorem~\ref{thm:global} classifies every target fiber and selects its global pair: local pairs depend on the inactive-group lengths, while the global pair depends only on degree, depth, and active count.
 
-For odd degree $r$, signed $r$th powers can cancel within a consecutive group of inactive blocks. Active blocks separate these groups into independent leading loss directions, so their positions determine the available cancellation regimes. A group's contribution changes regime when its length reaches $r$, where a logarithm appears. Theorem~\ref{thm:arrangement} adds these group contributions to the regular contribution of the active weights. Theorem~\ref{thm:global} classifies every target fiber and selects its global pair: local pairs depend on the inactive-group lengths, while the global pair depends only on degree, depth, and active count.
+The model is deliberately minimal: one dimension, no biases and monomial activations. We chose it because it is exactly solvable, so every learning coefficient can be computed and certified rather than estimated. It is not a model of practical networks. What it provides is a family of examples in which the learning coefficient varies across realizations of one function, the variation follows an explicit combinatorial rule, and the odd-degree transition is exactly a failure of Newton nondegeneracy (Section~3), a standard notion in singularity theory.
 
 The architecture is the scalar monomial specialization of the polynomial ResNets studied by \citet{dahlgren2026}. Related work connects sparse subnetworks to singularities of polynomial function spaces \citep{shahverdi2026}. Here we compute local loss-volume exponents, giving exact examples relevant to local learning coefficient estimation \citep{lau2025}. Exact coefficients are also known for reduced-rank regression and multilayer linear networks \citep{aoyagiwatanabe2005,aoyagi2024}. Our calculations use the singular learning framework and monomial rules of \citet{watanabe2009,lin2017}; they concern deterministic population-loss integrals.
 
@@ -73,7 +74,7 @@ Fix integers $r\ge2$ and $L\ge1$. The parameters are independent raw weights $w\
  h_0(x)=x,\qquad h_\ell(x)=h_{\ell-1}(x)+w_\ell^r h_{\ell-1}(x)^r,
  \quad 1\le\ell\le L.
 \end{equation}
-This is the bias-free scalar specialization of $h\mapsto h+\sigma(wh)$ with $\sigma(z)=z^r$ \citep[Definition 2.1]{dahlgren2026}, hence the coefficient $w^r$. Replacing it by an independent coefficient $c$ changes the geometry at zero: $w\mapsto c=w^r$ is not a local diffeomorphism there, and raw Lebesgue measure induces a density proportional to $|c|^{1/r-1}$ on each branch. A smooth positive prior in $c$ therefore defines a different local integral. Write $F_c(x)=x+cx^r$, so $h_L=F_{w_L^r}\circ\cdots\circ F_{w_1^r}$. The target $f$ is realizable in this architecture. For an input probability measure $\mu$, let
+This is the bias-free scalar specialization of $h\mapsto h+\sigma(wh)$ with $\sigma(z)=z^r$ \citep[Definition 2.1]{dahlgren2026}, hence the coefficient $w^r$. Write $F_c(x)=x+cx^r$, so $h_L=F_{w_L^r}\circ\cdots\circ F_{w_1^r}$. The target $f$ is realizable in this architecture. For an input probability measure $\mu$, let
 \begin{equation}\label{eq:loss}
  K_f(w)=\int_\R (h_L(w,x)-f(x))^2\,d\mu(x).
 \end{equation}
@@ -90,9 +91,15 @@ At a realization $w^*$, let $\pi$ be a smooth positive density on a full neighbo
  Z_{N,w^*}=\int_{\R^L}\chi(w)e^{-N K_f(w)}\pi(w)\,dw
  \asym N^{-\lambda}(\log N)^{m-1},\qquad N\longrightarrow\infty.
 \end{equation}
-The symbol $\asym$ denotes bounds by positive constant multiples. For every loss treated below, $\lambda$ is also the local integrability threshold: $K_f^{-s}$ is locally integrable for $s<\lambda$ and diverges at $s=\lambda$. This needs no resolution. For $s>0$ it follows from \eqref{eq:pair} through the Mellin identity $\int K_f^{-s}\chi\pi\,dw=\Gamma(s)^{-1}\int_0^\infty t^{s-1}Z_{t,w^*}\,dt$, since the zero set of $K_f$ meets a small $\supp\chi$ only in the null set $\{w^*\}$. For $s\le0$, integrability is trivial. The threshold statement is certified in Lean on small balls with bounded measurable densities (Section~\ref{sec:formal}). The integer $m$ records the logarithmic power, which our calculations determine separately. For this analytic loss, $m$ is also the order of the first positive pole of the local zeta integral, by the usual resolution framework \citep[Theorem 2.10 and Proposition 3.2]{lin2017}. We use this pole reading only as an interpretation. Our normalization uses a \emph{squared} loss; Lin's coefficient-ideal threshold is $2\lambda$ (his zeta convention is $(\sum_i f_i^2)^{-z/2}$). A measurable density bounded above and away from zero already suffices for the order in \eqref{eq:pair}; smoothness supplies the customary pole interpretation.
+The symbol $\asym$ denotes bounds by positive constant multiples. For every loss treated below, $\lambda$ is also the local integrability threshold: $K_f^{-s}$ is locally integrable for $s<\lambda$ and diverges at $s=\lambda$. This needs no resolution. For $s>0$ it follows from \eqref{eq:pair} through the Mellin identity $\int K_f^{-s}\chi\pi\,dw=\Gamma(s)^{-1}\int_0^\infty t^{s-1}Z_{t,w^*}\,dt$, since the zero set of $K_f$ meets a small $\supp\chi$ only in the null set $\{w^*\}$. For $s\le0$, integrability is trivial. The threshold statement is certified in Lean on small balls with bounded measurable densities (Section~\ref{sec:formal}). The integer $m$ records the logarithmic power, which our calculations determine separately. For this analytic loss, $m$ is also the order of the first positive pole of the local zeta integral, by the usual resolution framework \citep[Theorem 2.10 and Proposition 3.2]{lin2017}. We use this pole reading only as an interpretation.
 
-All local constants may depend on $r,L,w^*$ and $\mu$; the estimates are pointwise in the nonzero active weights. Global statements use a nonnegative measurable density on $\R^L$ with finite mass, continuous and strictly positive at every point of the target fiber. Probability normalization and independence are unnecessary.
+\paragraph{Conventions.}
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item \emph{Raw weights.} Priors are densities in $w$. Replacing $w^r$ by an independent coefficient $c$ changes the geometry at zero: $w\mapsto c=w^r$ is not a local diffeomorphism there, and raw Lebesgue measure induces a density proportional to $|c|^{1/r-1}$ on each branch. A smooth positive prior in $c$ therefore defines a different local integral.
+\item \emph{Priors.} A measurable density bounded above and away from zero already suffices for the order in \eqref{eq:pair}; smoothness supplies the customary pole interpretation. Global statements use a nonnegative measurable density on $\R^L$ with finite mass, continuous and strictly positive at every point of the target fiber. Probability normalization and independence are unnecessary.
+\item \emph{Normalization.} We use a \emph{squared} loss, so Lin's coefficient-ideal threshold is $2\lambda$ (his zeta convention is $(\sum_i f_i^2)^{-z/2}$).
+\item \emph{Constants.} All local constants may depend on $r,L,w^*$ and $\mu$; the estimates are pointwise in the nonzero active weights.
+\end{itemize}
 
 \section{The identity-target phase transition}
 Write $K_0=K_x$. Effective coefficients $u_i=w_i^r$ will be used only as algebraic notation: the integration variables remain the raw weights. Set
@@ -243,8 +250,8 @@ The identity loss is coercive, and the $L^2(\mu)$ triangle inequality gives
 \]
 Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, making the complementary integral exponentially small. Among local contributions, minimize $\lambda$, then maximize $m$ among ties. For $n=L-k$, the inequality $\sum_g\pos{n_g-r}\le\pos{n-r}$ gives \eqref{eq:globalpair} (Appendix~\ref{app:global}). The cubic examples have global pairs $(1,2)$ and $(13/12,1)$; a prior positive near another realization and supported in a sufficiently small neighborhood of it instead retains its local pair.
 
-\paragraph{Scope.}
-The results cover every active count in scalar, bias-free polynomial residual networks and concern deterministic population-loss integrals. Priors are in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. Higher-dimensional, biased, and more general architectures are outside the proved scope.
+\paragraph{What this does and does not show.}
+The theorems give exact local and global pairs, for every degree, depth and active count, in scalar, bias-free polynomial residual networks. They show that the learning coefficient of a residual network depends on the realization, not only on the function, and they explain the dependence by cancellation within inactive groups. They concern deterministic population-loss integrals with priors in raw weights. They say nothing directly about finite samples, about stochastic estimators such as \citet{lau2025}, or about networks with width, biases or other activations; those are outside the proved scope.
 
 \section{Formal verification}\label{sec:formal}
 The pairs, fibers and counts of all three theorems are formalized in Lean 4 for localizations on small balls with bounded measurable densities. The transfer to the smooth cutoffs of \eqref{eq:pair} is on paper. The repository records the certified statements and their exact assumptions (Appendix~\ref{app:repro}).
@@ -431,7 +438,7 @@ If $n<r$, all placements have the same exponent and $m=1$. If $n=r$, all exponen
 \clearpage
 \section{Lean source and audit record}\label{app:repro}
 The proof source is available at \url{https://github.com/bubskee/residual-slt-in-a-haystack}. The reproducibility snapshot, containing the proof source and audit, is
-\begin{center}\small\ttfamily 2865e70a9ca7f559dabfce6aa32e13cf4fc88259\end{center}
+\begin{center}\small\ttfamily b08b1a334abac97cbdf754ba14eacee82e10be70\end{center}
 It uses Lean \texttt{v4.35.0} and mathlib commit
 \begin{center}\small\ttfamily 56a005855ea17e0b0958f73ec801ae140b0a1679\end{center}
 The principal declarations, all in namespace \texttt{ResidualSLT}, are
@@ -447,7 +454,7 @@ The principal declarations, all in namespace \texttt{ResidualSLT}, are
 Exact hypotheses are recorded in \path{paper/formalization_status.md}. From the repository root, run:
 \begingroup\small
 \begin{verbatim}
-git checkout 2865e70a9ca7f559dabfce6aa32e13cf4fc88259
+git checkout b08b1a334abac97cbdf754ba14eacee82e10be70
 cd lean
 lake exe cache get
 lake build

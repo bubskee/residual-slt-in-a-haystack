@@ -20,7 +20,7 @@ Install [elan](https://github.com/leanprover/elan), then:
 ```sh
 git clone https://github.com/bubskee/residual-slt-in-a-haystack.git
 cd residual-slt-in-a-haystack
-git checkout 2865e70a9ca7f559dabfce6aa32e13cf4fc88259
+git checkout b08b1a334abac97cbdf754ba14eacee82e10be70
 cd lean
 lake exe cache get
 lake build
@@ -28,7 +28,7 @@ lake env lean -DwarningAsError=true -DautoImplicit=false ../paper/checks/Network
 lake env lean -DwarningAsError=true -DautoImplicit=false CheckUnifiedNetworkCertificate.lean
 ```
 
-Lean `v4.35.0` and mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679` are pinned. The reproducibility snapshot [2865e70a9ca7f559dabfce6aa32e13cf4fc88259](https://github.com/bubskee/residual-slt-in-a-haystack/tree/2865e70a9ca7f559dabfce6aa32e13cf4fc88259) contains both the proof source and the focused audit. Its Lean source is unchanged from `3aa873960d83313e44d966ebc124655e87aa0982`. The release build, focused audit, and all 48 library audit/check files pass; logs and full rerun commands are linked in the coverage statement.
+Lean `v4.35.0` and mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679` are pinned. The reproducibility snapshot [b08b1a334abac97cbdf754ba14eacee82e10be70](https://github.com/bubskee/residual-slt-in-a-haystack/tree/b08b1a334abac97cbdf754ba14eacee82e10be70) contains both the proof source and the focused audit. Its Lean source is unchanged from `3aa873960d83313e44d966ebc124655e87aa0982`. The release build, focused audit, and all 48 library audit/check files pass; logs and full rerun commands are linked in the coverage statement.
 
 ## Build the paper
 
