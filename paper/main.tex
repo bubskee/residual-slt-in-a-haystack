@@ -1,31 +1,60 @@
-\documentclass[11pt,letterpaper]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,float}
-\usepackage[numbers]{natbib}
-\usepackage{graphicx,xurl}
-\usepackage[hidelinks]{hyperref}
-\hypersetup{pdftitle={Learning Coefficients and Active-Block Arrangements in Scalar Residual Networks},
+\documentclass[11pt,letterpaper]{amsart}
+\usepackage[letterpaper,textwidth=31pc,textheight=50\baselineskip,marginparwidth=1.15in,marginparsep=1.4em,centering,includehead]{geometry}
+\usepackage{iftex,etoolbox}
+\usepackage{amsmath,amssymb,amsthm,booktabs,float}
+\ifPDFTeX
+ \usepackage[T1]{fontenc}
+ \usepackage{newpxtext}
+ \usepackage[euler-digits,euler-hat-accent]{eulervm}
+ \usepackage[final,tracking=smallcaps,expansion=true,protrusion=true]{microtype}
+\else
+ \usepackage[no-math]{fontspec}
+ \setmainfont{texgyrepagella}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+ \usepackage[euler-digits,euler-hat-accent]{eulervm}
+ \DeclareSymbolFont{operators}{OT1}{pplx}{m}{n}
+ \SetSymbolFont{operators}{bold}{OT1}{pplx}{b}{n}
+ \usepackage[final,protrusion=true]{microtype}
+\fi
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,xurl,xcolor}
+\usepackage{hyperref}
+\definecolor{linkink}{rgb}{0.12,0.22,0.48}
+\hypersetup{colorlinks,linkcolor=linkink,citecolor=linkink,urlcolor=linkink,
+ pdftitle={Learning Coefficients and Active-Block Arrangements in Scalar Residual Networks},
  pdfauthor={Bobby Faber}, pdfsubject={Local learning coefficients of scalar polynomial residual networks},
  pdfkeywords={singular learning theory, residual networks, real log canonical threshold, Lean}}
 \clubpenalty=10000
 \widowpenalty=10000
 \displaywidowpenalty=10000
+\linespread{1.04}
+\setlength{\emergencystretch}{2.5em}
+\newtheoremstyle{scplain}{.7\baselineskip}{.7\baselineskip}{\itshape}{}{\bfseries\scshape}{.}{.5em}{}
+\theoremstyle{scplain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}[section]
-\newcommand{\R}{\mathbb R}
+\newcommand{\R}{{\mathbb R}}
 \newcommand{\asym}{\asymp}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\pos}[1]{(#1)_+}
 \DeclareMathOperator{\supp}{supp}
-\title{Learning Coefficients and Active-Block Arrangements\\in Scalar Residual Networks}
-\author{Bobby Faber\\\small Independent}
-\date{6 November 2026}
+\makeatletter
+\patchcmd{\@maketitle}{\global\topskip42\p@}{\global\topskip6\p@}{}{\PackageWarning{style}{title patch failed}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}{.6\baselineskip\@plus.2\baselineskip}{-.6em}{\normalfont\scshape}}
+\makeatother
+
+% Marginal Lean tag linking to the certifying declaration at the pinned snapshot.
+\newcommand{\leantag}[2]{\marginpar{\raggedright\footnotesize\textsc{lean}~\href{https://github.com/bubskee/residual-slt-in-a-haystack/blob/2865e70a9ca7f559dabfce6aa32e13cf4fc88259/lean/ResidualSLT/#1.lean\#L#2}{\checkmark}\\[-1pt]{\fontsize{6.5}{8}\selectfont\itshape\hspace{0pt}#1}}}
+\title[Learning Coefficients and Active-Block Arrangements]{Learning Coefficients and Active-Block Arrangements\\in Scalar Residual Networks}
+\author{Bobby Faber}
+\address{Independent researcher}
+\date{7 November 2026}
+\subjclass[2020]{62F15; 14E15, 68T07}
+\keywords{singular learning theory, residual networks, real log canonical threshold, Newton polyhedra, Lean}
 \begin{document}
-\maketitle
 \begin{abstract}
 We study squared-error population losses of scalar polynomial residual networks in their raw weights. At the identity target, odd activation degree permits cancellation and produces a depth-dependent transition, including a logarithmic factor at the critical depth. At an arbitrary realization, nonzero active blocks separate consecutive inactive groups: the local learning coefficient is the sum of a regular active contribution and the identity contributions of those groups. This gives realizations of the same function with different local exponents or multiplicities. An ordered-chain classification gives exact fiber sizes and a global formula for every realizable target. The fiber classification, counts, and local and global power/logarithmic Laplace orders are certified in Lean under the stated sparse Gram and prior assumptions.
 \end{abstract}
+\maketitle
 
 \section{Introduction}
 A depth-five cubic residual network represents $f(x)=x+x^3$ with its sole nonzero weight at any of its five positions, yet these realizations have different local loss geometry. We describe this geometry by a pair $(\lambda,m)$: the local learning coefficient $\lambda$ and multiplicity $m$ give the order $N^{-\lambda}(\log N)^{m-1}$ of the local integral of $e^{-N K_f}$, where $K_f$ is the squared-error population loss and $N\to\infty$ is a positive concentration parameter. At positions $1$ or $5$, the pair is $(13/12,1)$; at positions $2$ or $4$, it is $(7/6,2)$; at the center, it is $(7/6,1)$. Thus the same function has local integral orders $N^{-13/12}$, $N^{-7/6}\log N$, and $N^{-7/6}$. Figure~\ref{fig:arrangements} and Table~\ref{tab:examples} display the three cases.
@@ -61,7 +90,7 @@ At a realization $w^*$, let $\pi$ be a smooth positive density on a full neighbo
  Z_{N,w^*}=\int_{\R^L}\chi(w)e^{-N K_f(w)}\pi(w)\,dw
  \asym N^{-\lambda}(\log N)^{m-1},\qquad N\longrightarrow\infty.
 \end{equation}
-The symbol $\asym$ denotes bounds by positive constant multiples. The local threshold $\lambda$ satisfies: $K_f^{-s}$ is integrable for $s<\lambda$ and diverges at $s=\lambda$. The integer $m$ records the logarithmic power, equivalently the order of the first positive pole of the local zeta integral for this analytic loss. These interpretations follow from the usual resolution framework \citep[Theorem 2.10 and Proposition 3.2]{lin2017}; our calculations below determine the logarithmic power as well as the threshold. Our normalization uses a \emph{squared} loss; Lin's coefficient-ideal threshold is $2\lambda$ (his zeta convention is $(\sum_i f_i^2)^{-z/2}$). A measurable density bounded above and away from zero already suffices for the order in \eqref{eq:pair}; smoothness supplies the customary pole interpretation.
+The symbol $\asym$ denotes bounds by positive constant multiples. For every loss treated below, $\lambda$ is also the local integrability threshold: $K_f^{-s}$ is locally integrable for $s<\lambda$ and diverges at $s=\lambda$. This needs no resolution. For $s>0$ it follows from \eqref{eq:pair} through the Mellin identity $\int K_f^{-s}\chi\pi\,dw=\Gamma(s)^{-1}\int_0^\infty t^{s-1}Z_{t,w^*}\,dt$, since the zero set of $K_f$ meets a small $\supp\chi$ only in the null set $\{w^*\}$. For $s\le0$, integrability is trivial. The threshold statement is certified in Lean on small balls with bounded measurable densities (Section~\ref{sec:formal}). The integer $m$ records the logarithmic power, which our calculations determine separately. For this analytic loss, $m$ is also the order of the first positive pole of the local zeta integral, by the usual resolution framework \citep[Theorem 2.10 and Proposition 3.2]{lin2017}. We use this pole reading only as an interpretation. Our normalization uses a \emph{squared} loss; Lin's coefficient-ideal threshold is $2\lambda$ (his zeta convention is $(\sum_i f_i^2)^{-z/2}$). A measurable density bounded above and away from zero already suffices for the order in \eqref{eq:pair}; smoothness supplies the customary pole interpretation.
 
 All local constants may depend on $r,L,w^*$ and $\mu$; the estimates are pointwise in the nonzero active weights. Global statements use a nonnegative measurable density on $\R^L$ with finite mass, continuous and strictly positive at every point of the target fiber. Probability normalization and independence are unnecessary.
 
@@ -70,7 +99,7 @@ Write $K_0=K_x$. Effective coefficients $u_i=w_i^r$ will be used only as algebra
 \[
  S(w)=\sum_{i=1}^L w_i^r,\qquad Q(w)=\sum_{i=1}^L w_i^{2r}.
 \]
-\begin{theorem}[Identity target]\label{thm:identity}
+\begin{theorem}[Identity target]\label{thm:identity}\leantag{SparseIdentityCertificate}{16}
 Under \eqref{eq:gram}, near $w=0$,
 \begin{equation}\label{eq:identityreduction}
  K_0(w)\asym S(w)^2+Q(w)^2.
@@ -98,15 +127,24 @@ For even $r$, the summands of $S$ are nonnegative, so $S^2\asym\norm{w}^{2r}$ an
  \rho^{2r}(t^2+\rho^{2r}),\qquad
  \rho^{L-1}\,d\rho\,dt\,d\eta
 \end{equation}
-up to bounded positive factors. A finite collection of local charts with bounded positive densities suffices. In the thin region $|t|\le\rho^r$, cancellation changes the radial scale to $\rho^{4r}$ while the angular width contributes $\rho^r$. This gives $(L+r)/(4r)$. The competing exponent is $L/(2r)$; their crossing at $L=r$ produces one logarithm. Appendix~\ref{app:sectors} computes both exponents and the logarithm using two explicit sectors.
+up to bounded positive factors. A finite collection of local charts with bounded positive densities suffices. In the thin region $|t|\le\rho^r$, cancellation changes the radial scale to $\rho^{4r}$ while the angular width contributes $\rho^r$. This gives \mbox{$(L+r)/(4r)$}. The competing exponent is $L/(2r)$; their crossing at $L=r$ produces one logarithm. Appendix~\ref{app:sectors} computes both exponents and the logarithm using two explicit sectors.
+
+\paragraph{Remark (Newton polyhedra).}
+The transition is where the Newton prediction stops agreeing with the pair. We use the Newton polyhedron, Newton distance and nondegeneracy of \citet{varchenko1976} and \citet{agzv1988}. The degree-$2r$ part of $K_0$ is $G_{11}S^2$, and the other terms have degree at least $3r$. The Newton polyhedron of $K_0$ at zero is therefore $\{\alpha\in\R_{\ge0}^L:\sum_i\alpha_i\ge2r\}$. Its Newton distance is $2r/L$. The diagonal meets the compact face $\sum_i\alpha_i=2r$ in its relative interior, so the Newton prediction is $(L/(2r),1)$. This prediction is always an upper bound for $\lambda$: $S^2\le LQ$ gives $K_0\le C\sum_iw_i^{2r}$ near zero, and that sum has the stated exponent.
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item \emph{Even $r$, or $L=1$.} The face polynomial $G_{11}S^2$ has no zeros off the coordinate hyperplanes. $K_0$ is comparable to $\sum_iw_i^{2r}$, and the prediction is exact. The even comparison \eqref{eq:arrangementeven} below is likewise comparable to a sum of monomials. Its Newton distance, together with the face the diagonal meets, gives \eqref{eq:arrangementpair} directly \citep{lin2017}.
+\item \emph{Odd $r$ and $L\ge2$.} The face polynomial $G_{11}S^2$ vanishes to second order on $\{S=0\}\cap(\R^*)^L$. That set is nonempty: it contains \mbox{$(1,\ldots,1,-(L-1)^{1/r})$}. So $K_0$ is Newton-degenerate for every $L\ge2$. For $L<r$ the prediction still agrees with the pair, because the cancellation sector is dominated. At $L=r$ it misses the logarithm. For $L>r$ it overestimates $\lambda$, because the cancellation region $|t|\le\rho^r$ lowers it to \mbox{$(L+r)/(4r)<L/(2r)$}.
+\end{itemize}
 
 \section{The local arrangement theorem}
 Each inactive group inherits the identity-target geometry of Theorem~\ref{thm:identity}; the active weights contribute regular directions. For an inactive group of size $n$, define $A_r(0)=0$, $M_r(0)=1$, and, for $n\ge1$,
 \begin{equation}\label{eq:AM}
+\begin{gathered}
  A_r(n)=\begin{cases}n/(2r),&r\text{ even},\\
  n/(2r)-\pos{n-r}/(4r),&r\text{ odd},\end{cases}
- \qquad
+ \\[2pt]
  M_r(n)=\begin{cases}2,&r\text{ odd and }n=r,\\1,&\text{otherwise}.\end{cases}
+\end{gathered}
 \end{equation}
 Here $(a)_+=\max(a,0)$. These are the identity pairs of Theorem~\ref{thm:identity}, with the empty group contributing an integral equal to one.
 
@@ -117,7 +155,7 @@ Fix $w^*$ with exactly $k$ nonzero weights, at positions $i_1<\cdots<i_k$. Put $
 The active deviations $\delta_j=w_{i_j}^r-c_j$ are valid local coordinates because $r(w^*_{i_j})^{r-1}\ne0$. Only these active coordinates are changed.
 
 \begin{samepage}
-\begin{theorem}[Local arrangement]\label{thm:arrangement}
+\begin{theorem}[Local arrangement]\label{thm:arrangement}\leantag{ArrangementCertificate}{31}
 Let $f=h_L(w^*,\cdot)$ and assume \eqref{eq:gram}, with any nonzero active values and any inactive group sizes $n_g\ge0$. For odd $r\ge3$, on a sufficiently small full neighborhood of $w^*$,
 \begin{equation}\label{eq:arrangementodd}
  K_f\asym\sum_{j=1}^k\delta_j^2+\sum_{g=0}^k(S_g^2+Q_g^2).
@@ -164,10 +202,26 @@ Depth $L$ & Active position $j$ & Inactive lengths $(n_0,n_1)$ & Local $(\lambda
 \end{table}
 At depth four, moving the active block changes the logarithmic factor. At depth five, it can change the exponent itself. All these points have raw coefficient-Jacobian rank one; that rank does not determine either pair. The theorem also permits more than one logarithm: two groups of length $r$ give $m=3$. Such a local statement need not describe the globally dominant realization.
 
-\clearpage
+\paragraph{Remark (what a local learning coefficient sees).}
+Let $\varpi=\chi\pi\,dw$ be the local measure of \eqref{eq:pair}. Write $\mathcal Z(t)=\int e^{-tK_f}\,d\varpi$ and $E_t[K_f]=\mathcal Z(t)^{-1}\int K_fe^{-tK_f}\,d\varpi$; here $t$ plays the role of $n\beta$ for a tempered posterior. $K_f$ is bounded on the compact support, so differentiating under the integral gives $(\log\mathcal Z)'=-E_t[K_f]$. Integrating this and applying \eqref{eq:pair}, for each fixed $t_0>0$,
+\begin{equation}\label{eq:llcaverage}
+ \int_{t_0}^{T}E_t[K_f]\,dt=\lambda\log T-(m-1)\log\log T+O(1),\qquad T\to\infty.
+\end{equation}
+Dividing by $\log T$ shows that the average of $tE_t[K_f]$ against $dt/t$ tends to $\lambda$. The multiplicity enters only at the $\log\log T$ scale.
+\begin{itemize}\setlength{\itemsep}{0pt}
+\item At depth five, the endpoint and center placements differ by $1/12$ in $\lambda$.
+\item At depth five, positions $2$ and $3$ share $\lambda=7/6$. The integral at position $2$ minus the integral at position $3$ is $-\log\log T+O(1)$.
+\item At depth four, all four placements share $\lambda=1$.
+\end{itemize}
+Asymptotically, as $\log T\to\infty$ and with no rate, the averaged quantity therefore separates placements whose exponents differ. The value of $\lambda$ alone does not separate placements that differ only in multiplicity.
+
+At finite $T$, the correction $-(m-1)\log\log T/\log T$ and the uncontrolled $O(1)/\log T$ can exceed gaps of this size. Take position $2$, with $(7/6,2)$, against position $1$, with $(13/12,1)$. Even ignoring the $O(1)$ term, the averaged quantity orders them correctly only once $\log T>46$.
+
+This is a statement about the deterministic population integral. It does not cover the estimator of \citet{lau2025}, which uses the empirical loss and a Gaussian localization. Nor does it assert the pointwise limit $tE_t[K_f]\to\lambda$. That limit follows from the full resolution asymptotic expansion for analytic losses, but not from the two-sided bounds \eqref{eq:pair} used here.
+
 \section{Full fibers and global selection}
 The arrangement theorem describes one realization. The global integral combines the local contributions over the complete target fiber.
-\begin{theorem}[Full fibers and global selection]\label{thm:global}
+\begin{theorem}[Full fibers and global selection]\label{thm:global}\leantag{UnifiedNetworkCertificate}{53}
 Assume \eqref{eq:gram} and $0\le k\le L$. Let $f=F_{c_k}\circ\cdots\circ F_{c_1}$, with $c_j\ne0$ and, for even $r$, $c_j>0$. For $k=0$, set $f=x$. The complete effective fiber consists of the ordered coefficients $c_1,\ldots,c_k$ placed in any $k$ positions, with all other coefficients zero. Its raw fiber $\mathcal F_f=\{w:K_f(w)=0\}$ has size
 \[
  \#\mathcal F_f=\begin{cases}\binom Lk,&r\text{ odd},\\2^k\binom Lk,&r\text{ even}.\end{cases}
@@ -193,9 +247,9 @@ Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, m
 The results cover every active count in scalar, bias-free polynomial residual networks and concern deterministic population-loss integrals. Priors are in raw weights: a smooth positive prior in effective coefficients has different geometry at zero. Higher-dimensional, biased, and more general architectures are outside the proved scope.
 
 \section{Formal verification}\label{sec:formal}
-Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions (Appendix~\ref{app:repro}).
+The pairs, fibers and counts of all three theorems are formalized in Lean 4 for localizations on small balls with bounded measurable densities. The transfer to the smooth cutoffs of \eqref{eq:pair} is on paper. The repository records the certified statements and their exact assumptions (Appendix~\ref{app:repro}).
 
-The unified certificate covers all $r\ge2$, positive depths, and active counts: complete raw fibers and exact counts, local arrangement pairs, and the global pair. It uses \eqref{eq:gram} and Section~\ref{sec:model}'s global prior conditions; standalone local certificates allow measurable priors bounded above and away from zero. Inverse-power criteria cover all real exponents locally and positive exponents globally. Lean also certifies endpoint divergence and two-sided Laplace bounds with the stated logarithmic powers. The zeta-pole interpretation uses the cited resolution theory; meromorphic continuation and leading asymptotic constants are not part of the Lean certificate.
+The unified certificate covers all $r\ge2$, positive depths, and active counts: complete raw fibers and exact counts, local arrangement pairs, and the global pair. It uses \eqref{eq:gram} and Section~\ref{sec:model}'s global prior conditions; standalone local certificates allow measurable priors bounded above and away from zero. Inverse-power criteria cover all real exponents locally and positive exponents globally. Lean also certifies endpoint divergence and two-sided Laplace bounds with the stated logarithmic powers. The zeta-pole interpretation uses the cited resolution theory; meromorphic continuation and leading asymptotic constants are not part of the Lean certificate. Neither are the two remarks: the Newton-polyhedron comparison in Section~3 and the averaged identity \eqref{eq:llcaverage}. Their comparisons with Theorems~\ref{thm:identity} and~\ref{thm:arrangement} are proved here, and the Newton-polyhedron framework is cited.
 
 \label{main-end}
 
@@ -229,9 +283,10 @@ Restrict each chart to the inverse image of a product box $|t|<b$, $\eta\in V$ c
 The reduced loss equals $\rho^{2r}(t^2+\rho^{2r}q^2)$ and is comparable to \eqref{eq:angularmodel}. In a product box $0<\rho<\rho_0$, $|t|<\rho_0^r$, split into two sectors for each sign $\sigma\in\{-1,1\}$:
 \begin{align*}
  \mathcal C:&\quad t=\sigma\rho^r v,\quad 0<v<1,
- &\rho^{L-1}d\rho\,dt&=\rho^{L+r-1}d\rho\,dv,\\
- \mathcal O:&\quad t=\sigma z^r,\quad \rho=zy,\quad 0<z<\rho_0,\ 0<y<1,
- &\rho^{L-1}|d\rho\,dt|&=r z^{L+r-1}y^{L-1}dz\,dy.
+ &&\rho^{L-1}d\rho\,dt=\rho^{L+r-1}d\rho\,dv,\\
+ \mathcal O:&\quad t=\sigma z^r,\quad \rho=zy,
+ &&\rho^{L-1}|d\rho\,dt|=r z^{L+r-1}y^{L-1}dz\,dy,\\
+ &\quad 0<z<\rho_0,\ 0<y<1.
 \end{align*}
 Apart from boundaries of measure zero these are exactly $|t|<\rho^r$ and $\rho^r<|t|$. The loss is comparable to $\rho^{4r}$ in $\mathcal C$ and to $z^{4r}y^{2r}$ in $\mathcal O$. Sector $\mathcal C$ has pair $((L+r)/(4r),1)$. For $\mathcal O$, substitute $a=z^{4r}$ and $b=y^{2r}$. Up to constants its integral is
 \[
@@ -345,7 +400,7 @@ Thus $v=Jz+(0,R'_0,\ldots,R'_k)$ obeys the same lemma. The retained family $U_j,
 for each nonempty group, proving \eqref{eq:arrangementeven}.
 
 \paragraph{Integration.}
-The active coordinate map has Jacobian determinant $\prod_j r(w^*_{i_j})^{r-1}\ne0$. Its inverse absolute Jacobian and the prior are bounded above and away from zero locally. Inner and outer product boxes in $(\delta,a_0,\ldots,a_k)$ bound the cutoff integral. On each box the comparison integral factors into Gaussian active integrals and identity-group integrals. Theorem~\ref{thm:identity}, or the usual addition rule \citep[Proposition 3.7]{lin2017}, gives \eqref{eq:arrangementpair}: exponents add and $m-1=\sum_g(M_r(n_g)-1)$. Empty groups contribute one. All comparison losses vanish only at the base point, so shrinking cutoffs does not change the pair. Integration uses $(\delta,a_0,\ldots,a_k)$; $z$ records coefficients rather than raw coordinates.
+The Jacobian determinant of the active coordinate map is $\prod_j r(w^*_{i_j})^{r-1}\ne0$. Its inverse absolute Jacobian and the prior are bounded above and away from zero locally. Inner and outer product boxes in $(\delta,a_0,\ldots,a_k)$ bound the cutoff integral. On each box the comparison integral factors into Gaussian active integrals and identity-group integrals. Theorem~\ref{thm:identity}, or the usual addition rule \citep[Proposition 3.7]{lin2017}, gives \eqref{eq:arrangementpair}: exponents add and $m-1=\sum_g(M_r(n_g)-1)$. Empty groups contribute one. All comparison losses vanish only at the base point, so shrinking cutoffs does not change the pair. Integration uses $(\delta,a_0,\ldots,a_k)$; $z$ records coefficients rather than raw coordinates.
 
 \clearpage
 \section{Full fibers and global selection}\label{app:global}

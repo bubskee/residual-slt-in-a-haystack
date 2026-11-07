@@ -4,7 +4,7 @@ Reproducibility snapshot (proof source and audit): [2865e70a9ca7f559dabfce6aa32e
 The Lean source is unchanged from proof-source commit `3aa873960d83313e44d966ebc124655e87aa0982`.
 Lean `v4.35.0`; mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
-Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions.
+All three theorems of the paper are formalized in Lean 4. This file records the certified statements and their exact assumptions.
 
 The current certificate covers complete raw fibers, exact cardinalities, local arrangement pairs, and global learning pairs for every degree `r ≥ 2`, positive depth, and active count. It supersedes the identity-only coverage of earlier manuscript releases. This release imports the completed Lean results without changing their proofs.
 

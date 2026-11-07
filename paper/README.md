@@ -1,6 +1,6 @@
 # Learning Coefficients and Active-Block Arrangements in Scalar Residual Networks
 
-Bobby Faber, Independent. 6 November 2026.
+Bobby Faber, Independent. 7 November 2026.
 
 - `main.pdf`: compiled manuscript.
 - `main.tex` and `references.bib`: editable sources.
@@ -12,7 +12,7 @@ Public proof repository: https://github.com/bubskee/residual-slt-in-a-haystack
 
 The three theorems give the identity-target phase transition, local arrangement pairs, and complete fibers and global selection for arbitrary active counts. The global theorem includes exact raw-fiber sizes. Lean certifies the fiber results and local/global Laplace orders under the paper's sparse Gram assumption.
 
-Formal verification and extensions are ongoing. A growing subset of the results has been formalized in Lean 4; the repository documents the currently certified statements and their assumptions.
+All three theorems are formalized in Lean 4; `formalization_status.md` records the certified statements and their exact assumptions.
 
 ## Compile
 

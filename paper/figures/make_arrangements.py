@@ -12,8 +12,9 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, FancyArrowPatch
 
 OUT = Path(__file__).resolve().parent
-plt.rcParams.update({'font.family':'serif', 'font.serif':['STIXGeneral'],
-                     'mathtext.fontset':'stix', 'font.size':10,
+plt.rcParams.update({'font.family':'serif', 'font.serif':['Palatino','TeX Gyre Pagella','STIXGeneral'],
+                     'mathtext.fontset':'custom', 'mathtext.rm':'Palatino',
+                     'mathtext.it':'Palatino:italic', 'mathtext.bf':'Palatino:bold', 'font.size':10,
                      'pdf.fonttype':42, 'svg.fonttype':'path'})
 fig, ax = plt.subplots(figsize=(6.5,2.65))
 fig.subplots_adjust(left=.015,right=.995,bottom=.04,top=.95)

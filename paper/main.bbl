@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{11}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -31,6 +31,12 @@ Miki Aoyagi and Sumio Watanabe.
 \newblock \emph{Neural Networks}, 18\penalty0 (7):\penalty0 924--933, 2005.
 \newblock \doi{10.1016/j.neunet.2005.03.014}.
 
+\bibitem[Arnold et~al.(1988)Arnold, Gusein-Zade, and Varchenko]{agzv1988}
+V.~I. Arnold, S.~M. Gusein-Zade, and A.~N. Varchenko.
+\newblock \emph{Singularities of Differentiable Maps, Volume {II}: Monodromy
+  and Asymptotics of Integrals}.
+\newblock Birkh{\"a}user, Boston, 1988.
+
 \bibitem[Dahlgren et~al.(2026)Dahlgren, Marchetti, and Kohn]{dahlgren2026}
 Isabel Dahlgren, Giovanni~Luca Marchetti, and Kathl{\'e}n Kohn.
 \newblock Polynomial residual networks are generically identifiable.
@@ -62,6 +68,12 @@ Vahid Shahverdi, Giovanni~Luca Marchetti, and Kathl{\'e}n Kohn.
 \newblock arXiv:2505.11846v3 [cs.LG], 2026.
 \newblock URL \url{https://arxiv.org/abs/2505.11846v3}.
 \newblock Version 3, 11 June 2026; published at ICLR 2026.
+
+\bibitem[Varchenko(1976)]{varchenko1976}
+A.~N. Varchenko.
+\newblock Newton polyhedra and estimation of oscillating integrals.
+\newblock \emph{Functional Analysis and Its Applications}, 10\penalty0
+  (3):\penalty0 175--196, 1976.
 
 \bibitem[Watanabe(2009)]{watanabe2009}
 Sumio Watanabe.
