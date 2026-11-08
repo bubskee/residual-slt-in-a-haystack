@@ -52,7 +52,10 @@ Each claim gets exactly one of these labels. Never blur them.
 - **Explain the mechanism before the proof.** Say *why* something happens in words (cancellation within inactive groups) before the theorem that proves it.
 - **Say what it is and what it isn't.** State the toy-model framing and the scope paragraph plainly, before a reader has to ask.
 - **Sentence style.** Prefer short declarative sentences, with one claim per sentence. Use signposts ("The mechanism is…", "Therefore…"), but don't use rhetorical questions.
-- **Hedging.** Hedge once, in the right place, and don't stack hedges. Conventions and caveats belong in the Conventions paragraph or the scope paragraph, not scattered through the argument.
+- **One scope statement.** The paper has exactly one scope paragraph: the last paragraph of the introduction (what the model is, what the theorems show, what they do not cover). Do not restate it in remarks, section endings or Section 7; a remark may add at most one clause about its own limits.
+- **Hedging.** Hedge once, in the right place, and don't stack hedges. Modelling choices that change the answer (raw weights) get one clear sentence in Section 2; minor conventions go in footnotes.
+- **Proofs read confident.** No reassurance parentheticals ("including depth one", "(one in dimension zero)", "without requiring …"). If the general argument covers a case, say nothing. If a case needs its own step, state that step plainly as part of the argument. Lean certification never substitutes for a complete paper proof.
+- **Define once.** Each object gets one definition (e.g. (λ, m) is defined in Section 2; the introduction gives one plain gloss).
 - **Voice.** Use "we" for the author. Use present tense for results and past tense only for history.
 - **Numbers.** Write exact fractions, such as 13/12. Write 1/12, not "about 0.083".
 - **Avoid these words:** "novel", "crucially", "it is worth noting", "interestingly", "delve", "leverage".

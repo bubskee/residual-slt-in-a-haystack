@@ -1,4 +1,4 @@
-# Learning Coefficients and Active-Block Arrangements in Scalar Residual Networks
+# A Needle in Five Haystacks: Local Learning Coefficients of a Scalar ResNet
 
 Bobby Faber, Independent. 7 November 2026.
 
