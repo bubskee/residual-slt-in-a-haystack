@@ -16,7 +16,10 @@
  \usepackage[final,protrusion=true]{microtype}
 \fi
 \usepackage[authoryear,round]{natbib}
-\usepackage{graphicx,xurl,xcolor}
+\usepackage{graphicx,url,xcolor}
+\urlstyle{same}
+\makeatletter\g@addto@macro\UrlBreaks{\do\_}\makeatother
+\newcommand{\leanname}[1]{{\urlstyle{tt}\nolinkurl{#1}}}
 \usepackage{hyperref}
 \definecolor{linkink}{rgb}{0.12,0.22,0.48}
 \hypersetup{colorlinks,linkcolor=linkink,citecolor=linkink,urlcolor=linkink,
@@ -233,7 +236,6 @@ Thus $K_f$ has a positive gap outside small neighborhoods of its finite fiber, m
 \section{Formal verification}\label{sec:formal}
 The pairs, fibers and counts of all three theorems are certified in Lean~4 for localizations on small balls with bounded measurable densities, together with the inverse-power criteria and endpoint divergence; the margin marks link each theorem to its certificate. The transfer to the smooth cutoffs of \eqref{eq:pair}, the zeta-pole interpretation and the two remarks are proved on paper or cited, and meromorphic continuation and leading constants are not certified. Appendix~\ref{app:repro} gives the snapshot, the principal declarations and the audit.
 
-\label{main-end}
 
 \clearpage
 \appendix
@@ -330,9 +332,11 @@ The multiplied old degrees are at most $(3r-2)d$; the last two degrees are $r^2d
 \paragraph{Uniform control of omitted coefficients.}
 Each actual inactive group has
 \begin{equation}\label{eq:group}
- \mathcal H_g=x+S_gx^r+B_gx^{2r-1}+R_g,\qquad
+\begin{gathered}
+ \mathcal H_g=x+S_gx^r+B_gx^{2r-1}+R_g,\\
  B_g=\frac r2(S_g^2-Q_g),\qquad
  \norm{R_g}\le C_g\norm{u_g}_2Q_g.
+\end{gathered}
 \end{equation}
 Indeed its coefficient of $x^{d_h}$ is homogeneous of degree $h$ in $u_g$. On $\norm{u_g}_2\le1$, the sum of the finitely many terms with $h\ge3$ is bounded by $C_g\norm{u_g}_2^3$, and $Q_g=\norm{u_g}_2^2$. Empty and singleton groups have $R_g=0$; also $B_g=0$ for a singleton.
 
@@ -396,7 +400,6 @@ for each nonempty group, proving \eqref{eq:arrangementeven}.
 \paragraph{Integration.}
 The Jacobian determinant of the active coordinate map is $\prod_j r(w^*_{i_j})^{r-1}\ne0$. Its inverse absolute Jacobian and the prior are bounded above and away from zero locally. Inner and outer product boxes in $(\delta,a_0,\ldots,a_k)$ bound the cutoff integral. On each box the comparison integral factors into Gaussian active integrals and identity-group integrals. Theorem~\ref{thm:identity}, or the usual addition rule \citep[Proposition 3.7]{lin2017}, gives \eqref{eq:arrangementpair}: exponents add and $m-1=\sum_g(M_r(n_g)-1)$. All comparison losses vanish only at the base point, so shrinking cutoffs does not change the pair.
 
-\clearpage
 \section{Full fibers and global selection}\label{app:global}
 \paragraph{Ordered recovery.}
 Every active block has degree $r$, so a network with $q$ active blocks has degree $r^q$. Equal outputs therefore have the same active count. To recover their coefficients, suppose
@@ -422,19 +425,20 @@ For even $r$, every placement has pair $(k/2+(L-k)/(2r),1)$. For odd $r$, write 
 \]
 If $n<r$, all placements have the same exponent and $m=1$. If $n=r$, all exponents agree and concentrating the inactive blocks in one gap gives $m=2$, the largest multiplicity. If $n>r$, the inequality is strict whenever at least two gaps are nonempty: if any gap exceeds $r$, the other nonempty gaps strictly reduce the sum of positive parts from $n-r$; if none does, that sum is zero. Hence concentration in one gap uniquely describes the minimizing patterns, and these have $m=1$. Such a placement exists before, between, or after the ordered active blocks. This proves \eqref{eq:globalpair}.
 
-\clearpage
 \section{Lean source and audit record}\label{app:repro}
-The proof source is available at \url{https://github.com/bubskee/residual-slt-in-a-haystack}. The reproducibility snapshot, containing the proof source and audit, is
+The proof source is available at
+\begin{center}\small\url{https://github.com/bubskee/residual-slt-in-a-haystack}\end{center}
+The reproducibility snapshot, containing the proof source and audit, is
 \begin{center}\small\ttfamily b08b1a334abac97cbdf754ba14eacee82e10be70\end{center}
 It uses Lean \texttt{v4.35.0} and mathlib commit
 \begin{center}\small\ttfamily 56a005855ea17e0b0958f73ec801ae140b0a1679\end{center}
 The principal declarations, all in namespace \texttt{ResidualSLT}, are
 \begin{itemize}\setlength{\itemsep}{0pt}
-\item \nolinkurl{unified_residual_network_certificate}: full fibers, exact counts, and local/global learning pairs;
-\item \nolinkurl{sparse_identity_network_rlct_laplace_certificate}: the identity pair;
-\item \nolinkurl{arrangement_raw_network_rlct_laplace_certificate_of_depth_pos}: the local arrangement pair;
-\item \nolinkurl{network_full_raw_fiber}: ordered active-chain classification;
-\item \nolinkurl{raw_network_fiber_cardinality}: exact raw-fiber size.
+\item \leanname{unified_residual_network_certificate}: full fibers, exact counts, and local/global learning pairs;
+\item \leanname{sparse_identity_network_rlct_laplace_certificate}: the identity pair;
+\item \leanname{arrangement_raw_network_rlct_laplace_certificate_of_depth_pos}: the local arrangement pair;
+\item \leanname{network_full_raw_fiber}: ordered active-chain classification;
+\item \leanname{raw_network_fiber_cardinality}: exact raw-fiber size.
 \end{itemize}
 
 \noindent\begin{minipage}{\linewidth}
