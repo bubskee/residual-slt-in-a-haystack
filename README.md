@@ -1,6 +1,6 @@
 # Residual SLT in a Haystack
 
-**A Needle in Five Haystacks: Local Learning Coefficients of a Scalar ResNet**  
+**A Needle in Five Tiny Haystacks: Local Learning Coefficients of Scalar ResNets**  
 Bobby Faber, Independent. 6 November 2026.
 
 [Read the paper](paper/main.pdf) · [LaTeX source](paper/main.tex) · [Formal coverage](paper/formalization_status.md)

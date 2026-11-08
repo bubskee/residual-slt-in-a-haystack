@@ -1,4 +1,4 @@
-# A Needle in Five Haystacks: Local Learning Coefficients of a Scalar ResNet
+# A Needle in Five Tiny Haystacks: Local Learning Coefficients of Scalar ResNets
 
 Bobby Faber, Independent. 7 November 2026.
 

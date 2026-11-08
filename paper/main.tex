@@ -20,7 +20,7 @@
 \usepackage{hyperref}
 \definecolor{linkink}{rgb}{0.12,0.22,0.48}
 \hypersetup{colorlinks,linkcolor=linkink,citecolor=linkink,urlcolor=linkink,
- pdftitle={A Needle in Five Haystacks: Local Learning Coefficients of a Scalar ResNet},
+ pdftitle={A Needle in Five Tiny Haystacks: Local Learning Coefficients of Scalar ResNets},
  pdfauthor={Bobby Faber}, pdfsubject={Local learning coefficients of scalar polynomial residual networks},
  pdfkeywords={singular learning theory, residual networks, real log canonical threshold, Lean}}
 \clubpenalty=10000
@@ -44,7 +44,7 @@
 
 % Marginal Lean tag linking to the certifying declaration at the pinned snapshot.
 \newcommand{\leantag}[2]{\marginpar{\raggedright\footnotesize\textsc{lean}~\href{https://github.com/bubskee/residual-slt-in-a-haystack/blob/2865e70a9ca7f559dabfce6aa32e13cf4fc88259/lean/ResidualSLT/#1.lean\#L#2}{\checkmark}\\[-1pt]{\fontsize{6.5}{8}\selectfont\itshape\hspace{0pt}#1}}}
-\title[A Needle in Five Haystacks]{A Needle in Five Haystacks:\\Local Learning Coefficients of a Scalar ResNet}
+\title[A Needle in Five Tiny Haystacks]{A Needle in Five Tiny Haystacks:\\Local Learning Coefficients of Scalar ResNets}
 \author{Bobby Faber}
 \address{Independent researcher}
 \date{7 November 2026}
@@ -57,7 +57,7 @@ A residual network can represent one function at many points of its parameter sp
 \maketitle
 
 \section{Introduction}
-A depth-five cubic residual network represents $f(x)=x+x^3$ with its sole nonzero weight at any of its five positions, yet these realizations have different local loss geometry. We describe this geometry by a pair $(\lambda,m)$: the local learning coefficient $\lambda$ and multiplicity $m$ give the order $N^{-\lambda}(\log N)^{m-1}$ of the local integral of $e^{-N K_f}$, where $K_f$ is the squared-error population loss and $N\to\infty$ is a positive concentration parameter. At positions $1$ or $5$, the pair is $(13/12,1)$; at positions $2$ or $4$, it is $(7/6,2)$; at the center, it is $(7/6,1)$. Thus the same function has local integral orders $N^{-13/12}$, $N^{-7/6}\log N$, and $N^{-7/6}$. Figure~\ref{fig:arrangements} and Table~\ref{tab:examples} display the three cases.
+A depth-five cubic residual network represents $f(x)=x+x^3$ with its sole nonzero weight at any of its five positions, yet these realizations have different local loss geometry. We describe this geometry by a pair $(\lambda,m)$: the local learning coefficient $\lambda$ and multiplicity $m$ give the order $N^{-\lambda}(\log N)^{m-1}$ of the local integral of $e^{-N K_f}$, where $K_f$ is the squared-error population loss and $N\to\infty$ is a positive concentration parameter. At positions $1$ or $5$, the pair is $(13/12,1)$; at positions $2$ or $4$, it is $(7/6,2)$; at the center, it is $(7/6,1)$. Thus the same function has local integral orders $N^{-13/12}$, $N^{-7/6}\log N$, and $N^{-7/6}$. Figure~\ref{fig:arrangements} and Table~\ref{tab:examples} display the three cases. In the terms of our title, the needle is the same in all five realizations: one active block computing $x\mapsto x+x^3$. What differs is the haystack, the inactive blocks packed around it, and the arrangement theorem below shows that the haystack's shape alone decides how the learning coefficient differs.
 
 Learning coefficients capture singular geometry beyond parameter counting or Jacobian rank \citep{wei2023,lau2025}. Here every realization has five parameters and raw coefficient-Jacobian rank one, but the local pairs differ. The learning coefficient is therefore a property of the point, not of the function: a local analysis near one realization need not describe the geometry near another realization of the same function, and which realization a training process approaches changes what a local estimate measures.
 
