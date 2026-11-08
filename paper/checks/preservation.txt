@@ -18,3 +18,7 @@ Added local-prior positivity and the local/global exponent distinction; ongoing-
 Reproducibility snapshot 2865e70 contains both the identical Lean source and focused audit.
 PDF remains 13 pages; pages 6 and 12 visually checked, all other pages pixel-identical to the reviewed version.
 Clean LaTeX compilation; Lean source and audit unchanged, so the existing build and audit records still apply.
+
+Pin consolidation, 7 November 2026:
+The paper, margin tags, README and formalization_status now cite a single reproducibility snapshot, b08b1a334abac97cbdf754ba14eacee82e10be70.
+The Lean tree is byte-identical across 3aa8739 (proof source), 2865e70 (earlier snapshot), b08b1a3 and later commits; 91b60f5 is the external research checkpoint the release was verified against.

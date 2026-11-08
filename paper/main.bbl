@@ -1,4 +1,4 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{12}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -43,6 +43,14 @@ Isabel Dahlgren, Giovanni~Luca Marchetti, and Kathl{\'e}n Kohn.
 \newblock arXiv:2610.33738v1 [cs.LG], 2026.
 \newblock URL \url{https://arxiv.org/abs/2610.33738v1}.
 \newblock 24 October 2026.
+
+\bibitem[Kohn et~al.(2026)Kohn, Marchetti, Shabir, Shahverdi, and
+  Wang]{kohn2026}
+Kathl{\'e}n Kohn, Giovanni~Luca Marchetti, Farhan Shabir, Vahid Shahverdi, and
+  Weisheng Wang.
+\newblock Singular learning and {Occam's} razor in deep monomial networks.
+\newblock arXiv:2606.28464 [cs.LG], 2026.
+\newblock URL \url{https://arxiv.org/abs/2606.28464}.
 
 \bibitem[Lau et~al.(2025)Lau, Furman, Wang, Murfet, and Wei]{lau2025}
 Edmund Lau, Zach Furman, George Wang, Daniel Murfet, and Susan Wei.

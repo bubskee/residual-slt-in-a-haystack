@@ -43,7 +43,7 @@
 \makeatother
 
 % Marginal Lean tag linking to the certifying declaration at the pinned snapshot.
-\newcommand{\leantag}[2]{\marginpar{\raggedright\footnotesize\textsc{lean}~\href{https://github.com/bubskee/residual-slt-in-a-haystack/blob/2865e70a9ca7f559dabfce6aa32e13cf4fc88259/lean/ResidualSLT/#1.lean\#L#2}{\checkmark}\\[-1pt]{\fontsize{6.5}{8}\selectfont\itshape\hspace{0pt}#1}}}
+\newcommand{\leantag}[2]{\marginpar{\raggedright\footnotesize\textsc{lean}~\href{https://github.com/bubskee/residual-slt-in-a-haystack/blob/b08b1a334abac97cbdf754ba14eacee82e10be70/lean/ResidualSLT/#1.lean\#L#2}{\checkmark}\\[-1pt]{\fontsize{6.5}{8}\selectfont\itshape\hspace{0pt}#1}}}
 \title[A Needle in Five Tiny Haystacks]{A Needle in Five Tiny Haystacks:\\Local Learning Coefficients of Scalar ResNets}
 \author{Bobby Faber}
 \address{Independent researcher}
@@ -52,18 +52,18 @@
 \keywords{singular learning theory, residual networks, real log canonical threshold, Newton polyhedra, Lean}
 \begin{document}
 \begin{abstract}
-A residual network can represent one function at many points of its parameter space, and singular learning theory assigns each point its own local learning coefficient $\lambda$ and multiplicity $m$. We compute both exactly for the simplest nontrivial case: the scalar network obtained by composing $L$ maps $x\mapsto x+w^rx^r$, with squared-error loss in the raw weights $w$. A depth-five cubic network represents $f(x)=x+x^3$ with its single nonzero weight in any of five positions, yet the local pair is $(13/12,1)$, $(7/6,2)$ or $(7/6,1)$ depending on the position. In general, the nonzero (active) blocks split the remaining weights into consecutive inactive groups. For odd $r$ the weights within a group can cancel. In every case $\lambda$ is a regular active contribution plus one identity-target contribution per group, and for odd $r$ a logarithm appears when a group has length exactly $r$. We also classify every target fiber, count its points exactly, and determine the global pair. All three theorems are certified in Lean under the stated Gram and prior assumptions.
+A residual network can represent one function at many points of its parameter space, and singular learning theory assigns each point its own local learning coefficient $\lambda$ and multiplicity $m$. We compute both exactly for the simplest nontrivial case: the scalar network obtained by composing $L$ maps $x\mapsto x+w^rx^r$, with squared-error loss in the raw weights $w$. A depth-five cubic network represents $f(x)=x+x^3$ with its single nonzero weight in any of five positions, yet the local pair is $(13/12,1)$, $(7/6,2)$ or $(7/6,1)$ depending on the position. In general, the nonzero (active) blocks split the remaining weights into consecutive inactive groups. For odd $r$ the weights within a group can cancel. In every case $\lambda$ is a regular active contribution plus one identity-target contribution per group, and for odd $r$ a logarithm appears when a group has length exactly $r$. We also classify every target fiber, count its points exactly, and determine the global pair. Lean certifies the pairs, fibers and counts of all three theorems for localizations on small balls with bounded measurable densities, under the stated Gram assumption.
 \end{abstract}
 \maketitle
 
 \section{Introduction}
 A depth-five cubic residual network represents $f(x)=x+x^3$ with its sole nonzero weight at any of its five positions, yet these realizations have different local loss geometry. We describe this geometry by a pair $(\lambda,m)$: the local learning coefficient $\lambda$ and multiplicity $m$ give the order $N^{-\lambda}(\log N)^{m-1}$ of the local integral of $e^{-N K_f}$, where $K_f$ is the squared-error population loss and $N\to\infty$ is a positive concentration parameter. At positions $1$ or $5$, the pair is $(13/12,1)$; at positions $2$ or $4$, it is $(7/6,2)$; at the center, it is $(7/6,1)$. Thus the same function has local integral orders $N^{-13/12}$, $N^{-7/6}\log N$, and $N^{-7/6}$. Figure~\ref{fig:arrangements} and Table~\ref{tab:examples} display the three cases. In the terms of our title, the needle is the same in all five realizations: one active block computing $x\mapsto x+x^3$. What differs is the haystack, the inactive blocks packed around it, and the arrangement theorem below shows that the haystack's shape alone decides how the learning coefficient differs.
 
-Learning coefficients capture singular geometry beyond parameter counting or Jacobian rank \citep{wei2023,lau2025}. Here every realization has five parameters and raw coefficient-Jacobian rank one, but the local pairs differ. The learning coefficient is therefore a property of the point, not of the function: a local analysis near one realization need not describe the geometry near another realization of the same function, and which realization a training process approaches changes what a local estimate measures.
+The local learning coefficient is by definition an invariant of a point in parameter space, not of the function computed there \citep{watanabe2009,lau2025}, and it captures singular geometry beyond parameter counting or Jacobian rank \citep{wei2023}. The example makes both facts exact. Every realization has five parameters and raw coefficient-Jacobian rank one, yet the local pairs differ, and the multiplicity varies within a single fiber. A local analysis near one realization therefore need not describe another realization of the same function, and which realization a training process approaches changes what a local estimate measures.
 
 The mechanism is cancellation. A block with zero weight is the identity map, so moving the single active block along the chain does not change the output. Perturbing the inactive weights does change it, and for odd $r$ the leading terms are signed $r$th powers that can cancel against each other. Cancellation happens only among consecutive inactive blocks. An active block between two groups composes their contributions with a nonlinear map, which places them in independent leading loss directions (Appendix~\ref{app:arrangement}). The positions of the active blocks therefore decide which weights can cancel together. A group's contribution changes regime as its length passes $r$; at length exactly $r$ the two regimes balance and a logarithm appears. Theorem~\ref{thm:arrangement} adds these group contributions to the regular contribution of the active weights. Theorem~\ref{thm:global} classifies every target fiber and selects its global pair: local pairs depend on the inactive-group lengths, while the global pair depends only on degree, depth, and active count.
 
-The architecture is the scalar monomial specialization of the polynomial ResNets studied by \citet{dahlgren2026}. Related work connects sparse subnetworks to singularities of polynomial function spaces \citep{shahverdi2026}. Here we compute local loss-volume exponents, giving exact examples relevant to local learning coefficient estimation \citep{lau2025}. Exact coefficients are also known for reduced-rank regression and multilayer linear networks \citep{aoyagiwatanabe2005,aoyagi2024}. Our calculations use the singular learning framework and monomial rules of \citet{watanabe2009,lin2017}.
+The architecture is the scalar monomial specialization of the polynomial ResNets studied by \citet{dahlgren2026}. Related work connects sparse subnetworks to singularities of polynomial function spaces \citep{shahverdi2026}, and \citet{kohn2026} relate rank-deficient critical points of deep monomial networks to subnetworks with inactive neurons. Our realizations are subnetworks of exactly this kind, and they show that equal Jacobian rank does not determine the learning coefficient. Here we compute local loss-volume exponents, giving exact examples relevant to local learning coefficient estimation \citep{lau2025}. Exact coefficients are also known for reduced-rank regression and multilayer linear networks \citep{aoyagiwatanabe2005,aoyagi2024}. Our calculations use the singular learning framework and monomial rules of \citet{watanabe2009,lin2017}.
 
 The model is deliberately minimal: one dimension, no biases and monomial activations. We chose it because it is exactly solvable, so every learning coefficient can be computed and certified rather than estimated; it is not a model of practical networks. Within it, the theorems give exact local and global pairs for every degree, depth and active count. They show that the learning coefficient depends on the realization, not only on the function, explain the dependence by cancellation within inactive groups, and place the odd-degree transition exactly where Newton nondegeneracy fails (Section~3). All statements concern deterministic population-loss integrals with priors in raw weights. Finite samples, stochastic estimators such as that of \citet{lau2025}, and networks with width or biases are outside their scope.
 
@@ -114,6 +114,9 @@ The local pair is
 Moreover, $K_0$ is coercive and has zero set $\{0\}$. Thus the same pair governs the global integral under a finite-mass prior continuous and positive at zero.
 \end{theorem}
 
+\paragraph{What is classical.}
+Two comparisons separate the new part of Theorem~\ref{thm:identity} from the standard one; for even $r$ the pair is immediate (see below). First, for odd $r$ the leading term $S^2$ alone already has pair $\bigl(\min\{1/2,L/(2r)\},m\bigr)$ with $m=2$ exactly when $L=r$: $S$ is homogeneous with zero set smooth away from the origin, and the blow-up of Appendix~\ref{app:sectors} without the $Q^2$ term gives a transverse exponent $1/2$ and a radial exponent $L/(2r)$. Theorem~\ref{thm:identity} therefore agrees with this classical threshold for $L\le r$, logarithm included. For $L>r$ the radial term $Q^2$ cuts off the cone $\{S=0\}$ and raises $\lambda$ from $1/2$ to $(L+r)/(4r)$. Second, with a smooth positive prior in effective coordinates $u=w^r$, the loss is comparable to $(\sum_iu_i)^2+\norm{u}^4$, whose pair is $(1/2+(L-1)/4,1)$ for every $r$ and $L$. The parity split, the critical length and the logarithm all come from the raw parametrization.
+
 The first two output error coefficients are exactly $S$ and
 \[
  B=r\sum_{i<j}u_i u_j=\frac r2(S^2-Q).
@@ -128,7 +131,7 @@ For even $r$, the summands of $S$ are nonnegative, so $S^2\asym\norm{w}^{2r}$ an
 up to bounded positive factors. A finite collection of local charts with bounded positive densities suffices. In the thin region $|t|\le\rho^r$, cancellation changes the radial scale to $\rho^{4r}$ while the angular width contributes $\rho^r$. This gives \mbox{$(L+r)/(4r)$}. The competing exponent is $L/(2r)$; their crossing at $L=r$ produces one logarithm. Appendix~\ref{app:sectors} computes both exponents and the logarithm using two explicit sectors.
 
 \paragraph{Remark (Newton polyhedra).}
-The degree-$2r$ part of $K_0$ is $G_{11}S^2$ and all other terms have higher degree, so the Newton polyhedron of $K_0$ at zero is $\{\alpha\in\R^L_{\ge0}:\sum_i\alpha_i\ge2r\}$ and its Newton prediction \citep{varchenko1976,agzv1988} is $(L/(2r),1)$. The prediction is always an upper bound for $\lambda$, since $S^2\le LQ$ gives $K_0\le C\sum_iw_i^{2r}$. For even $r$, or $L=1$, the face polynomial $G_{11}S^2$ has no zeros in $(\R^*)^L$, and the prediction is exact. For odd $r$ and $L\ge2$ it vanishes to second order on $\{S=0\}\cap(\R^*)^L$, which contains \mbox{$(1,\ldots,1,-(L-1)^{1/r})$}, so $K_0$ is Newton-degenerate. The degeneracy is invisible for $L<r$, costs the logarithm at $L=r$, and lowers $\lambda$ to \mbox{$(L+r)/(4r)$} for $L>r$.
+The degree-$2r$ part of $K_0$ is $G_{11}S^2$ and all other terms have higher degree, so the Newton polyhedron of $K_0$ at zero is $\{\alpha\in\R^L_{\ge0}:\sum_i\alpha_i\ge2r\}$ and its Newton prediction \citep{varchenko1976,agzv1988} is $(L/(2r),1)$. The prediction is always an upper bound for $\lambda$, since $S^2\le LQ$ gives $K_0\le C\sum_iw_i^{2r}$. For even $r$, or $L=1$, the face polynomial $G_{11}S^2$ has no zeros in $(\R^*)^L$, in particular no singular ones, and the prediction is exact. For odd $r$ and $L\ge2$ it vanishes to second order on $\{S=0\}\cap(\R^*)^L$, which contains \mbox{$(1,\ldots,1,-(L-1)^{1/r})$}, so $K_0$ is Newton-degenerate. The degeneracy is invisible for $L<r$, where the cancellation exponent $(L+r)/(4r)$ exceeds $L/(2r)$; it costs the logarithm at $L=r$, and lowers $\lambda$ to \mbox{$(L+r)/(4r)$} for $L>r$.
 
 \section{The local arrangement theorem}
 Each inactive group inherits the identity-target geometry of Theorem~\ref{thm:identity}; the active weights contribute regular directions. For an inactive group of size $n$, define $A_r(0)=0$, $M_r(0)=1$, and, for $n\ge1$,
@@ -197,7 +200,7 @@ Depth $L$ & Active position $j$ & Inactive lengths $(n_0,n_1)$ & Local $(\lambda
 At depth four, moving the active block changes the logarithmic factor. At depth five, it can change the exponent itself. All these points have raw coefficient-Jacobian rank one; that rank does not determine either pair. The theorem also permits more than one logarithm: two groups of length $r$ give $m=3$. Such a local statement need not describe the globally dominant realization.
 
 \paragraph{Remark (what a local learning coefficient sees).}
-Let $\varpi=\chi\pi\,dw$ be the local measure of \eqref{eq:pair}. Write $\mathcal Z(t)=\int e^{-tK_f}\,d\varpi$ and $E_t[K_f]=\mathcal Z(t)^{-1}\int K_fe^{-tK_f}\,d\varpi$; here $t$ plays the role of $n\beta$ for a tempered posterior. $K_f$ is bounded on the compact support, so differentiating under the integral gives $(\log\mathcal Z)'=-E_t[K_f]$. Integrating this and applying \eqref{eq:pair}, for each fixed $t_0>0$,
+Let $\varpi=\chi\pi\,dw$ be the local measure of \eqref{eq:pair}. Write $\mathcal Z(t)=\int e^{-tK_f}\,d\varpi$ and $E_t[K_f]=\mathcal Z(t)^{-1}\int K_fe^{-tK_f}\,d\varpi$; here $t$ plays the role of $n\beta$ for a tempered posterior. $K_f$ is bounded on the compact support, so differentiating under the integral gives $(\log\mathcal Z)'=-E_t[K_f]$. Integrating this and applying \eqref{eq:pair}, for each fixed $t_0>0$, with an $O(1)$ term depending on $t_0$, $w^*$ and $\mu$,
 \begin{equation}\label{eq:llcaverage}
  \int_{t_0}^{T}E_t[K_f]\,dt=\lambda\log T-(m-1)\log\log T+O(1),\qquad T\to\infty.
 \end{equation}
@@ -206,7 +209,7 @@ Dividing by $\log T$ shows that the average of $tE_t[K_f]$ against $dt/t$ tends 
 \section{Full fibers and global selection}
 The arrangement theorem describes one realization. The global integral combines the local contributions over the complete target fiber.
 \begin{theorem}[Full fibers and global selection]\label{thm:global}\leantag{UnifiedNetworkCertificate}{53}
-Assume \eqref{eq:gram} and $0\le k\le L$. Let $f=F_{c_k}\circ\cdots\circ F_{c_1}$, with $c_j\ne0$ and, for even $r$, $c_j>0$. For $k=0$, set $f=x$. The complete effective fiber consists of the ordered coefficients $c_1,\ldots,c_k$ placed in any $k$ positions, with all other coefficients zero. Its raw fiber $\mathcal F_f=\{w:K_f(w)=0\}$ has size
+Assume \eqref{eq:gram} and $0\le k\le L$. Let $f=F_{c_k}\circ\cdots\circ F_{c_1}$, with $c_j\ne0$ and, for even $r$, $c_j>0$. For $k=0$, set $f=x$. In effective coordinates $u=w^r$, the complete fiber consists of the ordered coefficients $c_1,\ldots,c_k$ placed in any $k$ positions, with all other coefficients zero; the corresponding raw weights are $c_j^{1/r}$ for odd $r$ and $\pm c_j^{1/r}$ for even $r$. Its raw fiber $\mathcal F_f=\{w:K_f(w)=0\}$ has size
 \[
  \#\mathcal F_f=\begin{cases}\binom Lk,&r\text{ odd},\\2^k\binom Lk,&r\text{ even}.\end{cases}
 \]
@@ -215,7 +218,7 @@ For every prior satisfying the global conditions of Section~\ref{sec:model},
  \int_{\R^L}e^{-N K_f(w)}\pi(w)\,dw
  \asym N^{-[k/2+A_r(L-k)]}(\log N)^{M_r(L-k)-1}.
 \end{equation}
-Repeated coefficients and opposite signs are included whenever realizable.
+Repeated coefficients are allowed.
 \end{theorem}
 
 
@@ -257,7 +260,7 @@ For even $r$, $S\asym\norm{w}^r$ and \eqref{eq:identityreduction} reduces the in
 
 Suppose $r$ is odd and $L\ge2$, and use the Euclidean sphere. Let $\tau(\theta)=\sum_i\theta_i^r$, $q(\theta)=\sum_i\theta_i^{2r}$. Compactness gives $0<c\le q\le C$. The set $\Sigma=\{\tau=0\}$ is nonempty, since it contains $(2^{-1/2},-2^{-1/2},0,\ldots,0)$. At a point of $\Sigma$, Euler's identity gives $\theta\cdot\nabla\tau=r\tau=0$, whereas $\nabla\tau\ne0$. Thus the tangential derivative is nonzero. The inverse function theorem supplies smooth local coordinates $(t,\eta)$ with $t=\tau$, and surface density bounded above and below on smaller coordinate boxes. A finite collection of these boxes covers a neighborhood of the compact set $\Sigma$. On the remaining compact angular set, $|\tau|$ has a positive lower bound.
 
-Restrict each chart to the inverse image of a product box $|t|<b$, $\eta\in V$ contained in its image; finitely many smaller boxes cover $\Sigma$, and bounded larger boxes give upper bounds. The smaller boxes give lower bounds, while the unused coordinates contribute finite positive volume. For radial cutoff $R>0$, the product domain lies between $(0,\rho_0)\times(-\rho_0^r,\rho_0^r)$ and $(0,\rho_1)\times(-\rho_1^r,\rho_1^r)$, where $\rho_0=\min(R,b^{1/r})$ and $\rho_1=\max(R,b^{1/r})$. These inclusions justify the following model integrals.
+Restrict each chart to the inverse image of a product box $|t|<b$, $\eta\in V$ contained in its image; finitely many smaller boxes cover $\Sigma$, and bounded larger boxes give upper bounds. The smaller boxes give lower bounds, while the unused coordinates contribute finite positive volume. For radial cutoff $R>0$, the product domain lies between $(0,\rho_0)\times(-\rho_0^r,\rho_0^r)$ and $(0,\rho_1)\times(-\rho_1^r,\rho_1^r)$, where $\rho_0=\min(R,b^{1/r})$ and $\rho_1=\max(R,b^{1/r})$. These inclusions justify the following model integrals. The comparison \eqref{eq:angularmodel} is used only on the chart domain itself; the larger boxes carry only the explicit model integrand, so they give valid upper bounds.
 
 The reduced loss equals $\rho^{2r}(t^2+\rho^{2r}q^2)$ and is comparable to \eqref{eq:angularmodel}. In a product box $0<\rho<\rho_0$, $|t|<\rho_0^r$, split into two sectors for each sign $\sigma\in\{-1,1\}$:
 \begin{align*}
@@ -276,6 +279,12 @@ The inner integral is comparable to $\min\{1,(Na)^{-\beta}\}$. Splitting at $a=N
 
 Finally, if $cF\le K\le CF$, then the corresponding Laplace integrals satisfy $Z_F(CN)\le Z_K(N)\le Z_F(cN)$ for the same positive amplitude. Thus both the exponent and the logarithmic power transfer to the actual loss. For the pole interpretation, replace the cutoff by a small closed box around the isolated zero, on which the density is smooth and positive. The difference is supported away from the zero and contributes an exponentially small Laplace term and a zeta term holomorphic near the positive real axis. Resolution on that box supplies the stated interpretation.
 
+The Lean certificates localize to balls rather than smooth cutoffs. If $B_{\rm in}\subset\{\chi=1\}$ and $\supp\chi\subset B_{\rm out}$ are small balls around $w^*$, then
+\[
+ \int_{B_{\rm in}}e^{-NK_f}\pi\,dw\le Z_{N,w^*}\le\norm{\chi}_\infty\int_{B_{\rm out}}e^{-NK_f}\pi\,dw.
+\]
+Both outer integrals have the same pair, since any sufficiently small ball does, so $Z_{N,w^*}$ has it too.
+
 For the integrability threshold, Tonelli and $\int_0^\infty t^{s-1}e^{-tK}\,dt=\Gamma(s)K^{-s}$ give, for $s>0$,
 \[
  \int K_f^{-s}\chi\pi\,dw=\frac1{\Gamma(s)}\int_0^\infty t^{s-1}Z_{t,w^*}\,dt,
@@ -285,7 +294,7 @@ because the zero set of $K_f$ meets a small $\supp\chi$ only in the null set $\{
 \section{Proof of the local arrangement theorem}\label{app:arrangement}
 We first identify independent leading coefficient directions. We then control the higher-order terms uniformly, including along cancellation paths. Finally, we transfer the coefficient comparison to the population loss and factor the local integral.
 
-Fix $r,k,(n_g)$ and nonzero active coefficients $c_1,\ldots,c_k$. Constants in the coefficient estimates depend only on these fixed data. Use coefficient $\ell^1$ norms on polynomial spaces and sum norms on their direct sums; use the Euclidean norm on each effective group vector $u_g=(a_{g,i}^r)_i$. Norm equivalence will be used only in fixed finite dimension.
+Fix $r,k,(n_g)$ and nonzero active coefficients $c_1,\ldots,c_k$. Constants in the coefficient estimates, and the size of the neighborhood, depend only on these fixed data; they may degenerate as some $c_j\to0$. Use coefficient $\ell^1$ norms on polynomial spaces and sum norms on their direct sums; use the Euclidean norm on each effective group vector $u_g=(a_{g,i}^r)_i$. Norm equivalence will be used only in fixed finite dimension.
 
 \paragraph{The auxiliary composition map.}
 Set $d_h=1+h(r-1)$, $\nu_g=(r^{n_g}-1)/(r-1)$, and
