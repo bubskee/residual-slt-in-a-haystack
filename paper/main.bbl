@@ -1,4 +1,4 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{13}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -43,6 +43,12 @@ Isabel Dahlgren, Giovanni~Luca Marchetti, and Kathl{\'e}n Kohn.
 \newblock arXiv:2610.33738v1 [cs.LG], 2026.
 \newblock URL \url{https://arxiv.org/abs/2610.33738v1}.
 \newblock 24 October 2026.
+
+\bibitem[Faber(2026)]{faber2026vector}
+Bobby Faber.
+\newblock Rank, shears, and logarithmic multiplicity in polynomial residual
+  networks.
+\newblock In preparation, 2026.
 
 \bibitem[Kohn et~al.(2026)Kohn, Marchetti, Shabir, Shahverdi, and
   Wang]{kohn2026}
