@@ -49,20 +49,25 @@ Each claim gets exactly one of these labels. Never blur them.
 
 ## Prose
 
-- **Lead with the example.** The abstract and the introduction both open with the concrete surprise: the same function, with different (λ, m) at different realizations. The general theorem comes second.
-- **Define before use.** The abstract defines the network in one clause (L maps x ↦ x + wʳxʳ, composed). No term of art appears before it is defined, and coined terms ("active", "inactive group") are defined at first use.
-- **Explain the mechanism before the proof.** Say *why* something happens in words (cancellation within inactive groups) before the theorem that proves it.
-- **Say what it is and what it isn't.** State the toy-model framing and the scope paragraph plainly, before a reader has to ask.
-- **Sentence style.** Prefer short declarative sentences, with one claim per sentence. Use signposts ("The mechanism is…", "Therefore…"), but don't use rhetorical questions.
-- **One scope statement.** The paper has exactly one scope paragraph: the last paragraph of the introduction (what the model is, what the theorems show, what they do not cover). Do not restate it in remarks, section endings or Section 7; a remark may add at most one clause about its own limits.
-- **Further directions.** A short closing section before the appendices may name natural extensions, open questions and the work in progress that follows the paper, with a citation where a draft exists. It states directions, not exclusions, so it is not a second scope paragraph. Readers deserve to know what we are thinking.
-- **Hedging.** Hedge once, in the right place, and don't stack hedges. Modelling choices that change the answer (raw weights) get one clear sentence in Section 2; minor conventions go in footnotes.
-- **Proofs read confident.** No reassurance parentheticals ("including depth one", "(one in dimension zero)", "without requiring …"). If the general argument covers a case, say nothing. If a case needs its own step, state that step plainly as part of the argument. Lean certification never substitutes for a complete paper proof.
-- **Define once.** Each object gets one definition (e.g. (λ, m) is defined in Section 2; the introduction gives one plain gloss).
-- **Voice.** Use "we" for the author. Use present tense for results and past tense only for history.
-- **Numbers.** Write exact fractions, such as 13/12. Write 1/12, not "about 0.083".
-- **Avoid these words:** "novel", "crucially", "it is worth noting", "interestingly", "delve", "leverage".
+The structural rules. Prose taste is not legislated here; see Defaults.
+
+- **One scope statement.** The paper has exactly one scope paragraph: the last paragraph of the introduction (what the model is, what the theorems show, what they do not cover). Do not restate it in remarks, section endings or the formal-verification section; a remark may add at most one clause about its own limits.
+- **Further directions.** A short closing section before the appendices may name natural extensions, open questions and the work in progress that follows the paper, with a citation where a draft exists. It states directions, not exclusions, so it is not a second scope paragraph.
+- **Define once, define before use.** Each object gets one definition, and no term of art or coined term ("active", "inactive group") appears before it is defined. The introduction may give one plain gloss of (λ, m); Section 2 defines it.
+- **Modelling choices that change the answer** (raw weights) get one clear sentence in Section 2 and are not repeated elsewhere. Minor conventions go in footnotes.
+- **Voice and numbers.** "We" for the author. Present tense for results, past tense only for history. Exact fractions, such as 13/12, never decimals.
+- **Word lint.** Do not use "novel", "crucially", "it is worth noting", "interestingly", "delve", "leverage".
 - **AI disclosure.** Keep the disclosure paragraph in Appendix E, following the Leiden Declaration, and name the tools that were used.
+
+## Defaults
+
+Tendencies to lean on when unsure. They are not rules, and a passage that reads better without them wins.
+
+- Open the abstract and the introduction with the concrete surprise rather than the setting.
+- Say why something happens in words before the theorem that proves it.
+- Short declarative sentences, one claim each. No rhetorical questions.
+- Let a fact end a paragraph. Sentences that announce the paper's organization or importance ("Both questions then have exact answers", "Several directions follow") can usually be deleted once the preceding sentence has made the claim.
+- Hedge where the hedge belongs and once. In proofs, state the step that handles a case rather than reassuring the reader that it is handled.
 
 ## Build
 
