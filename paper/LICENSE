@@ -1,0 +1,15 @@
+The paper "A Needle in Five Tiny Haystacks: Local Learning Coefficients of
+Scalar ResNets" is Copyright 2026 Bobby Faber.
+
+Its text, LaTeX source, bibliography, compiled PDF and figures (main.tex,
+main.pdf, references.bib, figures/active-arrangements.*) and the prose
+documents in this directory are licensed under the Creative Commons
+Attribution 4.0 International License (CC BY 4.0).
+
+You may share and adapt this material for any purpose, provided you give
+appropriate credit, link to the license, and indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Code in this directory (checks/*.lean, figures/make_arrangements.py) is
+licensed under the Apache License, Version 2.0; see ../LICENSE.

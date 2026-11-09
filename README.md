@@ -39,6 +39,10 @@ tectonic --keep-logs main.tex
 
 The vector figure is included. Its optional Python generator requires matplotlib; see [figure documentation](paper/figures/README.md).
 
+## License
+
+Copyright 2026 Bobby Faber. The Lean proofs and all other code are released under the [Apache License 2.0](LICENSE), the license mathlib uses. The paper, including its text, LaTeX source and figures, is released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); see [paper/LICENSE](paper/LICENSE).
+
 ## Assistance
 
 Following the disclosure recommendation of the [Leiden Declaration on Artificial Intelligence and Mathematics](https://doi.org/10.5281/zenodo.20302944), the manuscript records substantial AI assistance. Astra and Opus 5.5 assisted with writing, proof development, and Lean formalization. Fable 5.1 provided adversarial review and attempted to find errors in the arguments. The author retains responsibility for the results, arguments, and citations.
